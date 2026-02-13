@@ -14,17 +14,17 @@ export function getConfig(isProduction: boolean, dir: string) {
     const config: ConfigType = {
         apiServer: {
             host: "127.0.0.1",
-            port: 4000,
+            port: 8000,
         },
         gameServer: {
             host: "127.0.0.1",
-            port: 4001,
+            port: 8001,
             apiServerUrl: "", // defaults to apiServer if blank
             thisRegion: "local",
         },
         vite: {
             host: "127.0.0.1",
-            port: 7000,
+            port: 8000,
         },
         regions: {},
         proxies: {},
