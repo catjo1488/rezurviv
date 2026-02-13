@@ -24,7 +24,7 @@ export function getConfig(isProduction: boolean, dir: string) {
         },
         vite: {
             host: "127.0.0.1",
-            port: 8000,
+            port: 3000,
         },
         regions: {},
         proxies: {},
