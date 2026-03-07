@@ -5,6 +5,7 @@ import type { MapDef } from "../mapDefs";
 import { MapId } from "../types/misc";
 import { Main, type PartialMapDef } from "./baseDefs";
 
+
 export enum TeamColor {
     // NONE = 0, // can be used ambiguously with code that runs the same regardless of team color
     Red = 1,
@@ -18,14 +19,14 @@ const mapDef: PartialMapDef = {
         icon: "img/gui/star.svg",
         buttonCss: "btn-mode-faction",
         buttonText: "50v50",
-        backgroundImg: "img/main_splash_0_7_0.png",
+        backgroundImg: "img/main_splash_0_7_3.png",
     },
     assets: {
         audio: [
             {
                 name: "lt_assigned_01",
                 channel: "ui",
-            },
+            },    
             {
                 name: "captain_assigned_01",
                 channel: "ui",
@@ -83,7 +84,7 @@ const mapDef: PartialMapDef = {
                 channel: "otherPlayers",
             },
         ],
-        atlases: ["gradient", "loadout", "shared", "faction","woods","main",],
+        atlases: ["snow","gradient", "loadout", "shared", "faction","woods","main","halloween"],
     },
     biome: {
         colors: {
@@ -95,7 +96,7 @@ const mapDef: PartialMapDef = {
             grass: 0x4e6128,
             underground: 0x1b0d03,
             playerSubmerge: 0x123049,
-            playerGhillie: 0x4c6024,
+            playerGhillie: 0x4e6128,
         },
     },
     gameMode: {
@@ -200,7 +201,7 @@ const mapDef: PartialMapDef = {
                 {
                     role: "medik",
                     circleIdx: 0,
-                    wait: 74,
+                    wait: 75,
                 },
                 {
                     role: "Admiral",
@@ -239,7 +240,7 @@ const mapDef: PartialMapDef = {
                 //     wait: 54,
                 // },
                 {
-                    role: "Vice_Admiral:",
+                    role: "Vice_Admiral",
                     circleIdx: 0,
                     wait: 24,
                 },
@@ -443,15 +444,14 @@ const mapDef: PartialMapDef = {
         },
         densitySpawns: [
             {
-                stone_01: 350,
-                barrel_01: 76,
+             barrel_01: 76,
                 silo_01: 8,
-                crate_01: 38,
-                crate_02f: 5,
-                crate_22: 5,
+                crate_01: 48,
+                crate_02f: 20,
+                crate_22: 20,
                 crate_03: 8,
                 bush_01: 78,
-                tree_08sp: 420,
+                crate_08: 5,
                 hedgehog_01: 24,
                 container_01: 5,
                 container_02: 5,
@@ -461,6 +461,12 @@ const mapDef: PartialMapDef = {
                 outhouse_01: 5,
                 loot_tier_1: 24,
                 loot_tier_beach: 4,
+                tree_08sp: 300,
+                tree_08spb: 150,
+                tree_07sp: 200,
+                tree_07spr: 106,
+                tree_08spr: 53,
+                tree_09: 60,
             },
         ],
         fixedSpawns: [
@@ -495,11 +501,11 @@ const mapDef: PartialMapDef = {
         randomSpawns: [],
         spawnReplacements: [
             {
-                bush_01: "bush_01f",
-                crate_02: "crate_01",
+                bush_01: "bush_07x",
+                tree_01: "tree_07sp",
+                tree_07: "tree_07sp",
                 stone_01: "stone_01f",
-                stone_03: "stone_03f",
-                tree_01: "tree_08sp",
+                stone_03: "stone_03f",  
                 tree_02: "tree_07sp",
             },
         ],

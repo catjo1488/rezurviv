@@ -42,7 +42,7 @@ const mapDef: PartialMapDef = {
         // this override is not from the leak!
         tier_chrys_case: [
             { name: "", count: 1, weight: 2 }, // ?
-            { name: "helmet03_moon", count: 1, weight: 3 },
+            { name: "helmet04_moon", count: 1, weight: 3 },
             { name: "tier_katanas", count: 1, weight: 3 }, // ?
             { name: "naginata", count: 1, weight: 1 }, // ?
         ],
@@ -84,8 +84,8 @@ const mapDef: PartialMapDef = {
                 loot_tier_1: 36,
                 loot_tier_beach: 12,
                 tree_08sp: 350,
-                tree_08spb: 100,
-                tree_07sp: 1200,
+                tree_08spb: 400,
+                tree_07sp: 400,
                 tree_07spr: 106,
                 tree_08spr: 53,
                 tree_09: 60,

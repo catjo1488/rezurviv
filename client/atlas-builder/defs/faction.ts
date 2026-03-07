@@ -1,7 +1,6 @@
 import type { AtlasDef } from "../atlasDefs";
 import { BuildingSprites } from "./buildings";
 
-
 export const FactionAtlas: AtlasDef = {
     compress: true,
     images: [
@@ -16,7 +15,7 @@ export const FactionAtlas: AtlasDef = {
 
         ...BuildingSprites.warehouse_complex,
         // 50v50 main bridge only
-        //"",
+        "map/map-complex-warehouse-floor-04.svg",
 
         "map/map-crate-02f.svg",
 

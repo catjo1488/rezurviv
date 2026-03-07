@@ -1278,9 +1278,9 @@ export class Player implements AbstractObject {
         }
         this.throwableStatePrev = this.throwableState;
 
-        if (this.visualsDirty) {
-            this.updateVisuals(playerBarn, map);
-        }
+  if (this.visualsDirty) {
+    this.updateVisuals(playerBarn, map);
+}
         this.visualsDirty = false;
 
         this.updateAura(dt, isActivePlayer, activePlayer);
@@ -1572,7 +1572,7 @@ export class Player implements AbstractObject {
         } else {
             this.steelskinSprite.visible = false;
         }
-
+        
         // Helmet
         if (this.m_netData.m_helmet == "" || outfitDef.ghillie) {
             this.helmetSprite.visible = false;
@@ -1765,7 +1765,7 @@ export class Player implements AbstractObject {
                 ? actionItemDef.aura.sprite
                 : "part-aura-circle-01.img";
             const tint = actionItemDef?.aura ? actionItemDef.aura.tint : 0xff00ff;
-            const auraScale = 0.200;
+            const auraScale = 0.120;
             let auraRad = actionItemDef
                 ? GameConfig.player.medicHealRange
                 : GameConfig.player.medicReviveRange;
@@ -1987,7 +1987,7 @@ export class Player implements AbstractObject {
                     emitterProps.scale = 1.5;
                     emitterProps.radius =
                         GameConfig.player.medicHealRange / emitterProps.scale;
-                    emitterProps.rateMult = 0.25;
+                    emitterProps.rateMult = 1.50;
                 }
                 break;
             }

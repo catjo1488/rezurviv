@@ -4434,6 +4434,31 @@ speed: number = 0;
             }
         }
     }
+    spectate(msg: net.SpectateMsg): void {
+    if (!this.dead) return;
+
+    if (msg.specBegin) {
+        const player = this.game.playerBarn.randomPlayer(this);
+        if (player) this.spectating = player;
+        return;
+    }
+
+    if (msg.specNext) {
+        const currentGroup = this.spectating?.group ?? this.group!;
+        const next = this.game.playerBarn.nextTeam(currentGroup);
+        const player = next?.players.find(p => !p.dead);
+        if (player) this.spectating = player;
+        return;
+    }
+
+    if (msg.specPrev) {
+        const currentGroup = this.spectating?.group ?? this.group!;
+        const prev = this.game.playerBarn.prevTeam(currentGroup);
+        const player = prev?.players.find(p => !p.dead);
+        if (player) this.spectating = player;
+        return;
+        }
+    }
 
     doAction(
         actionItem: string,

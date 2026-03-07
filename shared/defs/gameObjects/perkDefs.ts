@@ -58,8 +58,12 @@ export const PerkProperties = {
         scale: 0.30,
         healthRegen: 1.3, // per second
     },
+    woods: {
+        scale: 0.30,
+        healthRegen: 1.1,
+    },    
     field_medic: {
-        speedBoost: 10,
+        speedBoost: 3,
     },
     tree_climbing: {
         waterSpeedBoost: 2,
@@ -70,6 +74,9 @@ export const PerkProperties = {
     rare_potato: {
         quality: 1,
     },
+    repulsor: {
+    // можно добавить доп. свойства если нужно
+   },
     // map of ammo type to perk that boosts that ammo
     ammoBonuses: {
         "9mm": ["treat_9mm", "bonus_9mm"],
@@ -173,6 +180,20 @@ export const PerkDefs: Record<string, PerkDef> = {
         type: "perk",
         lootImg: {
             sprite: "loot-perk-ultimate-survival.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-03.img",
+            borderTint: 0xffffff,
+            scale: 0.275,
+        },
+        sound: {
+            pickup: "perk_pickup_01",
+        },
+    },
+    woods: {
+        name: "woods-king",
+        type: "perk",
+        lootImg: {
+            sprite: "loot-perk-gotw.img",
             tint: 0xffffff,
             border: "loot-circle-outer-03.img",
             borderTint: 0xffffff,
@@ -762,6 +783,20 @@ export const PerkDefs: Record<string, PerkDef> = {
             pickup: "perk_pickup_01",
         },
     },
+    repulsor: {
+    name: "Repulsor",
+    type: "perk",
+    lootImg: {
+        sprite: "loot-perk-repulsor.img",
+        tint: 0xffffff,
+        border: "loot-circle-outer-03.img",
+        borderTint: 0xffffff,
+        scale: 0.275,
+    },
+    sound: {
+        pickup: "perk_pickup_01",
+    },
+},
     turkey_shoot: {
         name: "Perky Shoot",
         type: "perk",
