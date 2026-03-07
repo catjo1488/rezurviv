@@ -356,7 +356,7 @@ export const RoleDefs: Record<string, RoleDef> = {
                 { type: "", ammo: 0 },
                 { type: "smoke", ammo: 0 },
             ],
-            backpack: "backpack03",  
+            backpack: "backpack03",
             chest: "chest03",
             helmet: (teamcolor: TeamColor) =>
                 ({
@@ -387,11 +387,11 @@ export const RoleDefs: Record<string, RoleDef> = {
                         {
                             [TeamColor.Red]: util.weightedRandom([
                                 { type: "garand", ammo: 8, fillInv: true, weight: 0.9 },
-                          
+
                             ]),
                             [TeamColor.Blue]: util.weightedRandom([
                                 { type: "garand", ammo: 8, fillInv: true, weight: 0.9 },
-                               
+
                             ]),
                         },
                         teamcolor,
@@ -422,11 +422,11 @@ export const RoleDefs: Record<string, RoleDef> = {
                         {
                             [TeamColor.Red]: util.weightedRandom([
                                 { type: "blr", ammo: 3, fillInv: true, weight: 0.9 },
-                               
+
                             ]),
                             [TeamColor.Blue]: util.weightedRandom([
                                 { type: "blr", ammo: 3, fillInv: true, weight: 0.9 },
-                          
+
                             ]),
                         },
                         teamcolor,
@@ -533,7 +533,7 @@ export const RoleDefs: Record<string, RoleDef> = {
             inventory: {
                 mirv: 4,
                 frag: 6,
-                
+
                 "4xscope": 1,
                 bandage: 5,
             },

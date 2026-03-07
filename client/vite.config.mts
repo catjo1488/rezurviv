@@ -62,7 +62,7 @@ export default defineConfig(({ mode }) => {
     const plugins: Plugin[] = [ejsPlugin(), ...atlasBuilderPlugin()];
 
     if (!isDev) {
-        plugins.push(codefendPlugin());
+    plugins.push(codefendPlugin());
 
         plugins.push(
             stripBlockPlugin({
@@ -70,7 +70,7 @@ export default defineConfig(({ mode }) => {
                 end: "STRIP_FROM_PROD_CLIENT:END",
             }),
         );
-    }
+}
 
     const serverOptions: ServerOptions = {
         port: Config.vite.port,

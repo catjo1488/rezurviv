@@ -234,7 +234,7 @@ export class Editor {
             const folder = tools.addFolder({
                 title: "Toggles",
             });
-
+            
             folder.addBinding(this.toolParams, "noClip", {
                 label: "No Clip",
             });

@@ -242,7 +242,7 @@ export const ObjectSerializeFns: {
             if (hasRole) {
                 s.writeGameType(data.role);
             }
-
+            
             const hasPerks = data.perks.length > 0;
             s.writeBoolean(hasPerks);
             if (hasPerks) {

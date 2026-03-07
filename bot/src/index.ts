@@ -21,7 +21,7 @@ function setupInteractionHandlers() {
             return;
         }
 
-        const commandName = interaction.commandName as Command;
+     const commandName = interaction.commandName as Command;
         if (!commandHandlers[commandName]) {
             botLogger.warn(`Unknown command: ${commandName}`);
             return;
@@ -34,7 +34,7 @@ function setupInteractionHandlers() {
                 content: "There was an error while executing this command!",
                 flags: MessageFlags.Ephemeral,
             };
-
+ 
             if (interaction.replied || interaction.deferred) {
                 await interaction.followUp(errorMessage);
             } else {
