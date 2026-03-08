@@ -79,6 +79,7 @@
         killedPlayers: Player[] = [];
         groupIdAllocator = new IDAllocator(8);
         aliveCountDirty = false;
+        deserterPlayer: Player | null = null;
 
         socketIdToPlayer = new Map<string, Player>();
 
@@ -331,30 +332,59 @@
                 this.killedPlayers[i].addGameOverMsg();
             }
             this.killedPlayers.length = 0;
+// update scheduled roles
+for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
+    const scheduledRole = this.scheduledRoles[i];
+    scheduledRole.time -= dt;
+    if (scheduledRole.time <= 0) {
+        this.scheduledRoles.splice(i, 1);
 
-            // update scheduled roles
-            for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
-                const scheduledRole = this.scheduledRoles[i];
-                scheduledRole.time -= dt;
-                if (scheduledRole.time <= 0) {
-                    this.scheduledRoles.splice(i, 1);
+        const isDeserterRole = scheduledRole.role.startsWith("deserter_");
 
-                    const fullAliveContext = this.game.modeManager.getAlivePlayersContext();
-                    for (let i = 0; i < fullAliveContext.length; i++) {
-                        const promotablePlayers = fullAliveContext[i].filter(
-                            (p) => !p.disconnected && !p.downed && !p.role,
-                        );
-                        if (promotablePlayers.length == 0) continue;
+        // Если это роль дезертира — назначаем тому же игроку
+        if (isDeserterRole) {
+            // deserter_1 — назначаем случайному, запоминаем
+            if (scheduledRole.role === "deserter_1") {
+                const alivePlayers = this.livingPlayers.filter(
+                    (p) => !p.disconnected && !p.downed,
+                );
+                if (alivePlayers.length === 0) continue;
 
-                        const randomPlayer =
-                            promotablePlayers[
-                                util.randomInt(0, promotablePlayers.length - 1)
-                            ];
-                        randomPlayer.promoteToRole(scheduledRole.role);
-                    }
+                const randomPlayer =
+                    alivePlayers[util.randomInt(0, alivePlayers.length - 1)];
+                randomPlayer.promoteToRole(scheduledRole.role);
+                this.deserterPlayer = randomPlayer;
+            } else {
+                // deserter_2..5 — назначаем тому же игроку
+                if (
+                    this.deserterPlayer &&
+                    !this.deserterPlayer.dead &&
+                    !this.deserterPlayer.disconnected
+                ) {
+                    // Сбрасываем старую роль чтобы promoteToRole сработал
+                    this.deserterPlayer.role = "";
+                    this.deserterPlayer.promoteToRole(scheduledRole.role);
                 }
+                // Если дезертир погиб — никому не назначаем
             }
+            continue;
         }
+
+        // Обычная логика для всех остальных ролей
+        const fullAliveContext = this.game.modeManager.getAlivePlayersContext();
+        for (let j = 0; j < fullAliveContext.length; j++) {
+            const promotablePlayers = fullAliveContext[j].filter(
+                (p) => !p.disconnected && !p.downed && !p.role,
+            );
+            if (promotablePlayers.length === 0) continue;
+
+            const randomPlayer =
+                promotablePlayers[util.randomInt(0, promotablePlayers.length - 1)];
+            randomPlayer.promoteToRole(scheduledRole.role);
+        }
+    }
+}
+}
 
         removePlayer(player: Player) {
             this.players.splice(this.players.indexOf(player), 1);
@@ -362,6 +392,9 @@
             if (livingIdx !== -1) {
                 this.livingPlayers.splice(livingIdx, 1);
                 this.aliveCountDirty = true;
+            }
+            if (this.deserterPlayer === player) {
+                this.deserterPlayer = null;
             }
             this.deletedPlayers.push(player.__id);
             player.destroy();
@@ -2615,11 +2648,20 @@
         const preHealth = this._health;
 
         // teammates can't deal damage to each other
-        if (playerSource && params.source !== this) {
-            if (playerSource.teamId === this.teamId && !this.disconnected) {
-                return;
-            }
-        }
+if (playerSource && params.source !== this) {
+    const attackerIsDeserter = playerSource.role?.startsWith("deserter_");
+    const targetIsDeserter = this.role?.startsWith("deserter_");
+    
+    // дезертир может бить всех, все могут бить дезертира
+    if (
+        playerSource.teamId === this.teamId &&
+        !this.disconnected &&
+        !attackerIsDeserter &&
+        !targetIsDeserter
+    ) {
+        return;
+    }
+}
 
 
         let finalDamage = params.amount!;
@@ -2865,10 +2907,11 @@
             : params.source;
         if (killCreditSource?.__type === ObjectType.Player) {
             this.killedBy = killCreditSource;
-
-            if (killCreditSource !== this && killCreditSource.teamId !== this.teamId) {
-                killCreditSource.killedIds.push(this.matchDataId);
-                killCreditSource.kills++;
+const targetIsDeserter = this.role?.startsWith("deserter_");
+const attackerIsDeserter = (killCreditSource as Player).role?.startsWith("deserter_");
+if (killCreditSource !== this && (killCreditSource.teamId !== this.teamId || attackerIsDeserter || targetIsDeserter)) {
+    killCreditSource.killedIds.push(this.matchDataId);
+    killCreditSource.kills++;
 
                 if (killCreditSource.isKillLeader) {
                     this.game.playerBarn.killLeaderDirty = true;

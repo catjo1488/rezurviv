@@ -19,6 +19,7 @@ import { WoodsSnow } from "./maps/woodsSnowDefs";
 import { WoodsSpring } from "./maps/woodsSpringDefs";
 import { WoodsSummer } from "./maps/woodsSummerDefs";
 import type { MapId } from "./types/misc";
+import { OneVFifty } from "./maps/oneVFiftyDefs";
 
 export type Atlas =
     | "gradient"
@@ -34,7 +35,8 @@ export type Atlas =
     | "cobalt"
     | "savannah"
     | "turkey"
-    | "beach";
+    | "beach"
+    | "oneVFifty"
 
 export const MapDefs = {
     main: Main,
@@ -55,6 +57,7 @@ export const MapDefs = {
     turkey: Turkey,
     birthday: Birthday,
     beach: Beach,
+    oneVFifty: OneVFifty,
 
     /* STRIP_FROM_PROD_CLIENT:START */
     test_normal: testNormal,

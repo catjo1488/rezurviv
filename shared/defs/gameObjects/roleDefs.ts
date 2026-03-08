@@ -583,7 +583,7 @@ export const RoleDefs: Record<string, RoleDef> = {
     },
     last_man: {
         type: "role",
-        announce: true,
+        announce: false,
         killFeed: { assign: true },
         sound: { assign: "last_man_assigned_01" },
         perks: [
@@ -639,6 +639,180 @@ export const RoleDefs: Record<string, RoleDef> = {
             },
         }),
     },
+    // Дезертир - стартовая роль (0 минут)
+deserter_1: {
+    type: "role",
+    announce: true,
+    killFeed: { assign: true },
+    sound: { assign: "last_man_1v50" },
+    mapIcon: {
+        alive: "player-the-hunted.img",
+    },
+    mapIndicator: {
+        sprite: "player-the-hunted.img",
+        tint: 0xffaa00,
+        pulse: false,
+        pulseTint: 0xffaa00,
+    },
+    perks: ["steelskin","splinter","windwalk"],
+    defaultItems: createDefaultItems({
+        weapons: [
+            { type: "", },
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+        ],
+        backpack: "backpack03",
+        helmet: "one_V50",
+        chest: "chest03",
+        inventory: {
+            bandage: 5,
+            "4xscope": 1,
+        },
+    }),
+},
+
+// Дезертир - 1 минута
+deserter_2: {
+    type: "role",
+    announce: true,
+    killFeed: { assign: true },
+    sound: { assign: "last_man_1v50" },
+    mapIcon: {
+        alive: "player-the-hunted.img",
+    },
+    mapIndicator: {
+        sprite: "player-the-hunted.img",
+        tint: 0xff8800,
+        pulse: false,
+        pulseTint: 0xff8800,
+    },
+    perks: ["small_arms","steelskin","splinter","windwalk"],
+    defaultItems: createDefaultItems({
+        weapons: [
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+            { type: "mirv", ammo: 2 },
+        ],
+        backpack: "backpack03",
+        helmet: "one_V50lvl2",
+        chest: "chest03",
+        inventory: {
+            bandage: 8,
+            soda: 2,
+            "4xscope": 1,
+        },
+    }),
+},
+
+// Дезертир - 2 минуты
+deserter_3: {
+    type: "role",
+    announce: true,
+    killFeed: { assign: true },
+    sound: { assign: "last_man_1v50" },
+    mapIcon: {
+        alive: "player-the-hunted.img",
+    },
+    mapIndicator: {
+        sprite: "player-the-hunted.img",
+        tint: 0xff5500,
+        pulse: false,
+        pulseTint: 0xff5500,
+    },
+    perks: ["small_arms","steelskin","splinter","windwalk","firepower"],
+    defaultItems: createDefaultItems({
+        weapons: [
+            { type: "", },
+            { type: "", },
+            { type: "", ammo: 0 },
+            { type: "mirv", ammo: 4 },
+        ],
+        backpack: "backpack03",
+        helmet: "one_V50lvl3",
+        chest: "chest03",
+        inventory: {
+            bandage: 10,
+            healthkit: 1,
+            soda: 3,
+            "4xscope": 1,
+        },
+    }),
+},
+
+// Дезертир - 3 минуты
+deserter_4: {
+    type: "role",
+    announce: true,
+    killFeed: { assign: true },
+    sound: { assign: "leader_assigned_01" },
+    mapIcon: {
+        alive: "player-the-hunted.img",
+    },
+    mapIndicator: {
+        sprite: "player-the-hunted.img",
+        tint: 0xff2200,
+        pulse: true,
+        pulseTint: 0xff2200,
+    },
+    perks: ["small_arms","steelskin","splinter","windwalk","firepower","field_medic","melee_striker"],
+    defaultItems: createDefaultItems({
+        weapons: [
+            { type: "",  },
+            { type: "",  },
+            { type: "", ammo: 0 },
+            { type: "mirv", ammo: 6 },
+        ],
+        backpack: "backpack03",
+        helmet: "one_V50lvl4",
+        chest: "chest03",
+        inventory: {
+            bandage: 15,
+            healthkit: 2,
+            soda: 5,
+            frag: 3,
+            "4xscope": 1,
+        },
+    }),
+},
+
+// Дезертир - 4 минуты (финальная форма)
+deserter_5: {
+    type: "role",
+    announce: true,
+    killFeed: { assign: true },
+    sound: { assign: "last_man_assigned_01", dead: "leader_dead_01" },
+    mapIcon: {
+        alive: "player-the-hunted.img",
+        dead: "skull-leader.img",
+    },
+    mapIndicator: {
+        sprite: "player-the-hunted.img",
+        tint: 0xff0000,
+        pulse: true,
+        pulseTint: 0xff0000,
+    },
+    perks: ["small_arms","steelskin","splinter","windwalk","firepower","field_medic","ap_rounds","melee_striker","armor_master"],
+    defaultItems: createDefaultItems({
+        weapons: [
+            { type: "m249", ammo: 100, fillInv: true },
+            { type: "", ammo: 0, },
+            { type: "", ammo: 0 },
+            { type: "mirv", ammo: 8},
+        ],
+        backpack: "backpack03",
+        helmet: "one_V50lvl5",
+        chest: "chest04",
+        inventory: {
+            bandage: 20,
+            healthkit: 3,
+            soda: 8,
+            painkiller: 2,
+            "8xscope": 1,
+        },
+    }),
+},
     woods_king: {
         type: "role",
         announce: false,

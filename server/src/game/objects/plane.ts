@@ -208,9 +208,10 @@ export class PlaneBarn {
         this.game.playerBarn.addMapPing("ping_airstrike", pos);
     }
 
-    isOneTeamWinning(): boolean {
-        if (this.sentHelp || this.game.gas.circleIdx == 0) return false;
-
+isOneTeamWinning(): boolean {
+    if (this.sentHelp || this.game.gas.circleIdx == 0) return false;
+    if (this.game.playerBarn.teams.length < 2) return false
+        
         const redConnectedPlayers = this.game.playerBarn.teams[0].livingPlayers.filter(
             (p) => !p.disconnected,
         );

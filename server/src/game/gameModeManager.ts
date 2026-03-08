@@ -9,12 +9,10 @@ import type { DamageParams } from "./objects/gameObject";
 import type { Player } from "./objects/player";
 
 enum GameMode {
-    /** default solos, any map besides factions */
     Solo,
-    /** default duos or squads, any map besides factions */
     Team,
-    /** irrelevant to gamemode type, always the mode if faction map is selected */
     Faction,
+    OneVFifty, // все союзники, один дезертир
 }
 
 export class GameModeManager {
@@ -25,13 +23,14 @@ export class GameModeManager {
     constructor(game: Game) {
         this.game = game;
 
-        this.mode = [
-            game.teamMode == TeamMode.Solo && !game.map.factionMode,
-            game.teamMode != TeamMode.Solo && !game.map.factionMode,
-            game.map.factionMode,
-        ].findIndex((isMode) => isMode);
+this.mode = [
+    game.teamMode == TeamMode.Solo && !game.map.factionMode,
+    game.teamMode != TeamMode.Solo && !game.map.factionMode,
+    game.map.factionMode && (game.map.mapDef.gameMode.factions ?? 2) > 1,
+    game.map.factionMode && (game.map.mapDef.gameMode.factions ?? 2) === 1,
+].findIndex((isMode) => isMode);
 
-        this.isSolo = this.mode === GameMode.Solo;
+   this.isSolo = this.mode === GameMode.Solo || this.mode === GameMode.OneVFifty;
     }
 
     aliveCount(): number {
@@ -42,6 +41,8 @@ export class GameModeManager {
                 return this.game.playerBarn.getAliveGroups().length;
             case GameMode.Faction:
                 return this.game.playerBarn.getAliveTeams().length;
+            case GameMode.OneVFifty:
+                return this.game.playerBarn.livingPlayers.length;    
         }
     }
 
@@ -60,13 +61,14 @@ export class GameModeManager {
                 return this.game.playerBarn.getAliveTeams().filter((team) => {
                     return team.players.filter((p) => !p.canDespawn()).length;
                 }).length;
+            case GameMode.OneVFifty:
+                return this.game.playerBarn.livingPlayers.filter((p) => !p.canDespawn()).length;    
         }
     }
 
     // used when saving the game match data
     getPlayersSortedByRank(): Array<{ player: Player; rank: number }> {
         const players = [...this.game.playerBarn.players];
-
         switch (this.mode) {
             case GameMode.Solo: {
                 return players
@@ -79,7 +81,13 @@ export class GameModeManager {
                             rank: idx + 1,
                         };
                     });
+
             }
+            case GameMode.OneVFifty:
+    return players
+        .sort((a, b) => b.killedIndex - a.killedIndex)
+        .map((player, idx) => ({ player, rank: idx + 1 }));
+
             case GameMode.Team:
             case GameMode.Faction: {
                 // the logic is basically the exact same for both
@@ -118,8 +126,9 @@ export class GameModeManager {
     }
 
     /** true if game needs to end */
-    handleGameEnd(): boolean {
-        if (!this.game.started || this.aliveCount() > 1) return false;
+ handleGameEnd(): boolean {
+    if (!this.game.started) return false;
+    if (this.mode !== GameMode.OneVFifty && this.aliveCount() > 1) return false;
         switch (this.mode) {
             case GameMode.Solo: {
                 const winner = this.game.playerBarn.livingPlayers[0];
@@ -140,6 +149,29 @@ export class GameModeManager {
                 }
                 return true;
             }
+            case GameMode.OneVFifty: {
+    // игра заканчивается если дезертир мёртв (или ещё не назначен — игнорируем)
+    const deserter = this.game.playerBarn.deserterPlayer;
+    if (!deserter || deserter.dead) {
+        // все выжившие победили
+        for (const player of this.game.playerBarn.livingPlayers) {
+            player.addGameOverMsg(player.teamId);
+        }
+        return true;
+    }
+    // или последний игрок остался (дезертир победил)
+    if (this.aliveCount() <= 1) {
+        const winner = this.game.playerBarn.livingPlayers[0];
+        if (winner) winner.addGameOverMsg(winner.teamId);
+        return true;
+    }
+    return false;
+}
+            case GameMode.OneVFifty: {
+    const winner = this.game.playerBarn.livingPlayers[0];
+    winner.addGameOverMsg(winner.teamId);
+    return true;
+}
         }
     }
 
@@ -159,6 +191,10 @@ export class GameModeManager {
                     aliveCounts.push(this.game.playerBarn.teams[i].livingPlayers.length);
                 }
                 break;
+            case GameMode.OneVFifty:
+                 aliveCounts.push(this.game.playerBarn.livingPlayers.length);
+                 break;
+    
         }
     }
 
@@ -177,6 +213,8 @@ export class GameModeManager {
                 return this.game.playerBarn.groups.map((g) => g.livingPlayers);
             case GameMode.Faction:
                 return this.game.playerBarn.teams.map((t) => t.livingPlayers);
+            case GameMode.OneVFifty:
+                return [this.game.playerBarn.livingPlayers];    
         }
     }
 
@@ -188,6 +226,8 @@ export class GameModeManager {
                 return player.group!.players;
             case GameMode.Faction:
                 return this.game.playerBarn.players;
+            case GameMode.OneVFifty:
+                return this.game.playerBarn.players;    
         }
     }
 
@@ -199,6 +239,8 @@ export class GameModeManager {
                 return player.group!.livingPlayers;
             case GameMode.Faction:
                 return player.team!.livingPlayers;
+            case GameMode.OneVFifty:
+                return this.game.playerBarn.livingPlayers.filter(p => !p.dead);    
         }
     }
 
@@ -235,6 +277,8 @@ export class GameModeManager {
                 return !player.group!.allDeadOrDisconnected && this.aliveCount() > 1;
             case GameMode.Faction:
                 return this.aliveCount() > 1;
+            case GameMode.OneVFifty:
+               return this.aliveCount() > 1;    
         }
     }
 
@@ -244,7 +288,10 @@ export class GameModeManager {
                 return [player];
             case GameMode.Team:
                 return player.group!.players;
+                case GameMode.OneVFifty:
+                return [player];
             case GameMode.Faction:
+                  
                 const redLeader = this.game.playerBarn.teams[TeamColor.Red - 1].leader;
                 const blueLeader = this.game.playerBarn.teams[TeamColor.Blue - 1].leader;
                 const highestKiller = this.game.playerBarn.players.reduce(
@@ -301,15 +348,18 @@ export class GameModeManager {
         }
     }
 
-    handlePlayerDeath(player: Player, params: DamageParams): void {
-        if (this.isSolo) {
-            player.kill(params);
-        } else {
-            const group = this.mode === GameMode.Faction ? player.team! : player.group!;
+handlePlayerDeath(player: Player, params: DamageParams): void {
+    if (this.isSolo) {
+        player.kill(params);
+    } else {
+        const group = this.mode === GameMode.Faction ? player.team! : player.group!;
+        
+            
 
             const playerSource =
                 params.source?.__type === ObjectType.Player
                     ? (params.source as Player)
+                    
                     : undefined;
             if (player.downed) {
                 const finishedByTeammate =
@@ -319,6 +369,7 @@ export class GameModeManager {
 
                 const nonPlayerKill =
                     player.downedBy && params.damageType != GameConfig.DamageType.Player;
+                    
 
                 // give kill credit to the person that downed the player if it was killed by:
                 // a teammate, bleeding or non player source (airstrike, gas etc)

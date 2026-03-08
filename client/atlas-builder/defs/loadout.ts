@@ -170,7 +170,6 @@ export const LoadoutAtlas: AtlasDef = {
         "emotes/turkey-animal.svg",
         "emotes/whale.svg",
         "emotes/cake.svg",
-
         "gui/audio-off.svg",
         "gui/audio-on.svg",
         "gui/bullets.svg",
@@ -555,6 +554,11 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/player-helmet-grenadier.svg",
         "loot/player-helmet-last-man-01.svg",
         "loot/player-helmet-last-man-02.svg",
+        "loot/player-helmet-last-man-03.svg",
+        "loot/player-helmet-last-man-04.svg",
+        "loot/player-helmet-last-man-05.svg",
+        "loot/player-helmet-last-man-06.svg",
+        "loot/player-helmet-last-man-07.svg",
         "loot/player-helmet-leader.svg",
         "loot/player-helmet-liutenant.svg",
         "loot/player-helmet-senior.svg",
@@ -699,5 +703,6 @@ export const LoadoutAtlas: AtlasDef = {
         "proj/proj-strobe-arming.svg",
         "proj/proj-strobe-unarmed.svg",
         "proj/proj-wedge-01.svg",
+        "player/player-base-outfitGamerio.png",
     ],
 };

@@ -891,6 +891,86 @@ const SkinDefs = {
             rot: 0.5 * Math.PI,
         },
     }),
+     one_V50: defineSkin("helmet04", {
+        name: "1v50 lvl1",
+        noDrop: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseTintRed: 0xffffff,
+            baseTintBlue: 0xffffff,
+            baseSprite: "player-helmet-last-man-06.img",
+            spriteScale: 0.3,
+        },
+        lootImg: {
+            sprite: "player-helmet-last-man-06.img",
+            scale: 0.3,
+            rot: 0.5 * Math.PI,
+        },
+    }),
+         one_V50lvl2: defineSkin("helmet04", {
+        name: "1v50 lvl2",
+        noDrop: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseTintRed: 0xffffff,
+            baseTintBlue: 0xffffff,
+            baseSprite: "player-helmet-last-man-05.img",
+            spriteScale: 0.3,
+        },
+        lootImg: {
+            sprite: "player-helmet-last-man-06.img",
+            scale: 0.3,
+            rot: 0.5 * Math.PI,
+        },
+    }),
+             one_V50lvl3: defineSkin("helmet04", {
+        name: "1v50 lvl3",
+        noDrop: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseTintRed: 0xffffff,
+            baseTintBlue: 0xffffff,
+            baseSprite: "player-helmet-last-man-04.img",
+            spriteScale: 0.3,
+        },
+        lootImg: {
+            sprite: "player-helmet-last-man-06.img",
+            scale: 0.3,
+            rot: 0.5 * Math.PI,
+        },
+    }),
+             one_V50lvl4: defineSkin("helmet04", {
+        name: "1v50 lvl4",
+        noDrop: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseTintRed: 0xffffff,
+            baseTintBlue: 0xffffff,
+            baseSprite: "player-helmet-last-man-03.img",
+            spriteScale: 0.3,
+        },
+        lootImg: {
+            sprite: "player-helmet-last-man-06.img",
+            scale: 0.3,
+            rot: 0.5 * Math.PI,
+        },
+    }),
+                 one_V50lvl5: defineSkin("helmet04", {
+        name: "1v50 lvl5",
+        noDrop: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseTintRed: 0xffffff,
+            baseTintBlue: 0xffffff,
+            baseSprite: "player-helmet-last-man-07.img",
+            spriteScale: 0.3,
+        },
+        lootImg: {
+            sprite: "player-helmet-last-man-06.img",
+            scale: 0.3,
+            rot: 0.5 * Math.PI,
+        },
+    }),
      helmet04_medic01: defineSkin("helmet04", {
         name: "Medic01",
         noDrop: true,
