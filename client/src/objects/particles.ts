@@ -2287,6 +2287,30 @@ const ParticleDefs: Record<string, ParticleDef> = {
         },
         color: 0xffffff,
     },
+        rainbow_ammo: {
+        image: [
+            "part-rainbow-1.img",
+            "part-rainbow-2.img",
+            "part-rainbow-3.img",
+            "part-rainbow-4.img",
+            "part-rainbow-5.img",
+            "part-rainbow-6.img",
+        ],
+        life: new Range(0.5, 0.75),
+        drag: new Range(3, 4),
+        rotVel: new Range(Math.PI * 3, Math.PI * 3),
+        scale: {
+            start: 0.45,
+            end: 0.1,
+            lerp: new Range(0, 1),
+        },
+        alpha: {
+            start: 1,
+            end: 0,
+            lerp: new Range(0.95, 1),
+        },
+        color: 16777215,
+    },
     classShell03a: {
         image: ["part-class-shell-03a.img"],
         life: new Range(0.85, 1.15),

@@ -111,6 +111,7 @@ export class Game {
 
     editor!: Editor;
     debugHUD!: DebugHUD;
+    m_isEditor = false;
 
     seq!: number;
     seqInFlight!: boolean;
@@ -143,7 +144,7 @@ export class Game {
         this.m_inputBindUi = m_inputBindUi;
         this.m_resourceManager = m_resourceManager;
 
-        if (IS_DEV) {
+        if (this.m_isEditor) {
             this.editor = new Editor(this.m_config);
         }
     }
@@ -398,24 +399,24 @@ export class Game {
         );
     }
 
-    update(dt: number) {
-        this.debugHUD.m_update(dt, this);
+update(dt: number) {
+    this.debugHUD.m_update(dt, this);
 
-        if (IS_DEV) {
-            if (this.m_input.keyPressed(Key.Tilde)) {
-                this.editor.setEnabled(!this.editor.enabled);
-            }
-            if (this.editor.enabled) {
-                this.editor.m_update(this.m_input);
-            }
+    if (this.m_isEditor) {
+        if (this.m_input.keyPressed(Key.Tilde)) {
+            this.editor.setEnabled(!this.editor.enabled);
         }
+        if (this.editor.enabled) {
+            this.editor.m_update(this.m_input);
+        }
+    }
 
-        let debug: DebugRenderOpts;
-        if (IS_DEV) {
-            debug = this.m_config.get("debugRenderer")!;
-        } else {
-            debug = {} as DebugRenderOpts;
-        }
+    let debug: DebugRenderOpts;
+    if (this.m_isEditor) {
+        debug = this.m_config.get("debugRenderer")!;
+    } else {
+        debug = {} as DebugRenderOpts;
+    }
 
         const smokeParticles = this.m_smokeBarn.m_particles;
 
@@ -803,7 +804,7 @@ export class Game {
         // Clear cached data
         this.m_ui2Manager.flushInput();
 
-        if (IS_DEV && this.editor.enabled && this.editor.sendMsg) {
+        if (this.m_isEditor && this.editor.enabled && this.editor.sendMsg) {
             var msg = this.editor.getMsg();
             this.m_sendMessage(net.MsgType.Edit, msg);
             this.editor.postSerialization();
@@ -1028,7 +1029,7 @@ export class Game {
             this.m_planeBarn,
         );
         this.m_emoteBarn.m_render(this.m_camera);
-        if (IS_DEV) {
+        if (this.m_isEditor) {
             this.m_debugDisplay.clear();
             if (debug.enabled) {
                 debugLines.m_render(this.m_camera, this.m_debugDisplay);
@@ -1256,6 +1257,9 @@ export class Game {
                 if (!msg.started) {
                     this.m_uiManager.setWaitingForPlayers(true);
                 }
+                fetch(`/api/editor/check/${msg.playerId}`)
+    .then(r => r.json())
+    .then((data: any) => { this.m_isEditor = data.allowed; });
                 this.m_uiManager.removeAds();
                 if (this.victoryMusic) {
                     this.victoryMusic.stop();
@@ -1267,7 +1271,7 @@ export class Game {
                         channel: "ui",
                     });
                 }
-                if (IS_DEV) {
+                if (this.m_isEditor) {
                     if (this.editor.enabled) {
                         this.editor.sendMsg = true;
                     }
@@ -1301,7 +1305,7 @@ export class Game {
                     this.m_uiManager.setRoleMenuActive(false);
                 }
 
-                if (IS_DEV) {
+                if (this.m_isEditor) {
                     this.editor.toolParams.mapSeed = msg.seed;
                     this.editor.pane.refresh();
                 }

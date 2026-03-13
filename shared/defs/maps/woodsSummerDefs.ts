@@ -60,7 +60,6 @@ const mapDef: PartialMapDef = {
         ],
         spawnReplacements: [
             {
-                ...Woods.mapGen.spawnReplacements[0],
                 tree_01: "tree_07su",
                 tree_02: "tree_07su",
                 tree_07: "tree_07su",

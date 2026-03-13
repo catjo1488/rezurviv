@@ -573,7 +573,12 @@ export class Player implements AbstractObject {
             if (!!isNew || !perksEqual(this.m_netData.m_perks, data.perks)) {
                 this.perksDirty = true;
             }
-
+            this.m_netData.m_perks = data.perks;
+            if (data.animSeq != this.anim.seq) {
+                if (this.currentAnim() !== Anim.ChangePose) {
+                    this.playAnim(data.animType, data.animSeq);
+                }
+            }
             this.m_netData.m_perks = data.perks;
             if (data.animSeq != this.anim.seq) {
                 this.playAnim(data.animType, data.animSeq);
@@ -701,6 +706,7 @@ export class Player implements AbstractObject {
             (this.m_netData.m_activeWeapon == "pan" && this.currentAnim() != Anim.Melee)
         );
     }
+    
 
     m_getPanSegment() {
         const panSurface = this.m_netData.m_wearingPan ? "unequipped" : "equipped";
@@ -725,6 +731,39 @@ export class Player implements AbstractObject {
         }
 
         return surface;
+    }
+
+    // Check if player has an active laser sword
+    m_hasActiveLasrSwrd() {
+        return (
+            this.m_netData.m_activeWeapon?.startsWith("lasr_swrd") &&
+            this.currentAnim() !== Anim.Melee
+        );
+    }
+
+    // Change laser sword pose animation
+    changeLasrSwrdPose() {
+        this.playAnimation(Anim.ChangePose, this.anim.seq);
+    }
+
+    // Get laser sword reflect area (similar to pan)
+    m_getLasrSwrdReflectArea() {
+        const meleeDef = GameObjectDefs[this.m_netData.m_activeWeapon] as MeleeDef;
+        const ang = Math.atan2(this.m_dir.y, this.m_dir.x);
+
+        // Offset scales with player size
+        if (!meleeDef.reflectArea) {
+            return collider.createCircle(this.m_pos, 0);
+        }
+        const off = v2.add(
+            meleeDef.reflectArea.offset,
+            v2.mul(v2.create(1, 0), this.m_netData.m_scale - 1),
+        );
+
+        const pos = v2.add(this.m_pos, v2.rotate(off, ang));
+        const rad = meleeDef.reflectArea.rad;
+
+        return collider.createCircle(pos, rad);
     }
 
     canInteract(map: Map) {
@@ -1987,7 +2026,7 @@ export class Player implements AbstractObject {
                     emitterProps.scale = 1.5;
                     emitterProps.radius =
                         GameConfig.player.medicHealRange / emitterProps.scale;
-                    emitterProps.rateMult = 1.50;
+                    emitterProps.rateMult = 0.25;
                 }
                 break;
             }
@@ -2114,6 +2153,16 @@ export class Player implements AbstractObject {
                 const o = a[i];
                 return t(o, o == "fists" && a.length == 1);
             }
+            case Anim.ChangePose: {
+                const r = GameObjectDefs[this.m_netData.m_activeWeapon] as MeleeDef;
+                if (!r.anim?.poseAnims) {
+                    return t("none", true);
+                }
+                const a = r.anim.poseAnims;
+                const i = Math.floor(Math.random() * a.length);
+                const o = a[i];
+                return t(o, false);
+            }
             default:
                 return t("none", false);
         }
@@ -2199,6 +2248,10 @@ export class Player implements AbstractObject {
                 this.playAnim(Anim.None, this.anim.seq);
             }
         }
+    }
+
+    playAnimation(type: Anim, seq: number, definitionId: string | null = null) {
+        this.playAnim(type, seq);
     }
 
     animPlaySound(animCtx: Partial<AnimCtx>, args: { sound: string }) {

@@ -20,6 +20,8 @@ import { WoodsSpring } from "./maps/woodsSpringDefs";
 import { WoodsSummer } from "./maps/woodsSummerDefs";
 import type { MapId } from "./types/misc";
 import { OneVFifty } from "./maps/oneVFiftyDefs";
+import { lepricon } from "./maps/lepriconDefs";
+
 
 export type Atlas =
     | "gradient"
@@ -37,6 +39,7 @@ export type Atlas =
     | "turkey"
     | "beach"
     | "oneVFifty"
+    | "lepricon"
 
 export const MapDefs = {
     main: Main,
@@ -58,6 +61,7 @@ export const MapDefs = {
     birthday: Birthday,
     beach: Beach,
     oneVFifty: OneVFifty,
+    lepricon: lepricon,
 
     /* STRIP_FROM_PROD_CLIENT:START */
     test_normal: testNormal,

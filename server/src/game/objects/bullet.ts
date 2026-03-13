@@ -488,7 +488,26 @@ export class Bullet {
                         };
                     }
                 }
-               
+                if (obj.hasActiveLasrSwrd()) {
+    const area = obj.getLasrSwrdReflectArea();
+    const intersection = coldet.intersectSegmentCircle(
+        posOld,
+        this.pos,
+        area.pos,
+        area.rad,
+    );
+    if (intersection) {
+        const normal = v2.normalize(v2.sub(intersection.point, obj.pos));
+        lasrCollision = {
+            point: intersection.point,
+            normal: normal,
+        };
+    }
+}
+                
+
+                
+
                 const collision = coldet.intersectSegmentCircle(
                     posOld,
                     this.pos,
@@ -510,6 +529,7 @@ export class Bullet {
                         collidable: true,
                         dist: v2.lengthSqr(v2.sub(collision.point, this.startPos)),
                     });
+                    
                     if (obj.hasPerk("steelskin")) {
                         const point = v2.add(
                             collision.point,
@@ -525,6 +545,7 @@ export class Bullet {
                             dist: v2.lengthSqr(v2.sub(point, this.startPos)),
                         });
                     }
+                    
                 } else if (panCollision) {
                     collisions.push({
                         type: "pan",
@@ -591,31 +612,31 @@ export class Bullet {
 
                     // Continue travelling if non-collidable
                     hit = col.collidable;
-                } else if (col.type == "player") {
-                    if (!shooterDead) {
-                        const isHighValueTarget =
-                            this.player?.hasPerk("targeting") && col.player!.perks.length;
+} else if (col.type == "player") {
+    if (!shooterDead && !col.player!.hasActiveLasrSwrd()) {
+        const isHighValueTarget =
+            this.player?.hasPerk("targeting") && col.player!.perks.length;
 
-                        let multiplier = 1;
-                        if (isHighValueTarget) {
-                            multiplier *= 1.25;
-                        }
+        let multiplier = 1;
+        if (isHighValueTarget) {
+            multiplier *= 1.25;
+        }
 
-                        this.bulletManager.damages.push({
-                            obj: col.player!,
-                            gameSourceType: this.shotSourceType,
-                            weaponSourceType: this.shotSourceType,
-                            mapSourceType: this.mapSourceType,
-                            source: this.player,
-                            damageType: this.damageType,
-                            amount: multiplier * finalDamage,
-                            dir: this.dir,
-                            isExplosion: this.isShrapnel,
-                            armorPenetration: this.apRounds
-                                ? PerkProperties.ap_rounds.armorPenetration
-                                : undefined,
-                        });
-                    }
+        this.bulletManager.damages.push({
+            obj: col.player!,
+            gameSourceType: this.shotSourceType,
+            weaponSourceType: this.shotSourceType,
+            mapSourceType: this.mapSourceType,
+            source: this.player,
+            damageType: this.damageType,
+            amount: multiplier * finalDamage,
+            dir: this.dir,
+            isExplosion: this.isShrapnel,
+            armorPenetration: this.apRounds
+                ? PerkProperties.ap_rounds.armorPenetration
+                : undefined,
+        });
+    }
                     hit = col.collidable;
                 } else if (col.type == "pan") {
                     hit = col.collidable;

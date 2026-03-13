@@ -1,89 +1,77 @@
 import { GameConfig } from "../../gameConfig";
 import { util } from "../../utils/util";
-import { v2 } from "../../utils/v2";
 import type { MapDef } from "../mapDefs";
 import { MapId } from "../types/misc";
 import { Main, type PartialMapDef } from "./baseDefs";
 
 
-
 const mapDef: PartialMapDef = {
-    mapId: MapId.OneVFifty,
+    mapId: MapId.lepricon,
+
     desc: {
-        name: "1v50",
-        icon: "img/gui/star.svg",
-        buttonCss: "btn-mode-halloween",
-        buttonText: "1v50",
-        backgroundImg: "img/main_splash_halloween.png",
+        name: "lepricon",
+        icon: "img/gui/st_patrick_button_icon.svg",
+     buttonCss: "btn-mode-lepricon",
+        backgroundImg: "img/main_splash_7_3.png",
+                buttonText: "classic",
     },
     assets: {
         audio: [
-            { name: "club_music_01", channel: "ambient" },
-            { name: "club_music_02", channel: "ambient" },
-            { name: "ambient_steam_01", channel: "ambient" },
-            { name: "log_11", channel: "sfx" },
-            { name: "log_12", channel: "sfx" },
         ],
- atlases: ["gradient", "loadout", "shared", "main", "oneVFifty", "halloween"],
+        atlases: ["gradient", "loadout", "shared", "main" ],
     },
-biome: {
-    colors: {
-        background: 0x170000,
-        water: 0x280000,
-        waterRipple: 0x100101,
-        beach: 0x64410e,
-        riverbank: 0x3c1b05,
-        grass: 0x212404,
-        underground: 0x120801,
-        playerSubmerge: 0x140000,
-        playerGhillie: 0x212404,
+    biome: {
+        colors: {
+            background: 0x3ca397,
+            water: 0x3ca397,
+            waterRipple: 0x48cf5a,
+            beach: 0x48cf5a,
+            riverbank: 0x48cf5a,
+            grass: 0x2c6e38,
+            underground: 0x3ca397,
+            playerSubmerge: 0x3ca397,
+        },
+        valueAdjust: 1,
+        sound: { riverShore: "sand" },
+        particles: { camera: "" },
+        tracerColors: {},
+        airdrop: {
+            planeImg: "map-plane-01.img",
+            planeSound: "plane_01",
+            airdropImg: "map-chute-01.img",
+        },
     },
-    valueAdjust: 0.3,
-    sound: { riverShore: "sand" },
-    particles: { camera: "falling_leaf_halloween" },
-    tracerColors: {},
-    airdrop: {
-        planeImg: "map-plane-01.img",
-        planeSound: "plane_01",
-        airdropImg: "map-chute-01.img",
+    gameMode: {
+        maxPlayers: 80,
+        killLeaderEnabled: true,
     },
-},
-gameMode: {
-    maxPlayers: 51,
-    factionMode: true,
-    factions: 1,        // одна команда — все союзники
-    killLeaderEnabled: false,
-},
-    /* STRIP_FROM_PROD_CLIENT:START */
     gameConfig: {
         planes: {
             timings: [
                 {
-                    circleIdx: 2,
-                    wait: 6,
+                    circleIdx: 1,
+                    wait: 10,
                     options: { type: GameConfig.Plane.Airdrop },
                 },
                 {
-                    circleIdx: 4,
-                    wait: 3,
+                    circleIdx: 3,
+                    wait: 2,
                     options: { type: GameConfig.Plane.Airdrop },
                 },
             ],
-            crates: [{ name: "airdrop_crate_03", weight: 1 }],
-        },
-        roles: {
-            timings: [
-                { role: "deserter_1", circleIdx: 0, wait: 50  },
-                { role: "deserter_2", circleIdx: 0, wait: 100 },
-                { role: "deserter_3", circleIdx: 0, wait: 150 },
-                { role: "deserter_4", circleIdx: 0, wait: 200 },
-                { role: "deserter_5", circleIdx: 0, wait: 300 },
+            crates: [
+                { name: "airdrop_crate_01", weight: 10 },
+                { name: "airdrop_crate_02", weight: 1 },
             ],
         },
         bagSizes: {},
         bleedDamage: 2,
-        bleedDamageMult: 1.25,
+        bleedDamageMult: 1,
     },
+    /* STRIP_FROM_PROD_CLIENT:START */
+    // NOTE: this loot table is not the original one so its not accurate
+    // ? are guesses based on statistics
+    // ! are uncertain data based on leak
     lootTable: {
         tier_world: [
             { name: "tier_guns", count: 1, weight: 0.29 }, // TODO get more data on this from original
@@ -102,6 +90,7 @@ gameMode: {
             { name: "tier_packs", count: 1, weight: 0.09 }, // ?
         ],
         tier_container: [
+             { name: "leprechaun", count: 1, weight: 0.15 },
             { name: "tier_guns", count: 1, weight: 0.29 },
             { name: "tier_ammo", count: 1, weight: 0.04 },
             { name: "tier_scopes", count: 1, weight: 0.15 },
@@ -112,6 +101,7 @@ gameMode: {
             { name: "tier_outfits", count: 1, weight: 0.035 }, // !
         ],
         tier_leaf_pile: [
+            { name: "leprechaun", count: 1, weight: 0.15 },
             { name: "tier_ammo", count: 1, weight: 0.2 },
             { name: "tier_scopes", count: 1, weight: 0.2 },
             { name: "tier_armor", count: 1, weight: 0.2 },
@@ -439,7 +429,7 @@ gameMode: {
             { name: "deagle_dual", count: 1, weight: 0.5 },
         ],
         tier_guns_rare_sniper: [
-            { name: "mosin", count: 5, weight: 5 },
+            { name: "mosin", count: 1, weight: 1 },
             { name: "sv98", count: 1, weight: 0.1 },
             { name: "awc", count: 1, weight: 0.05 },
         ],
@@ -486,7 +476,7 @@ gameMode: {
             { name: "scarssr", count: 1, weight: 1 },
             { name: "pkp", count: 1, weight: 1 },
             { name: "m249", count: 1, weight: 1 },
-            { name: "sv98", count: 3, weight: 3 },
+            { name: "sv98", count: 1, weight: 1 },
             { name: "pan", count: 1, weight: 1 },
             { name: "8xscope", count: 1, weight: 1 },
             { name: "15xscope", count: 1, weight: 1 },
@@ -714,55 +704,10 @@ gameMode: {
                 masks: [],
             },
         },
-        places: [
-            {
-                name: "The Killpit",
-                pos: v2.create(0.53, 0.64),
-            },
-            {
-                name: "Sweatbath",
-                pos: v2.create(0.84, 0.18),
-            },
-            {
-                name: "Tarkhany",
-                pos: v2.create(0.15, 0.11),
-            },
-            {
-                name: "Ytyk-Kyuyol",
-                pos: v2.create(0.25, 0.42),
-            },
-            {
-                name: "Todesfelde",
-                pos: v2.create(0.81, 0.85),
-            },
-            {
-                name: "Pineapple",
-                pos: v2.create(0.21, 0.79),
-            },
-            {
-                name: "Fowl Forest",
-                pos: v2.create(0.73, 0.47),
-            },
-            {
-                name: "Ranchito Pollo",
-                pos: v2.create(0.53, 0.25),
-            },
-        ],
         bridgeTypes: {
             medium: "bridge_md_structure_01",
             large: "bridge_lg_structure_01",
-            xlarge: "bridge_xlg_structure_01",
-        },
-        customSpawnRules: {
-            locationSpawns: [
-                {
-                    type: "club_complex_01",
-                    pos: v2.create(0.5, 0.5),
-                    rad: 150,
-                    retryOnFailure: true,
-                },
-            ],
-            placeSpawns: ["warehouse_01", "house_red_01", "house_red_02", "barn_01"],
+            xlarge: "",
         },
         densitySpawns: [
             {
@@ -772,12 +717,10 @@ gameMode: {
                 crate_01: 50,
                 crate_02: 4,
                 crate_03: 8,
-                bush_01: 78,
+                bush_01f: 78,
                 cache_06: 12,
-                tree_05: 222,
-                tree_07: 700,
-                tree_08: 300,
-                tree_09: 496,
+                tree_01: 320,
+                tree_13: 30,
                 hedgehog_01: 24,
                 container_01: 5,
                 container_02: 5,
@@ -787,6 +730,7 @@ gameMode: {
                 outhouse_01: 5,
                 loot_tier_1: 24,
                 loot_tier_beach: 4,
+                bush_07: 10,  
             },
         ],
         fixedSpawns: [
@@ -818,7 +762,7 @@ gameMode: {
                 tree_02: 3,
                 teahouse_complex_01su: {
                     small: 1,
-                    large: 2,
+                    large: 2,  
                 },
                 stone_04: 1,
             },
@@ -835,4 +779,4 @@ gameMode: {
     /* STRIP_FROM_PROD_CLIENT:END */
 };
 
-export const OneVFifty = util.mergeDeep({}, Main, mapDef) as MapDef;
+export const lepricon = util.mergeDeep({}, Main, mapDef) as MapDef;

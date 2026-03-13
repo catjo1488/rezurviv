@@ -103,6 +103,26 @@ const ChestDefs: Record<string, ChestDef> = {
             pickup: "chest_pickup_01",
         },
     },
+        chest05: {
+        name: "Level 5 Vest",
+        type: "chest",
+        level: 5,
+        damageReduction: 0.85,
+        skinImg: {
+            baseTint: 0x000,
+            baseSprite: "player-armor-base-01.img",
+        },
+        lootImg: {
+            sprite: "loot-chest-03.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
+        },
+        sound: {
+            pickup: "chest_pickup_01",
+        },
+    },
 };
 
 export interface HelmetDef {
@@ -199,6 +219,28 @@ const HelmetDefs: Record<string, HelmetDef> = {
         type: "helmet",
         level: 4,
         damageReduction: 0.7,
+        skinImg: {
+            baseTint: 0x252525,
+            baseTintRed: 0x260404,
+            baseTintBlue: 0x5192d,
+            baseSprite: "player-circle-base-01.img",
+        },
+        lootImg: {
+            sprite: "loot-helmet-03.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
+        },
+        sound: {
+            pickup: "helmet_pickup_01",
+        },
+    },
+        helmet05: {
+        name: "Level 5 Helmet",
+        type: "helmet",
+        level: 5,
+        damageReduction: 0.9,
         skinImg: {
             baseTint: 0x252525,
             baseTintRed: 0x260404,
@@ -939,7 +981,7 @@ const SkinDefs = {
             rot: 0.5 * Math.PI,
         },
     }),
-             one_V50lvl4: defineSkin("helmet04", {
+             one_V50lvl4: defineSkin("helmet05", {
         name: "1v50 lvl4",
         noDrop: true,
         skinImg: {
@@ -955,7 +997,7 @@ const SkinDefs = {
             rot: 0.5 * Math.PI,
         },
     }),
-                 one_V50lvl5: defineSkin("helmet04", {
+                 one_V50lvl5: defineSkin("helmet05", {
         name: "1v50 lvl5",
         noDrop: true,
         skinImg: {

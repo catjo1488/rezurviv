@@ -77,6 +77,11 @@ export const PerkProperties = {
     repulsor: {
     // можно добавить доп. свойства если нужно
    },
+   leprechaun: {
+    teleportThreshold: 15, // % здоровья
+    teleportRadius: 105,
+    cooldown: 10, // секунд между телепортами
+},
     // map of ammo type to perk that boosts that ammo
     ammoBonuses: {
         "9mm": ["treat_9mm", "bonus_9mm"],
@@ -119,6 +124,20 @@ export const PerkDefs: Record<string, PerkDef> = {
             pickup: "perk_pickup_01",
         },
     },
+    leprechaun: {
+    name: "Leprechaun",
+    type: "perk",
+    lootImg: {
+        sprite: "loot-perk-leprechaun.img",
+        tint: 0xffffff,
+        border: "loot-circle-outer-03.img",
+        borderTint: 0x00ff00,
+        scale: 0.275,
+    },
+    sound: {
+        pickup: "perk_pickup_01",
+    },
+},
      low_hp_surge: {
         name: "Last Stand",
         type: "perk",

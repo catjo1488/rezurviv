@@ -916,6 +916,9 @@ for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
 
         fatModifier = 0;
         fatTicker = 0;
+leprechaunTeleportCooldown = 0;
+leprechaunHealthAtTeleport = -1; 
+leprechaunInvincibleTicker = 0;
 
         promoteToRole(role: string) {
             const roleDef = GameObjectDefs[role] as RoleDef;
@@ -1273,6 +1276,27 @@ for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
                 (this.activeWeapon == "pan" && this.animType !== GameConfig.Anim.Melee)
             );
         }
+        hasActiveLasrSwrd() {
+    return (
+        this.activeWeapon?.startsWith("lasr_swrd") &&
+        this.animType !== GameConfig.Anim.Melee
+    );
+}
+            getLasrSwrdReflectArea() {
+        const meleeDef = GameObjectDefs[this.activeWeapon] as MeleeDef;
+        if (!meleeDef.reflectArea) {
+            return collider.createCircle(this.pos, 0);
+        }
+        const ang = Math.atan2(this.dir.y, this.dir.x);
+        const off = v2.add(
+            meleeDef.reflectArea.offset,
+            v2.mul(v2.create(1, 0), this.scale - 1),
+        );
+        const pos = v2.add(this.pos, v2.rotate(off, ang));
+        const rad = meleeDef.reflectArea.rad;
+        return collider.createCircle(pos, rad);
+    }
+
 
         getPanSegment() {
             const panSurface = this.wearingPan ? "unequipped" : "equipped";
@@ -1761,6 +1785,7 @@ for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
                 }
             }
         }
+        
 
         //
         // Animation logic
@@ -1975,8 +2000,7 @@ for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
                     this.group.spawnPosition = v2.copy(this.pos);
                 }
             }
-        }
-
+                }
         this.pickupTicker -= dt;
 
         //
@@ -2273,7 +2297,9 @@ for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
         // Weapon stuff
         //
    this.weaponManager.update(dt);
-
+        if (this.leprechaunInvincibleTicker > 0) {
+    this.leprechaunInvincibleTicker -= dt;
+}
         this.shotSlowdownTimer -= dt;
         if (this.shotSlowdownTimer <= 0) {
             this.shotSlowdownTimer = 0;
@@ -2283,6 +2309,7 @@ for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
             this.lowHpSurgeTicker = 0;
         }
     }
+    
 
     moveObjUpdate(occupiedBuilding?: Building): void {
         if (!this.debug.moveObjMode.enabled) return;
@@ -2636,6 +2663,7 @@ for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
         if (this.debug.godMode) return;
         if (this._health < 0) this._health = 0;
         if (this.dead) return;
+        if (this.leprechaunInvincibleTicker > 0) return;
         if (this.downed && this.downedDamageTicker > 0) return;
         // cobalt players on role picker menu
         if (this.game.map.perkMode && !this.role) return;
@@ -2746,7 +2774,34 @@ if (playerSource && params.source !== this) {
         }
 
         this.health -= finalDamage;
+if (
+    this.hasPerk("leprechaun") &&
+    !this.downed &&
+    this._health > 0 &&
+    this._health <= GameConfig.player.health * 0.15 &&
+    (this.leprechaunHealthAtTeleport < 0 || 
+     this._health >= this.leprechaunHealthAtTeleport + GameConfig.player.health * 0.35)
+) {
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 10 + Math.random() * 30;
+    const teleportPos = v2.add(this.pos, v2.create(
+        Math.cos(angle) * dist,
+        Math.sin(angle) * dist,
+    ));
+    this.game.map.clampToMapBounds(teleportPos, this.rad);
+v2.set(this.pos, teleportPos);
+this.game.grid.updateObject(this);
+this.setPartDirty();
+this.leprechaunHealthAtTeleport = this._health;
+this.leprechaunInvincibleTicker = 2;
+}
 
+
+// сброс leprechaun когда HP восстановилось на 35%
+if (this.leprechaunHealthAtTeleport >= 0 && 
+    this._health >= this.leprechaunHealthAtTeleport + GameConfig.player.health * 0.35) {
+    this.leprechaunHealthAtTeleport = -1;
+}
         if (this.hasPerk("low_hp_surge")) {
             const props = PerkProperties.low_hp_surge as any;
             const threshold = props?.threshold ?? 30;
@@ -2767,6 +2822,8 @@ if (playerSource && params.source !== this) {
             }
         }
     }
+    
+    
     
 
     /**

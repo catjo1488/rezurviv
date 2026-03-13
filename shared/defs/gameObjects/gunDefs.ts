@@ -38,6 +38,7 @@ export interface GunDef {
         innerScale?: number;
         rot?: number;
         mirror?: boolean;
+        noTint?: boolean;
     };
     worldImg: {
         sprite: string;
@@ -59,6 +60,7 @@ export interface GunDef {
         shellOffsetY?: number;
         shellForward?: number;
         shellReverse?: boolean;
+        amount?: number;
     };
     sound: {
         shoot: string;
@@ -3356,6 +3358,74 @@ export const BaseDefs: Record<string, GunDef> = {
             pickup: "stow_weapon_01",
             empty: "empty_fire_01",
             deploy: "stow_weapon_01",
+        },
+    },
+        rainbow_blaster: {
+        name: "Rainbow Blaster",
+        type: "gun",
+        quality: 0,
+        fireMode: "single",
+        caseTiming: "shoot",
+        ammo: "rainbow_ammo",
+        projType: "rainbow_projectile",
+        noDrop: false,
+        noPotatoSwap: true,
+        ammoSpawnCount: 1,
+        maxClip: 1,
+        maxReload: 1,
+        extendedClip: 1,
+        extendedReload: 1,
+        reloadTime: 0,
+        fireDelay: 0.16,
+        switchDelay: 0.3,
+        barrelLength: 4.6,
+        barrelOffset: 0,
+        recoilTime: 0.5,
+        moveSpread: 6,
+        shotSpread: 2.5,
+        bulletCount: 1,
+        bulletType: "bullet_rainbow",
+        headshotMult: 2,
+        speed: {
+            equip: 0,
+            attack: 0,
+        },
+        lootImg: {
+            sprite: "loot-weapon-rainbow-blaster.img",
+            tint: 65280,
+            border: "loot-circle-outer-07.img",
+            borderTint: 16777215,
+            scale: 0.3,
+            noTint: true,
+        },
+        worldImg: {
+            sprite: "gun-rainbow-blaster.img",
+            scale: {
+                x: 0.5,
+                y: 0.5,
+            },
+            tint: 16777215,
+            leftHandOffset: { x: 0, y: 0 },
+            recoil: 5,
+            handsBelow: true,
+            magImg: {
+                sprite: "gun-rainbow-top.img",
+                pos: { x: 0.5, y: -40.600000000000364 },
+                top: true,
+            },
+        },
+        particle: {
+            shellScale: 1,
+            shellOffset: 0.7875,
+            shellReverse: true,
+            amount: 10,
+        },
+        sound: {
+            shoot: "rainbow_blaster_01",
+            reload: "rainbow_blaster_loading",
+            pickup: "gun_pickup_01",
+            empty: "empty_fire_01",
+            deploy: "deagle_switch_01",
         },
     },
 };

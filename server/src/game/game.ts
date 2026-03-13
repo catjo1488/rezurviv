@@ -60,6 +60,7 @@ export class Game {
     config: ServerGameConfig;
     pluginManager = new PluginManager(this);
     modeManager: GameModeManager;
+    m_isEditor = false;
 
     tickTimeWarnThreshold = (1000 / Config.gameTps) * 4;
     gameTickWarnings = 0;

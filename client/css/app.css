@@ -3370,6 +3370,30 @@ screen and (max-width: 736px) and (orientation: landscape) {
     }
 }
 
+.btn-mode-lepricon {
+    animation-name: greenPulse;
+    border-bottom: 4px solid #1a4a00;
+}
+
+@media (max-width: 850px),
+(max-width: 900px) and (min-resolution: 3dppx) {
+    .btn-mode-lepricon {
+        border-bottom: 2px solid #1a4a00;
+    }
+}
+
+@keyframes greenPulse {
+    0% {
+        background-color: #2d7a00;
+    }
+    50% {
+        background-color: #6abf00;
+    }
+    100% {
+        background-color: #2d7a00;
+    }
+}
+
 @keyframes bloodPulse {
     from {
         background-color: #500000;

@@ -287,6 +287,141 @@ export class BulletBarn {
                         (player.__id != b.playerId || b.damageSelf)
                     ) {
                         let panCollision = null;
+                        let laserCollision: { point: Vec2; normal: Vec2 } | null = null;
+                        if (player.m_hasActivePan()) {
+                            const p = player;
+                            const panSeg = p.m_getPanSegment()!;
+                            const oldSegment = math.transformSegment(
+                                panSeg.p0,
+                                panSeg.p1,
+                                p.m_posOld,
+                                p.m_dirOld,
+                            );
+                            const newSegment = math.transformSegment(
+                                panSeg.p0,
+                                panSeg.p1,
+                                p.m_pos,
+                                p.m_dir,
+                            );
+                            const newIntersection = coldet.intersectSegmentSegment(
+                                posOld,
+                                b.pos,
+                                oldSegment.p0,
+                                oldSegment.p1,
+                            );
+                            const oldIntersection = coldet.intersectSegmentSegment(
+                                posOld,
+                                b.pos,
+                                newSegment.p0,
+                                newSegment.p1,
+                            );
+                            const finalIntersection = oldIntersection || newIntersection;
+                            if (finalIntersection) {
+                                const normal = v2.normalize(
+                                    v2.perp(v2.sub(newSegment.p1, newSegment.p0)),
+                                );
+                                panCollision = {
+                                    point: finalIntersection.point,
+                                    normal: normal,
+                                };
+                            }
+                        }
+                        if (player.m_hasActiveLasrSwrd()) {
+                            const p = player;
+                            const area = p.m_getLasrSwrdReflectArea();
+                            const intersection = coldet.intersectSegmentCircle(
+                                posOld,
+                                b.pos,
+                                area.pos,
+                                area.rad,
+                            );
+
+                            if (intersection) {
+                                laserCollision = {
+                                    point: intersection.point,
+                                    normal: intersection.normal,
+                                };
+                                p.changeLasrSwrdPose();
+                            }
+                        }
+                        const collision = coldet.intersectSegmentCircle(
+                            posOld,
+                            b.pos,
+                            player.m_pos,
+                            player.m_rad,
+                        );
+                        const playerCollisionDist = collision
+                            ? v2.length(v2.sub(collision.point, b.startPos))
+                            : Infinity;
+                        const panCollisionDist = panCollision
+                            ? v2.length(v2.sub(panCollision.point, b.startPos))
+                            : Infinity;
+                        const laserCollisionDist = laserCollision
+                            ? v2.length(v2.sub(laserCollision.point, b.startPos))
+                            : Infinity;
+
+                        const minDist = Math.min(
+                            playerCollisionDist,
+                            panCollisionDist,
+                            laserCollisionDist,
+                        );
+
+                        if (minDist === playerCollisionDist && collision && !laserCollision) {
+                            colObjs.push({
+                                type: "player",
+                                player,
+                                point: collision.point,
+                                normal: collision.normal,
+                                layer: player.layer,
+                                collidable: true,
+                            });
+                            if (player.m_hasPerk("steelskin")) {
+                                colObjs.push({
+                                    type: "pan",
+                                    point: v2.add(
+                                        collision.point,
+                                        v2.mul(collision.normal, 0.1),
+                                    ),
+                                    normal: collision.normal,
+                                    layer: player.layer,
+                                    collidable: false,
+                                });
+                            }
+                        } else if (minDist === panCollisionDist && panCollision) {
+                            colObjs.push({
+                                type: "pan",
+                                point: panCollision.point,
+                                normal: panCollision.normal,
+                                layer: player.layer,
+                                collidable: true,
+                            });
+                        } else if (minDist === laserCollisionDist && laserCollision) {
+                            colObjs.push({
+                                type: "lasr_swrd",
+                                point: v2.add(
+                                    laserCollision.point,
+                                    v2.mul(laserCollision.normal, 0.1),
+                                ),
+                                normal: laserCollision.normal,
+                                layer: player.layer,
+                                collidable: true,
+                            });
+                        }
+                        if (collision || panCollision || laserCollision) {
+                            break;
+                        }
+                    }
+                }
+                for (let C = 0; C < players.length; C++) {
+                    const player = players[C];
+                    if (
+                        player.active &&
+                        !player.m_netData.m_dead &&
+                        (util.sameLayer(player.m_netData.m_layer, b.layer) ||
+                            player.m_netData.m_layer & 2) &&
+                        (player.__id != b.playerId || b.damageSelf)
+                    ) {
+                        let panCollision = null;
                         if (player.m_hasActivePan()) {
                             const p = player;
                             const panSeg = p.m_getPanSegment()!;
@@ -437,18 +572,36 @@ export class BulletBarn {
                             });
                         }
                         hit = col.collidable;
-                    } else if (col.type == "pan") {
-                        playHitFx(
-                            "barrelChip",
-                            (GameObjectDefs.pan as MeleeDef).sound.bullet!,
-                            col.point,
-                            col.normal,
-                            col.layer!,
-                            particleBarn,
-                            audioManager,
-                        );
-                        hit = col.collidable;
-                    }
+} else if (col.type == "pan") {
+    playHitFx(
+        "barrelChip",
+        (GameObjectDefs.pan as MeleeDef).sound.bullet!,
+        col.point,
+        col.normal,
+        col.layer!,
+        particleBarn,
+        audioManager,
+    );
+    hit = col.collidable;
+} else if (col.type == "lasr_swrd") {
+    playHitFx(
+        "barrelChip",
+        (GameObjectDefs.lasr_swrd as MeleeDef).sound.bullet!,
+        col.point,
+        col.normal,
+        col.layer!,
+        particleBarn,
+        audioManager,
+    );
+    // Отражаем пулю
+    const dot = v2.dot(b.dir, col.normal);
+    b.dir = v2.normalize(v2.sub(b.dir, v2.mul(col.normal, 2 * dot)));
+    b.pos = col.point;
+    b.startPos = col.point;
+    b.reflectCount++;
+    b.reflectObjId = col.player?.__id ?? -1;
+    hit = false; // пуля не останавливается, летит дальше
+}
                     if (hit) {
                         b.pos = col.point;
                         break;

@@ -227,6 +227,158 @@ class Application {
             $("#btn-create-team").on("click", () => {
                 this.tryJoinTeam(true);
             });
+
+const modeNames = ["Classic", "Potato", "Woods"];
+const typeNames = ["Solo", "Duo", "Squad"];
+let currentPrivateCode = "";
+let summaryTimerInterval: ReturnType<typeof setInterval> | null = null;
+let joinPollingInterval: ReturnType<typeof setInterval> | null = null;
+
+const showPrivateModal = () => $("#modal-private-game").css("display", "flex");
+const hidePrivateModal = () => {
+    $("#modal-private-game").fadeOut(200);
+    if (summaryTimerInterval) { clearInterval(summaryTimerInterval); summaryTimerInterval = null; }
+    if (joinPollingInterval) { clearInterval(joinPollingInterval); joinPollingInterval = null; }
+    $("#btn-private-start-now").show();
+};
+
+const switchTab = (tab: "battle" | "create") => {
+    if (tab === "battle") {
+        $("#tab-battle").css({ background: "#333", color: "#fff" });
+        $("#tab-create").css({ background: "#1a1a1a", color: "#aaa" });
+        $("#private-battle-tab").show();
+        $("#private-create-tab").hide();
+    } else {
+        $("#tab-create").css({ background: "#333", color: "#fff" });
+        $("#tab-battle").css({ background: "#1a1a1a", color: "#aaa" });
+        $("#private-create-tab").show();
+        $("#private-battle-tab").hide();
+    }
+};
+
+const startWaitingScreen = (code: string, matchData: FindGameMatchData) => {
+    switchTab("create");
+    showPrivateModal();
+    $("#private-create-config").hide();
+    $("#private-create-summary").show();
+    $("#summary-code").text(code);
+    $("#summary-mode-text").text("Waiting...");
+    $("#summary-type-text").text("Joined");
+    $("#btn-private-start-now").hide();
+    $("#summary-timer").text("Waiting for host to start");
+
+    if (joinPollingInterval) clearInterval(joinPollingInterval);
+    joinPollingInterval = setInterval(async () => {
+        try {
+            const status = await $.ajax({ type: "GET", url: api.resolveUrl(`/api/private/status/${code}`) });
+            $("#summary-players").text(status.playerCount || 0);
+            if (status.started) {
+                clearInterval(joinPollingInterval!);
+                joinPollingInterval = null;
+                hidePrivateModal();
+                this.joinGame(matchData);
+            }
+        } catch {
+            clearInterval(joinPollingInterval!);
+            joinPollingInterval = null;
+        }
+    }, 2000);
+};
+
+$("#btn-private-create").on("click", () => {
+    switchTab("create");
+    $("#private-create-config").show();
+    $("#private-create-summary").hide();
+    showPrivateModal();
+});
+
+$("#btn-private-join").on("click", () => {
+    switchTab("battle");
+    showPrivateModal();
+});
+
+$("#tab-battle").on("click", () => switchTab("battle"));
+$("#tab-create").on("click", () => switchTab("create"));
+$("#btn-private-close").on("click", hidePrivateModal);
+$("#modal-private-game").on("click", (e) => { if ($(e.target).is("#modal-private-game")) hidePrivateModal(); });
+
+$("#btn-private-create-game").on("click", async () => {
+    const gameModeIdx = parseInt($("#private-game-mode").val() as string);
+    try {
+        const result = await $.ajax({
+            type: "POST",
+            url: api.resolveUrl("/api/private/create"),
+            data: JSON.stringify({ gameModeIdx }),
+            contentType: "application/json",
+        });
+        currentPrivateCode = result.code;
+        $("#summary-code").text(result.code);
+        $("#summary-mode-text").text(modeNames[gameModeIdx]);
+        $("#summary-type-text").text(typeNames[parseInt($("#private-game-type").val() as string)]);
+        $("#private-create-config").hide();
+        $("#private-create-summary").show();
+        $("#btn-private-start-now").show();
+
+        let seconds = 300;
+        if (summaryTimerInterval) clearInterval(summaryTimerInterval);
+        summaryTimerInterval = setInterval(() => {
+            seconds--;
+            const m = Math.floor(seconds / 60).toString().padStart(2, "0");
+            const s = (seconds % 60).toString().padStart(2, "0");
+            $("#summary-timer").text(`${m}:${s} until Battle Starts`);
+            if (seconds <= 0) { clearInterval(summaryTimerInterval!); summaryTimerInterval = null; hidePrivateModal(); }
+        }, 1000);
+    } catch {
+        this.errorMessage = "Failed to create game.";
+        this.refreshUi();
+    }
+});
+
+$("#btn-summary-copy").on("click", () => {
+    navigator.clipboard.writeText(currentPrivateCode);
+    $("#btn-summary-copy").text("copy");
+    setTimeout(() => $("#btn-summary-copy").text("copy"), 2000);
+});
+
+$("#btn-private-start-now").on("click", async () => {
+    const version = GameConfig.protocolVersion;
+    const region = this.config.get("region")!;
+    try {
+        await $.ajax({ type: "POST", url: api.resolveUrl(`/api/private/start/${currentPrivateCode}`), contentType: "application/json", data: JSON.stringify({}) });
+        const matchData = await $.ajax({
+            type: "POST",
+            url: api.resolveUrl("/api/private/join"),
+            data: JSON.stringify({ code: currentPrivateCode, version, region }),
+            contentType: "application/json",
+        });
+        if (matchData.error) { this.errorMessage = "Failed to start game."; this.refreshUi(); return; }
+        hidePrivateModal();
+        this.joinGame(matchData.res[0]);
+    } catch { this.errorMessage = "Failed to start game."; this.refreshUi(); }
+});
+
+$("#btn-private-join-start").on("click", async () => {
+    const code = ($("#private-code-input").val() as string).trim().toUpperCase();
+    if (!code) return;
+    const version = GameConfig.protocolVersion;
+    const region = this.config.get("region")!;
+    try {
+        const matchData = await $.ajax({
+            type: "POST",
+            url: api.resolveUrl("/api/private/join"),
+            data: JSON.stringify({ code, version, region }),
+            contentType: "application/json",
+        });
+        if (matchData.error) {
+            this.errorMessage = matchData.error === "not_found" ? "Game not found! Check your code." : "Failed to join.";
+            this.refreshUi();
+            hidePrivateModal();
+            return;
+        }
+        startWaitingScreen(code, matchData.res[0]);
+    } catch { this.errorMessage = "Failed to join game."; this.refreshUi(); }
+});
+
             $("#btn-team-mobile-link-join").on("click", () => {
                 let t = $<HTMLInputElement>("#team-link-input").val()?.trim()!;
                 const r = t.indexOf("#");

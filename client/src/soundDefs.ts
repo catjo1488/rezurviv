@@ -29,6 +29,14 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             volume: 1,
             maxInstances: 5,
         },
+        m9a17_reload_01: {
+            path: "audio/guns/m9a17_reload_01.mp3",
+            volume: 1,
+        },
+        m9a17_01: {
+            path: "audio/guns/m9a17_01.mp3",
+            volume: 1,
+        },
         m9_reload_01: {
             path: "audio/guns/m9_reload_01.mp3",
             volume: 1,
@@ -186,6 +194,15 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/guns/ak47_reload_01.mp3",
             volume: 1,
         },
+        water_gun_01: {
+            path: "audio/guns/water_gun_01.mp3",
+            volume: 1,
+            maxInstances: 5,
+        },
+        water_gun_reload_01: {
+            path: "audio/guns/water_gun_reload_01.mp3",
+            volume: 1,
+        },
         ak47_switch_01: {
             path: "audio/guns/ak47_switch_01.mp3",
             volume: 1,
@@ -239,6 +256,14 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             volume: 1,
             maxInstances: 5,
         },
+        flux_rifle_01: {
+            path: "audio/guns/flux_rifle_01.mp3",
+            volume: 1,
+        },
+        flux_rifle_relaod_01: {
+            path: "audio/guns/flux_rifle_relaod_01.mp3",
+            volume: 2,
+        },
         dp28_01: {
             path: "audio/guns/dp28_01.mp3",
             volume: 1,
@@ -278,6 +303,19 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/guns/pkp_switch_01.mp3",
             volume: 1,
         },
+        m134_01: {
+            path: "audio/guns/m134_01.mp3",
+            volume: 1,
+            maxInstances: 5,
+        },
+        m134_reload_01: {
+            path: "audio/guns/m134_reload_01.mp3",
+            volume: 1,
+        },
+        m134_switch_01: {
+            path: "audio/guns/pkp_switch_01.mp3",
+            volume: 1,
+        },
         m870_01: {
             path: "audio/guns/m870_01.mp3",
             volume: 1,
@@ -311,6 +349,19 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         spas12_pull_01: {
             path: "audio/guns/spas12_pull_01.mp3",
             volume: 1,
+        },
+        spas16_01: {
+            path: "audio/guns/spas16_01.mp3",
+            volume: 1,
+            maxInstances: 5,
+        },
+        spas16_reload_01: {
+            path: "audio/guns/spas16_reload_01.mp3",
+            volume: 1.25,
+        },
+        spas16_switch_01: {
+            path: "audio/guns/spas16_switch_01.mp3",
+            volume: 1.25,
         },
         mp220_01: {
             path: "audio/guns/mp220_01.mp3",
@@ -582,6 +633,19 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/guns/l86_switch_01.mp3",
             volume: 1,
         },
+        imbel_01: {
+            path: "audio/guns/imbel_01.mp3",
+            volume: 1,
+            maxInstances: 5,
+        },
+        imbel_reload_01: {
+            path: "audio/guns/imbel_reload_01.mp3",
+            volume: 1.25,
+        },
+        imbel_switch_01: {
+            path: "audio/guns/imbel_switch_01.mp3",
+            volume: 1.25,
+        },
         m249_01: {
             path: "audio/guns/m249_01.mp3",
             volume: 1,
@@ -741,6 +805,25 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/guns/potato_smg_reload_01.mp3",
             volume: 1,
         },
+        lasr_01: {
+            path: "audio/guns/lasr_01.mp3",
+            volume: 1,
+            maxInstances: 5,
+        },
+        lasr_gun_reload_01: {
+            path: "audio/guns/lasr_gun_reload_01.mp3",
+            volume: 1,
+        },
+        rainbow_blaster_01: {
+            path: "audio/guns/rainbow_blaster_01.mp3",
+            volume: 1,
+            maxInstances: 1,
+        },
+        rainbow_blaster_loading: {
+            path: "audio/guns/rainbow_blaster_loading.mp3",
+            volume: 1,
+            maxInstances: 1,
+        },
         potato_smg_switch_01: {
             path: "audio/guns/potato_smg_switch_01.mp3",
             volume: 1,
@@ -775,6 +858,19 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/guns/gun_switch_01.mp3",
             volume: 1,
         },
+        m79_01: {
+            path: "audio/guns/potato_cannon_01.mp3",
+            volume: 1,
+            maxInstances: 5,
+        },
+        m79_reload_01: {
+            path: "audio/guns/potato_cannon_reload_01.mp3",
+            volume: 1,
+        },
+        m79_switch_01: {
+            path: "audio/guns/potato_cannon_switch_01.mp3",
+            volume: 1,
+        },
         bandage_use_01: {
             path: "audio/ui/bandage_use_01.mp3",
             volume: 1,
@@ -785,6 +881,10 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         },
         soda_use_01: {
             path: "audio/ui/soda_use_01.mp3",
+            volume: 1,
+        },
+        pulseBox_use_01: {
+            path: "audio/ui/pulseBox_use_01.mp3",
             volume: 1,
         },
         pills_use_01: {
@@ -1007,6 +1107,10 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             canCoalesce: true,
             maxInstances: 3,
         },
+        lasr_hit_01: {
+            path: "audio/hits/lasr_hit_01.mp3",
+            volume: 1.0,
+        },
     },
     sfx: {
         crate_break_01: {
@@ -1213,6 +1317,10 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/sfx/heavy_swing_01.mp3",
             volume: 1,
         },
+        lasr_swing_01: {
+            path: "audio/sfx/lasr_swing_01.mp3",
+            volume: 1.0,
+        },
         bullet_whiz_01: {
             path: "audio/sfx/bullet_whiz_01.mp3",
             volume: 1,
@@ -1239,6 +1347,14 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         },
         frag_water_01: {
             path: "audio/hits/frag_water_01.mp3",
+            volume: 1,
+        },
+        water_balloon_throw_01: {
+            path: "audio/sfx/water_balloon_throw_01.mp3",
+            volume: 1,
+        },
+        water_balloon_deploy_01: {
+            path: "audio/sfx/water_hit_01.mp3",
             volume: 1,
         },
         strobe_click_01: {
@@ -1769,15 +1885,9 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             preload: false,
             maxInstances: 1,
         },
-          last_man_assigned_01: {
+        last_man_assigned_01: {
             path: "audio/ui/last_man_assigned_01.mp3",
             volume: 1.75,
-            preload: false,
-            maxInstances: 1,
-        },
-        last_man_1v50: {
-            path: "audio/ui/1vs50finalstadia.mp3",
-            volume: 1,
             preload: false,
             maxInstances: 1,
         },
@@ -1897,6 +2007,10 @@ const Groups: Record<string, { channel: string; sounds: string[] }> = {
     organic_hit: {
         channel: "hits",
         sounds: ["organic_hit_01"],
+    },
+    lasr_hit: {
+        channel: "hits",
+        sounds: ["lasr_hit_01"],
     },
     piano_hit: {
         channel: "hits",

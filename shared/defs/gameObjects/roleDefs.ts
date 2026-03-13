@@ -644,7 +644,7 @@ deserter_1: {
     type: "role",
     announce: true,
     killFeed: { assign: true },
-    sound: { assign: "last_man_1v50" },
+    sound: { assign: "leader_assigned_02" },
     mapIcon: {
         alive: "player-the-hunted.img",
     },
@@ -677,7 +677,7 @@ deserter_2: {
     type: "role",
     announce: true,
     killFeed: { assign: true },
-    sound: { assign: "last_man_1v50" },
+    sound: { assign: "leader_assigned_02" },
     mapIcon: {
         alive: "player-the-hunted.img",
     },
@@ -699,6 +699,7 @@ deserter_2: {
         helmet: "one_V50lvl2",
         chest: "chest03",
         inventory: {
+            mirv:2,
             bandage: 8,
             soda: 2,
             "4xscope": 1,
@@ -711,7 +712,7 @@ deserter_3: {
     type: "role",
     announce: true,
     killFeed: { assign: true },
-    sound: { assign: "last_man_1v50" },
+    sound: { assign: "leader_assigned_02" },
     mapIcon: {
         alive: "player-the-hunted.img",
     },
@@ -730,9 +731,10 @@ deserter_3: {
             { type: "mirv", ammo: 4 },
         ],
         backpack: "backpack03",
-        helmet: "one_V50lvl3",
+        helmet: "one_V50lvl4",
         chest: "chest03",
         inventory: {
+            mirv:4,
             bandage: 10,
             healthkit: 1,
             soda: 3,
@@ -746,7 +748,7 @@ deserter_4: {
     type: "role",
     announce: true,
     killFeed: { assign: true },
-    sound: { assign: "leader_assigned_01" },
+    sound: { assign: "leader_assigned_02" },
     mapIcon: {
         alive: "player-the-hunted.img",
     },
@@ -766,8 +768,9 @@ deserter_4: {
         ],
         backpack: "backpack03",
         helmet: "one_V50lvl4",
-        chest: "chest03",
+        chest: "chest04",
         inventory: {
+            mirv:6,
             bandage: 15,
             healthkit: 2,
             soda: 5,
@@ -782,7 +785,7 @@ deserter_5: {
     type: "role",
     announce: true,
     killFeed: { assign: true },
-    sound: { assign: "last_man_assigned_01", dead: "leader_dead_01" },
+    sound: { assign: "leader_assigned_02" },
     mapIcon: {
         alive: "player-the-hunted.img",
         dead: "skull-leader.img",
@@ -803,8 +806,9 @@ deserter_5: {
         ],
         backpack: "backpack03",
         helmet: "one_V50lvl5",
-        chest: "chest04",
+        chest: "chest05",
         inventory: {
+            mirv:8,
             bandage: 20,
             healthkit: 3,
             soda: 8,

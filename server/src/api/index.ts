@@ -57,7 +57,11 @@ app.onError((err: unknown, c) => {
     }
     return c.text("Internal Server Error", 500);
 });
-
+app.get("/api/editor/check/:userId", (c) => {
+    const userId = c.req.param("userId");
+    const allowed = (Config.editorUsers ?? []) as string[];
+    return c.json({ allowed: allowed.includes(userId) });
+});
 app.use(
     "/api/*",
     cors({
@@ -85,6 +89,94 @@ app.get("/api/site_info", (c) => {
 
 // not using the middleware here to not add extra indentation... smh
 const findGameRateLimit = new HTTPRateLimit(5, 3000);
+
+interface PrivateGame {
+    gameModeIdx: number;
+    createdAt: number;
+    playerCount: number;
+    started: boolean;
+    gameData: object | null;
+}
+const privateGames = new Map<string, PrivateGame>();
+
+function generatePrivateCode(): string {
+    let code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    while (privateGames.has(code)) {
+        code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    }
+    return code;
+}
+
+setInterval(() => {
+    const now = Date.now();
+    for (const [code, game] of privateGames.entries()) {
+        if (now - game.createdAt > 10 * 60 * 1000) privateGames.delete(code);
+    }
+}, 60 * 1000);
+
+app.post("/api/private/create", async (c) => {
+    const ip = getHonoIp(c, Config.apiServer.proxyIPHeader);
+    if (!ip) return c.json({ error: "invalid_ip" }, 500);
+    const body = await c.req.json();
+    const gameModeIdx = body.gameModeIdx ?? 0;
+    const code = generatePrivateCode();
+    privateGames.set(code, { gameModeIdx, createdAt: Date.now(), playerCount: 0, started: false, gameData: null });
+    return c.json({ code });
+});
+
+app.post("/api/private/join", async (c) => {
+    const ip = getHonoIp(c, Config.apiServer.proxyIPHeader);
+    if (!ip) return c.json({ error: "invalid_ip" }, 500);
+    const body = await c.req.json();
+    const code = (body.code as string)?.toUpperCase().trim();
+    const privateGame = privateGames.get(code);
+    if (!privateGame) return c.json({ error: "not_found" });
+
+    const token = randomUUID();
+    const mode = server.modes[privateGame.gameModeIdx];
+    if (!mode || !mode.enabled) return c.json({ error: "full" });
+
+    const sessionId = getCookie(c, "session") ?? null;
+    let user: UsersTableSelect | null = null;
+    if (sessionId) {
+        try {
+            const account = await validateSessionToken(sessionId);
+            user = account.user?.banned ? null : account.user;
+        } catch {}
+    }
+
+    const data = await server.findGame({
+        region: body.region || Object.keys(server.regions)[0],
+        version: body.version,
+        mapName: mode.mapName,
+        teamMode: mode.teamMode,
+        autoFill: false,
+        playerData: [{ token, userId: user?.id || null, ip, loadout: user?.loadout }],
+    });
+
+    if ("error" in data) return c.json(data);
+
+    privateGame.playerCount++;
+    const matchData = { zone: "", data: token, useHttps: data.useHttps, hosts: data.hosts, addrs: data.addrs, gameId: data.gameId };
+    privateGame.gameData = matchData;
+
+    return c.json({ res: [matchData] });
+});
+
+app.post("/api/private/start/:code", async (c) => {
+    const code = c.req.param("code").toUpperCase();
+    const game = privateGames.get(code);
+    if (!game) return c.json({ error: "not_found" });
+    game.started = true;
+    return c.json({ ok: true });
+});
+
+app.get("/api/private/status/:code", async (c) => {
+    const code = c.req.param("code").toUpperCase();
+    const game = privateGames.get(code);
+    if (!game) return c.json({ error: "not_found" });
+    return c.json({ playerCount: game.playerCount, started: game.started, gameData: game.gameData });
+});
 
 app.post("/api/find_game", validateParams(zFindGameBody), async (c) => {
     const ip = getHonoIp(c, Config.apiServer.proxyIPHeader);

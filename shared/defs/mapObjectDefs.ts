@@ -9008,6 +9008,7 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
         loot: [tierLoot("tier_soviet", 2, 3)],
     }),
     bush_01: createBush({}),
+    
     bush_01b: createBush({ img: { alpha: 1 } }),
     bush_01cb: createBush({
         img: { sprite: "map-bush-01cb.img" },
@@ -9066,6 +9067,14 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
     bush_03: createBush({
         img: { sprite: "map-bush-03.img", alpha: 1 },
     }),
+    bush_lepricon: createBush({
+    img: {
+        sprite: "map-bush-lepricon.img",
+        tint: 0xffffff ,
+        residue: "map-bush-res-01.img",
+    },
+map: { display: true, color: 0x1a5c00  },
+}),
     bush_04: createBush({
         hitParticle: "leafRiver",
         explodeParticle: "leafRiver",

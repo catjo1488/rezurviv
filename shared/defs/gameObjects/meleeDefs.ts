@@ -25,6 +25,7 @@ export interface MeleeDef {
     anim: {
         idlePose: string;
         attackAnims: string[];
+        poseAnims?: string[];
     };
     sound: Record<string, string>;
     noDrop?: boolean;
@@ -66,7 +67,19 @@ export interface MeleeDef {
     };
     armorPiercing?: boolean;
     stonePiercing?: boolean;
-};
+    reflectArea?: {
+        offset: Vec2;
+        rad: number;
+    };
+    handSprites?: {
+        spriteL: string;
+        spriteR: string;
+    };
+    scale?: {
+        x: number;
+        y: number;
+    };
+}
 export interface Img {
     sprite: string;
     pos: Vec2;
@@ -835,6 +848,58 @@ const BaseDefs: Record<string, MeleeDef> = {
             playerHit: "knife_hit_01",
         },
     },
+    lasr_swrd: {
+        name: "Lasr Swrd",
+        type: "melee",
+        quality: 1,
+        armorPiercing: true,
+        stonePiercing: true,
+        autoAttack: false,
+        switchDelay: 0.25,
+        damage: 100, // 60
+        obstacleDamage: 5.5,
+        attack: {
+            offset: { x: 2, y: 0 },
+            rad: 3,
+            damageTimes: [0.3],
+            cooldownTime: 0.3,
+        },
+        speed: {
+            equip: 6,
+        },
+        anim: {
+            idlePose: "meleeLasrSwrd",
+            attackAnims: ["lasrSwrdSwing"],
+            poseAnims: ["lasrSwrd_pose_1", "lasrSwrd_pose_2", "lasrSwrd_pose_3"],
+        },
+        sound: {
+            pickup: "frag_pickup_01",
+            swing: "lasr_swing_01",
+            deploy: "stow_weapon_01",
+            playerHit: "lasr_hit_01",
+        },
+        lootImg: {
+            sprite: "loot-melee-lasr-sword-01.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-02.img",
+            borderTint: 0xffffff,
+            scale: 0.3,
+            mirror: true,
+            rot: 0.0,
+        },
+        worldImg: {
+            sprite: "lasr-sword-01.img",
+            pos: { x: 110.0, y: -2.0 },
+            rot: 0.0,
+            scale: { x: 0.15, y: 0.15 },
+            tint: 0xffffff,
+            leftHandOntop: true,
+        },
+        reflectArea: {
+            offset: { x: 2.0, y: 0.0 },
+            rad: 3,
+        },
+    },
     hook: {
         name: "Hook",
         type: "melee",
@@ -1402,6 +1467,14 @@ const SkinDefs: Record<string, MeleeDef> = {
         perk: "pirate",
         lootImg: { sprite: "loot-melee-cutlass-gold.img" },
         worldImg: { sprite: "loot-melee-cutlass-gold.img" },
+    }),
+    lasr_swrd_02: defineMeleeSkin("lasr_swrd", {
+        lootImg: { sprite: "loot-melee-lasr-sword-02.img" },
+        worldImg: { sprite: "lasr-sword-02.img" },
+    }),
+    lasr_swrd_03: defineMeleeSkin("lasr_swrd", {
+        lootImg: { sprite: "loot-melee-lasr-sword-03.img" },
+        worldImg: { sprite: "lasr-sword-03.img" },
     }),
 };
 
