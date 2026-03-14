@@ -18,6 +18,7 @@ import {
 import { Command } from "../utils";
 import { createCommand, createSlashCommand, genericExecute } from "./helpers";
 import { searchPlayersHandler } from "./search-player";
+import { giveEditorHandler } from "./give-editor";
 
 /**
  * for generic commands that only makes an api call and return it's meessage
