@@ -324,7 +324,10 @@ export interface ConfigType {
      * Guild ID
      */
     discordGuildId?: string;
-
+/**
+ * Slugs of users with editor access
+ */
+editorUsers?: string[];
     /**
      * Enables caching some expensive API requests (like leaderboards) with Redis.
      *
