@@ -1343,7 +1343,7 @@ const SkinDefs: Record<string, MeleeDef> = {
             sprite: "loot-melee-machete-taiga.img",
         },
     }),
-     lasr_swrd: defineMeleeSkin("lasr swrd", {
+     lasr_swrd: defineMeleeSkin("lasr_swrd", {
         name: "lasr swrd",
         noPotatoSwap: false,
         lootImg: { sprite: "lasr-sword-01.img" },
