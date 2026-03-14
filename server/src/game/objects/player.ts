@@ -1429,6 +1429,7 @@ leprechaunInvincibleTicker = 0;
             this.ip = ip;
             this.findGameIp = findGameIp;
             this.userId = userId;
+            this.slug = slug ?? "";
 
             this.isMobile = joinMsg.isMobile;
 
