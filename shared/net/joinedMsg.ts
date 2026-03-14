@@ -6,27 +6,25 @@ export class JoinedMsg implements AbstractMsg {
     playerId = 0;
     started = false;
     emotes: string[] = [];
-    slug = ""; 
+    slug = "";
 
     serialize(s: BitStream) {
         s.writeUint8(this.teamMode);
         s.writeUint16(this.playerId);
         s.writeBoolean(this.started);
-
         s.writeArray(this.emotes, 8, (emote) => {
             s.writeGameType(emote);
         });
+        s.writeString(this.slug);
     }
 
     deserialize(s: BitStream) {
         this.teamMode = s.readUint8();
         this.playerId = s.readUint16();
         this.started = s.readBoolean();
-
         this.emotes = s.readArray(8, () => {
             return s.readGameType();
         });
-        this.slug = s.readString();   
+        this.slug = s.readString();
     }
-    
 }
