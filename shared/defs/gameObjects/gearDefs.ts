@@ -880,7 +880,7 @@ const SkinDefs = {
             spriteScale: 0.3,
         },
         lootImg: {
-            sprite: "player-helmet-quartermaster-recon.img",
+             sprite: "player-helmet-quartermaster-recon.img",
             scale: 0.3,
             rot: 0.5 * Math.PI,
         },

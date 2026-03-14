@@ -37,6 +37,7 @@ import { Profiler } from "./profiler";
 export interface JoinTokenData {
     expiresAt: number;
     userId: string | null;
+    slug: string;
     findGameIp: string;
     loadout?: Loadout;
     groupData: {
@@ -500,13 +501,14 @@ export class Game {
         };
 
         for (const token of tokens) {
-            this.joinTokens.set(token.token, {
-                expiresAt: Date.now() + 10000,
-                userId: token.userId,
-                groupData,
-                findGameIp: token.ip,
-                loadout: token.loadout,
-            });
+this.joinTokens.set(token.token, {
+    expiresAt: Date.now() + 10000,
+    userId: token.userId,
+    slug: token.slug ?? "",
+    groupData,
+    findGameIp: token.ip,
+    loadout: token.loadout,
+});
         }
     }
 

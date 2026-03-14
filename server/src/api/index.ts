@@ -57,10 +57,10 @@ app.onError((err: unknown, c) => {
     }
     return c.text("Internal Server Error", 500);
 });
-app.get("/api/editor/check/:userId", (c) => {
-    const userId = c.req.param("userId");
-    const allowed = (Config.editorUsers ?? []) as string[];
-    return c.json({ allowed: allowed.includes(userId) });
+app.get("/api/editor/check/:slug", (c) => {
+    const slug = c.req.param("slug");
+    const allowedSlugs = (Config.editorUsers ?? []) as string[];
+    return c.json({ allowed: slug !== "" && allowedSlugs.includes(slug) });
 });
 app.use(
     "/api/*",
@@ -151,7 +151,7 @@ app.post("/api/private/join", async (c) => {
         mapName: mode.mapName,
         teamMode: mode.teamMode,
         autoFill: false,
-        playerData: [{ token, userId: user?.id || null, ip, loadout: user?.loadout }],
+        playerData: [{ token, userId: user?.id || null, slug: user?.slug || null, ip, loadout: user?.loadout }],
     });
 
     if ("error" in data) return c.json(data);
@@ -253,6 +253,7 @@ app.post("/api/find_game", validateParams(zFindGameBody), async (c) => {
             {
                 token,
                 userId: user?.id || null,
+                slug: user?.slug || null,
                 ip,
                 loadout: user?.loadout,
             },

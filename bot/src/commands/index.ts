@@ -291,6 +291,7 @@ export const commandHandlers: CommandHandlers = (
     {
         // add non generic commands here
         [Command.SearchPlayer]: searchPlayersHandler.execute,
+        [Command.GiveEditor]: giveEditorHandler.execute,
     } as CommandHandlers,
 );
 
@@ -298,4 +299,5 @@ export const commandsToRegister: SlashCommandOptionsOnlyBuilder[] = [
     ...Object.values(commands).map(createSlashCommand),
     // add non generic commands here
     searchPlayersHandler.command,
+    giveEditorHandler.command,
 ];

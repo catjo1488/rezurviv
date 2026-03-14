@@ -35,6 +35,7 @@ import {
 } from "../../db/schema";
 import { MOCK_USER_ID } from "../user/auth/mock";
 import { isBanned, logPlayerIPs, ModerationRouter } from "./ModerationRouter";
+const editorSlugs = new Set<string>();
 
 export const PrivateRouter = new Hono<Context>()
     .use(privateMiddleware)
@@ -45,6 +46,7 @@ export const PrivateRouter = new Hono<Context>()
         server.updateRegion(regionId, data);
         return c.json({}, 200);
     })
+    
     .post("/set_game_mode", validateParams(zSetGameModeBody), (c) => {
         const {
             index,
@@ -244,6 +246,36 @@ export const PrivateRouter = new Hono<Context>()
             return c.json({ banned: false, banData: undefined, behindProxy: false });
         },
     )
+    .post(
+    "/give_editor",
+    databaseEnabledMiddleware,
+    validateParams(
+        z.object({
+            slug: z.string(),
+            action: z.enum(["grant", "revoke"]),
+        }),
+    ),
+    async (c) => {
+        const { slug, action } = c.req.valid("json");
+
+        const user = await db.query.usersTable.findFirst({
+            where: eq(usersTable.slug, slug),
+            columns: { id: true },
+        });
+
+        if (!user) {
+            return c.json({ message: "User not found" }, 200);
+        }
+
+        if (action === "grant") {
+            editorSlugs.add(slug);
+        } else {
+            editorSlugs.delete(slug);
+        }
+
+        return c.json({ message: `Editor access ${action}ed for ${slug}` }, 200);
+    },
+)
     .post(
         "/test/insert_game",
         databaseEnabledMiddleware,

@@ -216,6 +216,7 @@
                 joinData.findGameIp,
                 joinData.userId,
                 joinData.loadout,
+                joinData.slug,
             );
 
             this.socketIdToPlayer.set(socketId, player);
@@ -1397,6 +1398,7 @@ leprechaunInvincibleTicker = 0;
         matchDataId: number;
 
         userId: string | null = null;
+        slug: string = ""; 
         ip: string;
         // see comment on server/src/api/schema.ts
         // about logging find_game IP's
@@ -1414,6 +1416,7 @@ leprechaunInvincibleTicker = 0;
             findGameIp: string,
             userId: string | null,
             loadout?: Loadout,
+            slug?: string, 
         ) {
             super(game, pos);
 
@@ -2380,6 +2383,7 @@ leprechaunInvincibleTicker = 0;
             const joinedMsg = new net.JoinedMsg();
             joinedMsg.teamMode = this.game.teamMode;
             joinedMsg.playerId = this.__id;
+            joinedMsg.slug = this.slug ?? "";
             joinedMsg.started = game.started;
             joinedMsg.teamMode = game.teamMode;
             joinedMsg.emotes = this.loadout.emotes;

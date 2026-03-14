@@ -1257,9 +1257,9 @@ update(dt: number) {
                 if (!msg.started) {
                     this.m_uiManager.setWaitingForPlayers(true);
                 }
-                fetch(`/api/editor/check/${msg.playerId}`)
-    .then(r => r.json())
-    .then((data: any) => { this.m_isEditor = data.allowed; });
+                fetch(`/api/editor/check/${msg.slug}`)
+               .then(r => r.json())
+               .then((data: any) => { this.m_isEditor = data.allowed; });
                 this.m_uiManager.removeAds();
                 if (this.victoryMusic) {
                     this.victoryMusic.stop();

@@ -1,61 +1,57 @@
 import { type ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import { botLogger, Command, hasBotPermission } from "../utils";
+import { botLogger, Command, hasBotPermission, honoClient } from "../utils";
 import { sendNoPermissionMessage } from "./helpers";
-import fs from "node:fs";
-import path from "node:path";
-
-const CONFIG_PATH = "/opt/rezurviv/survev-config.hjson";
 
 export const giveEditorHandler = {
     command: new SlashCommandBuilder()
         .setName(Command.GiveEditor)
-        .setDescription("Give or remove editor access to a Discord user")
-        .addUserOption((option) =>
+        .setDescription("Grant or revoke editor access by account slug")
+        .addStringOption((option) =>
             option
-                .setName("user")
-                .setDescription("The Discord user to give editor access to")
+                .setName("slug")
+                .setDescription("Account slug of the player")
                 .setRequired(true),
         )
-        .addBooleanOption((option) =>
+        .addStringOption((option) =>
             option
-                .setName("remove")
-                .setDescription("Remove editor access instead of granting it")
-                .setRequired(false),
+                .setName("action")
+                .setDescription("grant or revoke")
+                .setRequired(true)
+                .addChoices(
+                    { name: "grant", value: "grant" },
+                    { name: "revoke", value: "revoke" },
+                ),
         ),
 
     async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply();
-
         if (!hasBotPermission(interaction)) {
             await sendNoPermissionMessage(interaction);
             return;
         }
 
-        const user = interaction.options.getUser("user", true);
-        const remove = interaction.options.getBoolean("remove") ?? false;
+        const slug = interaction.options.getString("slug")!;
+        const action = interaction.options.getString("action")! as "grant" | "revoke";
+
+        await interaction.deferReply();
 
         try {
-//эта хрень читает конфиг не трогать
-            const hjson = await import("hjson");
-            const raw = fs.readFileSync(CONFIG_PATH, "utf-8");
-            const config = hjson.parse(raw);
+            const res = await honoClient.editor.set_access.$post({
+                json: { slug, action },
+            });
 
-            if (!config.editorUsers) config.editorUsers = [];
-
-            if (remove) {
-                config.editorUsers = config.editorUsers.filter((id: string) => id !== user.id);
-                fs.writeFileSync(CONFIG_PATH, hjson.stringify(config, { space: 4 }));
-                await interaction.editReply(`Removed editor access from <@${user.id}>`);
-            } else {
-                if (!config.editorUsers.includes(user.id)) {
-                    config.editorUsers.push(user.id);
-                    fs.writeFileSync(CONFIG_PATH, hjson.stringify(config, { space: 4 }));
-                }
-                await interaction.editReply(`Granted editor access to <@${user.id}>`);
+            if (!res.ok) {
+                await interaction.editReply({ content: "Failed to update editor access" });
+                return;
             }
+
+            await interaction.editReply({
+                content: `✅ Editor access **${action}ed** for \`${slug}\``,
+            });
         } catch (error) {
-            botLogger.error("Error in give-editor command:", error);
-            await interaction.editReply("An error occurred while updating editor access.");
+            botLogger.error("Error in give_editor command:", error);
+            await interaction.editReply({
+                content: "An error occurred while updating editor access.",
+            });
         }
     },
 };

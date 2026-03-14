@@ -62,6 +62,7 @@ export const zFindGamePrivateBody = z.object({
         z.object({
             token: z.string(),
             userId: z.string().nullable(),
+            slug: z.string().nullable().optional(),
             ip: z.string(),
             loadout: loadoutSchema.optional(),
         }),
