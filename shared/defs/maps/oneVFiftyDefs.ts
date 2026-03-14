@@ -24,7 +24,7 @@ const mapDef: PartialMapDef = {
             { name: "log_11", channel: "sfx" },
             { name: "log_12", channel: "sfx" },
         ],
- atlases: ["gradient", "loadout", "shared", "main", "oneVFifty", "halloween"],
+ atlases: ["gradient", "loadout", "shared", "main", "oneVFifty", "halloween","gradient"],
     },
 biome: {
     colors: {
@@ -138,17 +138,15 @@ gameMode: {
             { name: "15xscope", count: 1, weight: 0.02 }, // ?
         ],
         tier_armor: [
-            { name: "helmet01", count: 1, weight: 9 }, // !
             { name: "helmet02", count: 1, weight: 6 },
-            { name: "helmet03", count: 1, weight: 0.2 },
-            { name: "chest01", count: 1, weight: 15 }, // !
+            { name: "helmet03", count: 1, weight: 17 },
             { name: "chest02", count: 1, weight: 6 },
-            { name: "chest03", count: 1, weight: 0.2 },
+            { name: "chest03", count: 1, weight: 18 },
         ],
         tier_packs: [
-            { name: "backpack01", count: 1, weight: 15 }, // !
+            { name: "backpack01", count: 1, weight: 1 }, // !
             { name: "backpack02", count: 1, weight: 6 },
-            { name: "backpack03", count: 1, weight: 0.2 },
+            { name: "backpack03", count: 1, weight: 14 },
         ],
         tier_medical: [
             { name: "bandage", count: 5, weight: 16 },
@@ -278,9 +276,9 @@ gameMode: {
         ],
         tier_police: [
             { name: "scar", count: 1, weight: 0.5 },
-            { name: "helmet03", count: 1, weight: 0.15 },
-            { name: "chest03", count: 1, weight: 0.1 },
-            { name: "backpack03", count: 1, weight: 0.25 },
+            { name: "helmet03", count: 1, weight: 15 },
+            { name: "chest03", count: 1, weight: 11 },
+            { name: "backpack03", count: 1, weight: 16 },
         ],
         tier_ring_case: [
             { name: "grozas", count: 1, weight: 0.75 }, // ?
@@ -307,7 +305,7 @@ gameMode: {
             { name: "spas12", count: 1, weight: 1 },
             { name: "groza", count: 1, weight: 1.15 },
             { name: "helmet02", count: 1, weight: 1 },
-            { name: "helmet03", count: 1, weight: 0.25 },
+            { name: "helmet03", count: 1, weight: 25 },
             { name: "chest02", count: 1, weight: 1 },
             { name: "chest03", count: 1, weight: 0.25 },
             { name: "4xscope", count: 1, weight: 0.5 },
@@ -335,8 +333,8 @@ gameMode: {
             { name: "dp28", count: 1, weight: 2 }, // ?
             { name: "bar", count: 1, weight: 1.5 }, // ?
             { name: "qbb97", count: 1, weight: 0.5 }, // ?
-            { name: "m249", count: 1, weight: 0.05 }, // ?
-            { name: "pkp", count: 1, weight: 0.05 }, // ?
+            { name: "m249", count: 1, weight: 1.5 }, // ?
+            { name: "pkp", count: 1, weight: 1.3 }, // ?
         ],
         tier_shotguns: [
             { name: "spas12", count: 1, weight: 2 }, // ?
@@ -775,8 +773,8 @@ gameMode: {
                 bush_01: 78,
                 cache_06: 12,
                 tree_05: 222,
-                tree_07: 700,
-                tree_08: 300,
+                tree_07: 600,
+                tree_08: 250,
                 tree_09: 496,
                 hedgehog_01: 24,
                 container_01: 5,
@@ -793,8 +791,8 @@ gameMode: {
             {
                 // small is spawn count for solos and duos, large is spawn count for squads
                 warehouse_01: 2,
-                house_red_01: { small: 3, large: 4 },
-                house_red_02: { small: 3, large: 4 },
+                house_red_01: { small: 5, large: 4 },
+                house_red_02: { small: 5, large: 4 },
                 barn_01: { small: 1, large: 3 },
                 barn_02: 1,
                 hut_01: 3,
@@ -802,7 +800,7 @@ gameMode: {
                 hut_03: 1, // scout hut
                 shack_03a: 2,
                 shack_03b: { small: 2, large: 3 },
-                greenhouse_01: 1,
+                greenhouse_01: 2,
                 cache_01: 1,
                 cache_02: 1, // mosin tree
                 cache_07: 1,

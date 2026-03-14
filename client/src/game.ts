@@ -111,8 +111,7 @@ export class Game {
 
     editor!: Editor;
     debugHUD!: DebugHUD;
-    m_isEditor = false;
-
+ 
     seq!: number;
     seqInFlight!: boolean;
     seqSendTime!: number;
@@ -144,7 +143,7 @@ export class Game {
         this.m_inputBindUi = m_inputBindUi;
         this.m_resourceManager = m_resourceManager;
 
-        if (this.m_isEditor) {
+        if (this) {
             this.editor = new Editor(this.m_config);
         }
     }
@@ -402,7 +401,7 @@ export class Game {
 update(dt: number) {
     this.debugHUD.m_update(dt, this);
 
-    if (this.m_isEditor) {
+    if (IS_DEV) {
         if (this.m_input.keyPressed(Key.Tilde)) {
             this.editor.setEnabled(!this.editor.enabled);
         }
@@ -412,7 +411,7 @@ update(dt: number) {
     }
 
     let debug: DebugRenderOpts;
-    if (this.m_isEditor) {
+    if (IS_DEV) {
         debug = this.m_config.get("debugRenderer")!;
     } else {
         debug = {} as DebugRenderOpts;
@@ -804,7 +803,7 @@ update(dt: number) {
         // Clear cached data
         this.m_ui2Manager.flushInput();
 
-        if (this.m_isEditor && this.editor.enabled && this.editor.sendMsg) {
+        if (IS_DEV && this.editor.enabled && this.editor.sendMsg) {
             var msg = this.editor.getMsg();
             this.m_sendMessage(net.MsgType.Edit, msg);
             this.editor.postSerialization();
@@ -1029,7 +1028,7 @@ update(dt: number) {
             this.m_planeBarn,
         );
         this.m_emoteBarn.m_render(this.m_camera);
-        if (this.m_isEditor) {
+        if (IS_DEV) {
             this.m_debugDisplay.clear();
             if (debug.enabled) {
                 debugLines.m_render(this.m_camera, this.m_debugDisplay);
@@ -1259,7 +1258,7 @@ update(dt: number) {
                 }
                 fetch(`/api/editor/check/${msg.slug}`)
                .then(r => r.json())
-               .then((data: any) => { this.m_isEditor = data.allowed; });
+               .then((data: any) => { });
                 this.m_uiManager.removeAds();
                 if (this.victoryMusic) {
                     this.victoryMusic.stop();
@@ -1271,7 +1270,7 @@ update(dt: number) {
                         channel: "ui",
                     });
                 }
-                if (this.m_isEditor) {
+                if (IS_DEV) {
                     if (this.editor.enabled) {
                         this.editor.sendMsg = true;
                     }
@@ -1305,7 +1304,7 @@ update(dt: number) {
                     this.m_uiManager.setRoleMenuActive(false);
                 }
 
-                if (this.m_isEditor) {
+                if (this) {
                     this.editor.toolParams.mapSeed = msg.seed;
                     this.editor.pane.refresh();
                 }

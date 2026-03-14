@@ -18,7 +18,7 @@ const mapDef: PartialMapDef = {
     assets: {
         audio: [
         ],
-        atlases: ["gradient", "loadout", "shared", "main" ],
+        atlases: ["gradient", "loadout", "shared", "main","oneVFifty","woods" ],
     },
     biome: {
         colors: {
@@ -90,7 +90,7 @@ const mapDef: PartialMapDef = {
             { name: "tier_packs", count: 1, weight: 0.09 }, // ?
         ],
         tier_container: [
-             { name: "leprechaun", count: 1, weight: 0.15 },
+            { name: "leprechaun", count: 1, weight: 0.35 },
             { name: "tier_guns", count: 1, weight: 0.29 },
             { name: "tier_ammo", count: 1, weight: 0.04 },
             { name: "tier_scopes", count: 1, weight: 0.15 },
@@ -120,6 +120,7 @@ const mapDef: PartialMapDef = {
             { name: "tier_medical", count: 1, weight: 0.6 },
             { name: "tier_throwables", count: 1, weight: 0.05 },
             { name: "tier_outfits", count: 1, weight: 0.025 }, // !
+            { name: "leprechaun", count: 1, weight: 0.9 },
         ],
         tier_scopes: [
             { name: "2xscope", count: 1, weight: 24 },
@@ -720,7 +721,7 @@ const mapDef: PartialMapDef = {
                 bush_01f: 78,
                 cache_06: 12,
                 tree_01: 320,
-                tree_13: 30,
+                tree_08f:222,
                 hedgehog_01: 24,
                 container_01: 5,
                 container_02: 5,
