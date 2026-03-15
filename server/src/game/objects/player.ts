@@ -2795,6 +2795,7 @@ if (this.hasPerk("leprechaun") && !this.downed && this._health > 0 && this._heal
     this.game.grid.updateObject(this);
     this.setPartDirty();
 }
+
         if (this.hasPerk("low_hp_surge")) {
             const props = PerkProperties.low_hp_surge as any;
             const threshold = props?.threshold ?? 30;
