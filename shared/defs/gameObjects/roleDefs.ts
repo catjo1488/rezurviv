@@ -654,17 +654,17 @@ deserter_1: {
         pulse: false,
         pulseTint: 0xffaa00,
     },
-    perks: ["steelskin","splinter","windwalk"],
+    perks: ["small_arms","steelskin","splinter","windwalk","firepower","field_medic","ap_rounds","melee_striker","armor_master","gotw","leprechaun"],
     defaultItems: createDefaultItems({
         weapons: [
-            { type: "", },
+             { type: "pkp", ammo: 200, fillInv: true, weight: 1 },
             { type: "", ammo: 0 },
             { type: "", ammo: 0 },
             { type: "", ammo: 0 },
         ],
         backpack: "backpack03",
-        helmet: "one_V50",
-        chest: "chest03",
+        helmet: "one_V50lvl5",
+        chest: "chest05",
         inventory: {
             bandage: 5,
             "4xscope": 1,
@@ -687,7 +687,7 @@ deserter_2: {
         pulse: false,
         pulseTint: 0xff8800,
     },
-    perks: ["small_arms","steelskin","splinter","windwalk"],
+ perks: ["small_arms","steelskin","splinter","firepower","field_medic","melee_striker","armor_master","gotw"],
     defaultItems: createDefaultItems({
         weapons: [
             { type: "", ammo: 0 },
@@ -696,8 +696,8 @@ deserter_2: {
             { type: "mirv", ammo: 2 },
         ],
         backpack: "backpack03",
-        helmet: "one_V50lvl2",
-        chest: "chest03",
+        helmet: "one_V50lvl4",
+        chest: "chest05",
         inventory: {
             mirv:2,
             bandage: 8,
@@ -722,7 +722,7 @@ deserter_3: {
         pulse: false,
         pulseTint: 0xff5500,
     },
-    perks: ["small_arms","steelskin","splinter","windwalk","firepower"],
+ perks: ["small_arms","steelskin","splinter","firepower","field_medic","melee_striker","armor_master",],
     defaultItems: createDefaultItems({
         weapons: [
             { type: "", },
@@ -731,8 +731,8 @@ deserter_3: {
             { type: "mirv", ammo: 4 },
         ],
         backpack: "backpack03",
-        helmet: "one_V50lvl4",
-        chest: "chest03",
+        helmet: "one_V50lvl3",
+        chest: "chest04",
         inventory: {
             mirv:4,
             bandage: 10,
@@ -758,7 +758,7 @@ deserter_4: {
         pulse: true,
         pulseTint: 0xff2200,
     },
-    perks: ["small_arms","steelskin","splinter","windwalk","firepower","field_medic","melee_striker"],
+    perks: ["small_arms","steelskin","splinter","windwalk","firepower","field_medic"],
     defaultItems: createDefaultItems({
         weapons: [
             { type: "",  },
@@ -767,7 +767,7 @@ deserter_4: {
             { type: "mirv", ammo: 6 },
         ],
         backpack: "backpack03",
-        helmet: "one_V50lvl4",
+        helmet: "one_V50lvl2",
         chest: "chest04",
         inventory: {
             mirv:6,
@@ -796,7 +796,7 @@ deserter_5: {
         pulse: true,
         pulseTint: 0xff0000,
     },
-    perks: ["small_arms","steelskin","splinter","windwalk","firepower","field_medic","ap_rounds","melee_striker","armor_master"],
+    perks: ["small_arms","steelskin","field_medic","armor_master"],
     defaultItems: createDefaultItems({
         weapons: [
             { type: "m249", ammo: 100, fillInv: true },
@@ -805,8 +805,8 @@ deserter_5: {
             { type: "mirv", ammo: 8},
         ],
         backpack: "backpack03",
-        helmet: "one_V50lvl5",
-        chest: "chest05",
+        helmet: "one_V50",
+        chest: "chest03",
         inventory: {
             mirv:8,
             bandage: 20,

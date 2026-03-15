@@ -24,7 +24,7 @@ const mapDef: PartialMapDef = {
             { name: "log_11", channel: "sfx" },
             { name: "log_12", channel: "sfx" },
         ],
- atlases: ["gradient", "loadout", "shared", "main", "oneVFifty", "halloween","gradient"],
+ atlases: ["gradient", "loadout", "shared", "main", "oneVFifty", "halloween"],
     },
 biome: {
     colors: {
@@ -74,10 +74,10 @@ gameMode: {
         roles: {
             timings: [
                 { role: "deserter_1", circleIdx: 0, wait: 50  },
-                { role: "deserter_2", circleIdx: 0, wait: 100 },
-                { role: "deserter_3", circleIdx: 0, wait: 150 },
-                { role: "deserter_4", circleIdx: 0, wait: 200 },
-                { role: "deserter_5", circleIdx: 0, wait: 300 },
+                { role: "deserter_2", circleIdx: 0, wait: 150 },
+                { role: "deserter_3", circleIdx: 0, wait: 250 },
+                { role: "deserter_4", circleIdx: 0, wait: 350 },
+                { role: "deserter_5", circleIdx: 0, wait: 450 },
             ],
         },
         bagSizes: {},
@@ -772,10 +772,10 @@ gameMode: {
                 crate_03: 8,
                 bush_01: 78,
                 cache_06: 12,
-                tree_05: 222,
-                tree_07: 600,
+                tree_05: 122,
+                tree_07: 500,
                 tree_08: 250,
-                tree_09: 496,
+                tree_09: 396,
                 hedgehog_01: 24,
                 container_01: 5,
                 container_02: 5,

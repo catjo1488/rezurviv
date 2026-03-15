@@ -142,6 +142,25 @@ this.mode = [
                 }
                 return true;
             }
+
+case GameMode.OneVFifty: {
+    const deserter = this.game.playerBarn.deserterPlayer;
+    // дезертир ещё не назначен — игра не заканчивается
+    if (!deserter) return false;
+    if (deserter.dead) {
+        if (deserter.killedBy === deserter) return false;
+        for (const player of this.game.playerBarn.livingPlayers) {
+            player.addGameOverMsg(player.teamId);
+        }
+        return true;
+    }
+    if (this.aliveCount() <= 1) {
+        const winner = this.game.playerBarn.livingPlayers[0];
+        if (winner) winner.addGameOverMsg(winner.teamId);
+        return true;
+    }
+    return false;
+}
             case GameMode.Faction: {
                 const winner = this.game.playerBarn.getAliveTeams()[0];
                 for (const player of winner.livingPlayers) {
@@ -159,6 +178,7 @@ this.mode = [
         }
         return true;
     }
+    
     // или последний игрок остался (дезертир победил)
     if (this.aliveCount() <= 1) {
         const winner = this.game.playerBarn.livingPlayers[0];

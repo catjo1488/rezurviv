@@ -972,6 +972,7 @@ leprechaunInvincibleTicker = 0;
                     this.giveHaste(GameConfig.HasteType.Windwalk, 5);
                     break;
             }
+            
 
             if (roleDef.defaultItems) {
                 // for non faction modes where teamId > 2, just cycles between blue and red teamId
@@ -2779,6 +2780,7 @@ if (playerSource && params.source !== this) {
         }
 
         this.health -= finalDamage;
+        
 if (
     this.hasPerk("leprechaun") &&
     !this.downed &&
@@ -2789,18 +2791,37 @@ if (
 ) {
     const angle = Math.random() * Math.PI * 2;
     const dist = 10 + Math.random() * 30;
-    const teleportPos = v2.add(this.pos, v2.create(
+    let teleportPos = v2.add(this.pos, v2.create(
         Math.cos(angle) * dist,
         Math.sin(angle) * dist,
     ));
     this.game.map.clampToMapBounds(teleportPos, this.rad);
-v2.set(this.pos, teleportPos);
-this.game.grid.updateObject(this);
-this.setPartDirty();
-this.leprechaunHealthAtTeleport = this._health;
-this.leprechaunInvincibleTicker = 2;
-}
 
+    if (this.layer === 1) {
+        const structures = this.game.map.structures;
+        let foundBounds = false;
+        for (let i = 0; i < structures.length; i++) {
+            const structure = structures[i];
+            if (structure.layerObjIds.length < 2) continue;
+            const bottomFloor = this.game.objectRegister.getById(structure.layerObjIds[1]) as Building;
+            if (!bottomFloor) continue;
+            if (collider.intersectCircle(bottomFloor.bounds, this.pos, this.rad)) {
+                const aabb = collider.toAabb(bottomFloor.bounds);
+                teleportPos.x = math.clamp(teleportPos.x, aabb.min.x + this.rad, aabb.max.x - this.rad);
+                teleportPos.y = math.clamp(teleportPos.y, aabb.min.y + this.rad, aabb.max.y - this.rad);
+                foundBounds = true;
+                break;
+            }
+        }
+        if (!foundBounds) return;
+    }
+
+    v2.set(this.pos, teleportPos);
+    this.game.grid.updateObject(this);
+    this.setPartDirty();
+    this.leprechaunHealthAtTeleport = this._health;
+    this.leprechaunInvincibleTicker = 2;
+} // <-- закрывает if leprechaun
 
 // сброс leprechaun когда HP восстановилось на 35%
 if (this.leprechaunHealthAtTeleport >= 0 && 
@@ -2908,10 +2929,10 @@ if (this.leprechaunHealthAtTeleport >= 0 &&
         this.game.broadcastMsg(net.MsgType.Kill, downedMsg);
 
         // lone survivr can be given on knock or kill
-        if (this.game.map.factionMode) {
-            this.team!.checkAndApplyLastMan();
-            this.team!.checkAndApplyCaptain();
-        }
+if (this.game.map.factionMode && (this.game.map.mapDef.gameMode.factions ?? 2) > 1) {
+    this.team!.checkAndApplyLastMan();
+    this.team!.checkAndApplyCaptain();
+}
     }
 
     killedBy: Player | undefined;
@@ -3048,16 +3069,14 @@ if (killCreditSource !== this && (killCreditSource.teamId !== this.teamId || att
             }
         }
 
-        if (this.game.map.factionMode) {
-            // lone survivr can be given on knock or kill
-            this.team!.checkAndApplyLastMan();
-            this.team!.checkAndApplyCaptain();
+if (this.game.map.factionMode && (this.game.map.mapDef.gameMode.factions ?? 2) > 1) {
+    this.team!.checkAndApplyLastMan();
+    this.team!.checkAndApplyCaptain();
 
-            // golden airdrops depend on alive counts, so we only do this logic on kill
-            if (this.game.planeBarn.isOneTeamWinning()) {
-                this.game.planeBarn.helpLosingTeam();
-            }
-        }
+    if (this.game.planeBarn.isOneTeamWinning()) {
+        this.game.planeBarn.helpLosingTeam();
+    }
+}
 
         // params.gameSourceType check ensures player didnt die by bleeding out
         if (
@@ -3127,7 +3146,24 @@ if (killCreditSource !== this && (killCreditSource.teamId !== this.teamId || att
         }
 
         this.game.pluginManager.emit("playerKill", { ...params, player: this });
-
+        // OneVFifty: назначаем last_man когда остались дезертир + 2 обычных игрока
+if (
+    this.game.map.factionMode &&
+    (this.game.map.mapDef.gameMode.factions ?? 2) === 1 &&
+    this.game.playerBarn.deserterPlayer &&
+    !this.game.playerBarn.deserterPlayer.dead
+) {
+    const livingNonDeserters = this.game.playerBarn.livingPlayers.filter(
+        p => !p.role?.startsWith("deserter_")
+    );
+    if (livingNonDeserters.length === 2) {
+        for (const p of livingNonDeserters) {
+            if (p.role !== "last_man") {
+                p.promoteToRole("last_man");
+            }
+        }
+    }
+}
         //
         // Give spectators someone new to spectate
         //
