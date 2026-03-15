@@ -2781,52 +2781,19 @@ if (playerSource && params.source !== this) {
 
         this.health -= finalDamage;
         
-if (
-    this.hasPerk("leprechaun") &&
-    !this.downed &&
-    this._health > 0 &&
-    this._health <= GameConfig.player.health * 0.15 &&
-    (this.leprechaunHealthAtTeleport < 0 || 
-     this._health >= this.leprechaunHealthAtTeleport + GameConfig.player.health * 0.35)
-) {
+if (this.hasPerk("leprechaun") && !this.downed && this._health > 0 && this._health <= 15) {
+    if (this.layer === 1) return; // не телепортировать в подвале
+    
     const angle = Math.random() * Math.PI * 2;
     const dist = 10 + Math.random() * 30;
-    let teleportPos = v2.add(this.pos, v2.create(
+    const teleportPos = v2.add(this.pos, v2.create(
         Math.cos(angle) * dist,
         Math.sin(angle) * dist,
     ));
     this.game.map.clampToMapBounds(teleportPos, this.rad);
-
-    if (this.layer === 1) {
-        const structures = this.game.map.structures;
-        let foundBounds = false;
-        for (let i = 0; i < structures.length; i++) {
-            const structure = structures[i];
-            if (structure.layerObjIds.length < 2) continue;
-            const bottomFloor = this.game.objectRegister.getById(structure.layerObjIds[1]) as Building;
-            if (!bottomFloor) continue;
-            if (collider.intersectCircle(bottomFloor.bounds, this.pos, this.rad)) {
-                const aabb = collider.toAabb(bottomFloor.bounds);
-                teleportPos.x = math.clamp(teleportPos.x, aabb.min.x + this.rad, aabb.max.x - this.rad);
-                teleportPos.y = math.clamp(teleportPos.y, aabb.min.y + this.rad, aabb.max.y - this.rad);
-                foundBounds = true;
-                break;
-            }
-        }
-        if (!foundBounds) return;
-    }
-
     v2.set(this.pos, teleportPos);
     this.game.grid.updateObject(this);
     this.setPartDirty();
-    this.leprechaunHealthAtTeleport = this._health;
-    this.leprechaunInvincibleTicker = 2;
-} // <-- закрывает if leprechaun
-
-// сброс leprechaun когда HP восстановилось на 35%
-if (this.leprechaunHealthAtTeleport >= 0 && 
-    this._health >= this.leprechaunHealthAtTeleport + GameConfig.player.health * 0.35) {
-    this.leprechaunHealthAtTeleport = -1;
 }
         if (this.hasPerk("low_hp_surge")) {
             const props = PerkProperties.low_hp_surge as any;
