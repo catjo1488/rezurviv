@@ -1274,8 +1274,9 @@ if (this.m_isEditor && this.editor?.enabled && this.editor.sendMsg) {
                     });
                 }
                 if (this.m_isEditor) {
-                    if (this.editor.enabled) {
-                        this.editor.sendMsg = true;
+                  if (this.m_isEditor && this.editor?.enabled) {
+                 this.editor.sendMsg = true;
+
                     }
                 }
 
