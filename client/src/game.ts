@@ -143,7 +143,7 @@ export class Game {
         this.m_inputBinds = m_inputBinds;
         this.m_inputBindUi = m_inputBindUi;
         this.m_resourceManager = m_resourceManager;
-        
+
     }
 
     tryJoinGame(
@@ -222,7 +222,7 @@ export class Game {
 
     init() {
         this.m_canvasMode = this.m_pixi.renderer.type == PIXI.RENDERER_TYPE.CANVAS;
-
+        this.editor = new Editor(this.m_config);
         // Modules
         this.m_touch = new Touch(this.m_input, this.m_config);
         this.m_camera = new Camera();
@@ -407,6 +407,7 @@ if (this.m_isEditor) {
         this.editor.m_update(this.m_input);
     }
 }
+
 
     let debug: DebugRenderOpts;
     if (this.m_isEditor) {
@@ -801,11 +802,11 @@ if (this.m_isEditor) {
         // Clear cached data
         this.m_ui2Manager.flushInput();
 
-        if (this.m_isEditor && this.editor.enabled && this.editor.sendMsg) {
-            var msg = this.editor.getMsg();
-            this.m_sendMessage(net.MsgType.Edit, msg);
-            this.editor.postSerialization();
-        }
+if (this.m_isEditor && this.editor?.enabled && this.editor.sendMsg) {
+    var msg = this.editor.getMsg();
+    this.m_sendMessage(net.MsgType.Edit, msg);
+    this.editor.postSerialization();
+}
 
         this.m_map.m_update(
             dt,
@@ -1277,37 +1278,31 @@ if (this.m_isEditor) {
                 SDK.gamePlayStart();
                 break;
             }
-            case net.MsgType.Map: {
-                const msg = new net.MapMsg();
-                msg.deserialize(stream);
-                this.m_map.loadMap(
-                    msg,
-                    this.m_camera,
-                    this.m_canvasMode,
-                    this.m_particleBarn,
-                );
-                this.m_resourceManager.loadMapAssets(this.m_map.mapName);
-                this.m_map.renderMap(this.m_pixi.renderer, this.m_canvasMode);
-                this.m_bulletBarn.onMapLoad(this.m_map);
-                this.m_particleBarn.onMapLoad(this.m_map);
-                this.m_uiManager.onMapLoad(this.m_map, this.m_camera);
-                if (this.m_map.perkMode) {
-                    const role = this.m_config.get("perkModeRole")!;
-                    this.m_uiManager.setRoleMenuOptions(
-                        role,
-                        this.m_map.getMapDef().gameMode.perkModeRoles!,
-                    );
-                    this.m_uiManager.setRoleMenuActive(true);
-                } else {
-                    this.m_uiManager.setRoleMenuActive(false);
-                }
-
-                if (this.m_isEditor) {
-                    this.editor.toolParams.mapSeed = msg.seed;
-                    this.editor.pane.refresh();
-                }
-                break;
-            }
+case net.MsgType.Map: {
+    const mapMsg = new net.MapMsg();
+    mapMsg.deserialize(stream);
+    this.m_map.loadMap(mapMsg, this.m_camera, this.m_canvasMode, this.m_particleBarn);
+    this.m_resourceManager.loadMapAssets(this.m_map.mapName);
+    this.m_map.renderMap(this.m_pixi.renderer, this.m_canvasMode);
+    this.m_bulletBarn.onMapLoad(this.m_map);
+    this.m_particleBarn.onMapLoad(this.m_map);
+    this.m_uiManager.onMapLoad(this.m_map, this.m_camera);
+    if (this.m_map.perkMode) {
+        const role = this.m_config.get("perkModeRole")!;
+        this.m_uiManager.setRoleMenuOptions(
+            role,
+            this.m_map.getMapDef().gameMode.perkModeRoles!,
+        );
+        this.m_uiManager.setRoleMenuActive(true);
+    } else {
+        this.m_uiManager.setRoleMenuActive(false);
+    }
+    if (this.m_isEditor && this.editor) {
+        this.editor.toolParams.mapSeed = mapMsg.seed;
+        this.editor.pane.refresh();
+    }
+    break;
+}
             case net.MsgType.Update: {
                 const msg = new net.UpdateMsg();
                 msg.deserialize(stream, this.m_objectCreator);
