@@ -1246,7 +1246,7 @@ if (this.m_isEditor && this.editor?.enabled && this.editor.sendMsg) {
 
     // Socket functions
     m_onMsg(type: net.MsgType, stream: net.BitStream) {
-        if (!this.initialized) return;
+if (!this.initialized && type !== net.MsgType.Joined) return;
         switch (type) {
             case net.MsgType.Joined: {
                 const msg = new net.JoinedMsg();
