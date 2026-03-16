@@ -402,7 +402,7 @@ export class Game {
 
 update(dt: number) {
     if (!this.initialized) return;
-    console.log("m_isEditor:", this.m_isEditor);
+    console.log("update called, initialized:", this.initialized);
     this.debugHUD.m_update(dt, this);
 
 if (this.m_isEditor) {
