@@ -405,8 +405,8 @@ update(dt: number) {
 
     this.debugHUD.m_update(dt, this);
 
-
 if (this.m_isEditor) {
+    console.log("isEditor true, editor:", this.editor);
     if (this.m_input.keyPressed(Key.Tilde)) {
         this.editor?.setEnabled(!this.editor.enabled);
     }
