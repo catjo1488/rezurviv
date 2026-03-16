@@ -1259,21 +1259,19 @@ if (this.m_isEditor && this.editor?.enabled && this.editor.sendMsg) {
                 if (!msg.started) {
                     this.m_uiManager.setWaitingForPlayers(true);
                 }
-                fetch(`/api/editor/check/${msg.slug}`)
-               .then(r => r.json())
-               .then((data: any) => { this.m_isEditor = data.allowed; });
+ fetch(`/api/editor/check/${msg.slug}`)
+        .then(r => r.json())
+        .then((data: any) => {
+            console.log("Editor check:", msg.slug, data);
+            this.m_isEditor = data.allowed;
+        });
                 this.m_uiManager.removeAds();
                 if (this.victoryMusic) {
                     this.victoryMusic.stop();
                     this.victoryMusic = null;
+ 
                 }
-                fetch(`/api/editor/check/${msg.slug}`)
-    .then(r => r.json())
-    .then((data: any) => { 
-        console.log("Editor check:", msg.slug, data);
-        this.m_isEditor = data.allowed; 
-    });
-                // Play a sound if the user in another windows or tab
+               // Play a sound if the user in another windows or tab
                 if (!document.hasFocus()) {
                     this.m_audioManager.playSound("notification_start_01", {
                         channel: "ui",
@@ -1314,6 +1312,7 @@ case net.MsgType.Map: {
     }
     break;
 }
+
             case net.MsgType.Update: {
                 const msg = new net.UpdateMsg();
                 msg.deserialize(stream, this.m_objectCreator);
