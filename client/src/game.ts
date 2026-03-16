@@ -397,7 +397,10 @@ export class Game {
     }
 
 update(dt: number) {
+    if (!this.initialized) return;
+    
     this.debugHUD.m_update(dt, this);
+
 
 if (this.m_isEditor) {
     if (this.m_input.keyPressed(Key.Tilde)) {
