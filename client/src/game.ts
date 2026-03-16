@@ -218,10 +218,15 @@ export class Game {
         }
     }
 
-    init() {
-        this.m_canvasMode = this.m_pixi.renderer.type == PIXI.RENDERER_TYPE.CANVAS;
-      
-       this.editor = new Editor(this.m_config); 
+init() {
+    this.m_canvasMode = this.m_pixi.renderer.type == PIXI.RENDERER_TYPE.CANVAS;
+    
+    // Создаём editor только если он доступен (не вырезан в проде)
+    try {
+        this.editor = new Editor(this.m_config);
+    } catch(e) {
+        // editor недоступен в продакшн билде
+    }
        // Modules
         this.m_touch = new Touch(this.m_input, this.m_config);
         this.m_camera = new Camera();
