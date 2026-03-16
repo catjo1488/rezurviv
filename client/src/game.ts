@@ -13,9 +13,7 @@ import type { ConfigManager, DebugRenderOpts } from "./config";
 import { DebugHUD } from "./debug/debugHUD";
 import { debugLines } from "./debug/debugLines";
 
-/* STRIP_FROM_PROD_CLIENT:START */
 import { Editor } from "./debug/editor";
-/* STRIP_FROM_PROD_CLIENT:END */
 
 import { device } from "./device";
 import { EmoteBarn } from "./emote";
@@ -223,10 +221,7 @@ export class Game {
     init() {
         this.m_canvasMode = this.m_pixi.renderer.type == PIXI.RENDERER_TYPE.CANVAS;
       
-        /* STRIP_FROM_PROD_CLIENT:START */
-       this.editor = new Editor(this.m_config);
-       /* STRIP_FROM_PROD_CLIENT:END */
-        
+       this.editor = new Editor(this.m_config); 
        // Modules
         this.m_touch = new Touch(this.m_input, this.m_config);
         this.m_camera = new Camera();
