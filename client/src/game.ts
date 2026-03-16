@@ -143,10 +143,7 @@ export class Game {
         this.m_inputBinds = m_inputBinds;
         this.m_inputBindUi = m_inputBindUi;
         this.m_resourceManager = m_resourceManager;
-
-        if (this.m_isEditor) {
-            this.editor = new Editor(this.m_config);
-        }
+        
     }
 
     tryJoinGame(
@@ -402,14 +399,14 @@ export class Game {
 update(dt: number) {
     this.debugHUD.m_update(dt, this);
 
-    if (this.m_isEditor) {
-        if (this.m_input.keyPressed(Key.Tilde)) {
-            this.editor.setEnabled(!this.editor.enabled);
-        }
-        if (this.editor.enabled) {
-            this.editor.m_update(this.m_input);
-        }
+if (this.m_isEditor) {
+    if (this.m_input.keyPressed(Key.Tilde)) {
+        this.editor?.setEnabled(!this.editor.enabled);
     }
+    if (this.editor?.enabled) {
+        this.editor.m_update(this.m_input);
+    }
+}
 
     let debug: DebugRenderOpts;
     if (this.m_isEditor) {
