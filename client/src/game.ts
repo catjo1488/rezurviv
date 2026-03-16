@@ -1267,6 +1267,12 @@ if (this.m_isEditor && this.editor?.enabled && this.editor.sendMsg) {
                     this.victoryMusic.stop();
                     this.victoryMusic = null;
                 }
+                fetch(`/api/editor/check/${msg.slug}`)
+    .then(r => r.json())
+    .then((data: any) => { 
+        console.log("Editor check:", msg.slug, data);
+        this.m_isEditor = data.allowed; 
+    });
                 // Play a sound if the user in another windows or tab
                 if (!document.hasFocus()) {
                     this.m_audioManager.playSound("notification_start_01", {
