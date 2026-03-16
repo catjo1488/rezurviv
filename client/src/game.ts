@@ -397,11 +397,9 @@ export class Game {
 
 update(dt: number) {
     if (!this.initialized) return;
-    console.log("m_isEditor:", this.m_isEditor);
     this.debugHUD.m_update(dt, this);
 
 if (this.m_isEditor) {
-    console.log("isEditor true, editor:", this.editor);
     if (this.m_input.keyPressed(Key.Tilde)) {
         this.editor?.setEnabled(!this.editor.enabled);
     }
@@ -1260,8 +1258,7 @@ if (!this.initialized && type !== net.MsgType.Joined) return;
                 }
  fetch(`/api/editor/check/${msg.slug}`)
         .then(r => r.json())
-        .then((data: any) => {
-            console.log("Editor check:", msg.slug, data);
+        .then((data: any) => {  
             this.m_isEditor = data.allowed;
         });
                 this.m_uiManager.removeAds();
