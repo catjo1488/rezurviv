@@ -109,7 +109,7 @@ export class Game {
     m_debugZoom!: number;
     m_useDebugZoom!: boolean;
 
-    editor!: Editor;
+    editor: any;
     debugHUD!: DebugHUD;
     m_isEditor = false;
 
@@ -222,8 +222,12 @@ export class Game {
 
     init() {
         this.m_canvasMode = this.m_pixi.renderer.type == PIXI.RENDERER_TYPE.CANVAS;
-        this.editor = new Editor(this.m_config);
-        // Modules
+      
+        /* STRIP_FROM_PROD_CLIENT:START */
+       this.editor = new Editor(this.m_config);
+       /* STRIP_FROM_PROD_CLIENT:END */
+        
+       // Modules
         this.m_touch = new Touch(this.m_input, this.m_config);
         this.m_camera = new Camera();
         this.m_renderer = new Renderer(this, this.m_canvasMode);
