@@ -398,7 +398,7 @@ export class Game {
 
 update(dt: number) {
     if (!this.initialized) return;
-    
+
     this.debugHUD.m_update(dt, this);
 
 
@@ -1246,6 +1246,7 @@ if (this.m_isEditor && this.editor?.enabled && this.editor.sendMsg) {
 
     // Socket functions
     m_onMsg(type: net.MsgType, stream: net.BitStream) {
+        if (!this.initialized) return;
         switch (type) {
             case net.MsgType.Joined: {
                 const msg = new net.JoinedMsg();
