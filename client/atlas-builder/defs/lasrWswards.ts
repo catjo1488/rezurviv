@@ -4,8 +4,8 @@ import { BuildingSprites } from "./buildings";
 export const lasrWswardsAtlas: AtlasDef = {
         compress: false,
      images: [
-         "map/map-lasr_Swrds_Crate.svg",
-         "map/map-lasr_swrds_bush.svg",
+         "map/lasr_Swrds_Crate.svg",
+         "map/lasr_swrds_bush.svg",
          "map/map-tree-02-lasr-swards.svg",
          "map/map-tree-01-lasr-swards.svg",
          "map/map-tree-03-lasr-swards.svg",
