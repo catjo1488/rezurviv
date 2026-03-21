@@ -89,6 +89,9 @@
         killLeader?: Player;
 
         aoeHealPlayers: Player[] = [];
+        
+        randomModeTicker = 0;
+        readonly RANDOM_MODE_INTERVAL = 30;
 
         scheduledRoles: Array<{
             role: string;
@@ -241,6 +244,9 @@
             } else {
                 player.groupId = player.teamId = this.groupIdAllocator.getNextId();
             }
+                if (this.game.map.mapDef.gameMode.randomMode) {
+        player.applyRandomLoadout();
+            }
 
             if (player.game.map.perkMode) {
                 /*
@@ -386,6 +392,7 @@ for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
     }
 }
 }
+
 
         removePlayer(player: Player) {
             this.players.splice(this.players.indexOf(player), 1);
@@ -722,6 +729,7 @@ for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
 
     speed: number = 0;
         moveVel = v2.create(0, 0);
+        knockbackVel = v2.create(0, 0);
 
         shotSlowdownTimer: number = 0;
         lowHpSurgeTicker: number = 0;
@@ -920,6 +928,9 @@ for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
 leprechaunTeleportCooldown = 0;
 leprechaunHealthAtTeleport = -1; 
 leprechaunInvincibleTicker = 0;
+
+randomModeTicker = 30;
+readonly RANDOM_MODE_INTERVAL = 30;
 
         promoteToRole(role: string) {
             const roleDef = GameObjectDefs[role] as RoleDef;
@@ -1502,7 +1513,7 @@ leprechaunInvincibleTicker = 0;
             this.weaponManager.showNextThrowable();
             this.recalculateScale();
         }
-
+    
     update(dt: number): void {
         if (this.dead) {
             if (!this.sentDeathEmote) {
@@ -1750,6 +1761,37 @@ leprechaunInvincibleTicker = 0;
                             target.boost += itemDef.boost;
                         });
                     }
+if (this.actionItem === "pulseBox") {
+    const pulseRange = GameConfig.player.medicHealRange;
+    const pulseForce = 200;
+
+    const nearbyObjs = this.game.grid.intersectCollider(
+        collider.createCircle(this.pos, pulseRange)
+    );
+
+    for (const obj of nearbyObjs) {
+        const dir = v2.normalizeSafe(v2.sub(obj.pos, this.pos));
+        const dist = v2.distance(obj.pos, this.pos);
+        const falloff = Math.max(0, 1 - dist / pulseRange);
+
+        if (obj.__type === ObjectType.Player && obj !== this) {
+             if (obj.layer !== this.layer) continue; 
+            // knockbackVel — обрабатывается в update() со скольжением и затуханием
+            obj.knockbackVel = v2.add(
+                obj.knockbackVel,
+                v2.mul(dir, pulseForce * falloff)
+            );
+        }
+
+        if (obj.__type === ObjectType.Loot) {
+                if (obj.layer !== this.layer) continue;
+            // у лута уже есть vel + физика в loot.update()
+            obj.push(dir, pulseForce * falloff * 4);
+        }
+    }
+}
+
+
                     this.invManager.take(this.actionItem as InventoryItem, 1);
                 } else if (this.isReloading()) {
                     this.weaponManager.reload();
@@ -2313,7 +2355,86 @@ leprechaunInvincibleTicker = 0;
         if (this.lowHpSurgeTicker <= 0) {
             this.lowHpSurgeTicker = 0;
         }
+        this.lowHpSurgeTicker -= dt;
+        if (this.lowHpSurgeTicker <= 0) {
+            this.lowHpSurgeTicker = 0;
+        }
+
+ 
+if (v2.lengthSqr(this.knockbackVel) > 0.01) {
+            // Игнорируем knockback если игрок под землёй (layer 1)
+            if (this.layer !== 0) {
+                this.knockbackVel = v2.create(0, 0);
+            } else {
+                const newPos = v2.copy(this.pos);
+                v2.set(newPos, v2.add(newPos, v2.mul(this.knockbackVel, dt)));
+
+                const obstacles = this.game.grid
+                    .intersectCollider(collider.createCircle(newPos, this.rad + 2))
+                    .filter(
+                        (o): o is Obstacle =>
+                            o.__type === ObjectType.Obstacle &&
+                            (o as Obstacle).collidable &&
+                            !(o as Obstacle).dead &&
+                            !!util.sameLayer((o as Obstacle).layer, this.layer),
+                    );
+
+                for (const obstacle of obstacles) {
+                    const col = collider.intersectCircle(obstacle.collider, newPos, this.rad);
+                    if (col) {
+                        v2.set(newPos, v2.add(newPos, v2.mul(col.dir, col.pen + 0.001)));
+                    }
+                }
+
+                this.game.map.clampToMapBounds(newPos, this.rad);
+                v2.set(this.pos, newPos);
+                this.setPartDirty();
+                this.game.grid.updateObject(this);
+
+                this.knockbackVel = v2.mul(this.knockbackVel, 1 / (1 + dt * 12));
+                if (v2.lengthSqr(this.knockbackVel) < 0.01) {
+                    this.knockbackVel = v2.create(0, 0);
+                }
+            }
+        }
+        // Перк void_infinite — постоянно отталкивает игроков и лут вокруг
+if (this.hasPerk("void_infinite") && this.layer === 0 && !this.dead && !this.downed) {
+    const pulseRange = GameConfig.player.medicHealRange;
+    const pulseForce = 200;
+
+    const nearbyObjs = this.game.grid.intersectCollider(
+        collider.createCircle(this.pos, pulseRange)
+    );
+
+    for (const obj of nearbyObjs) {
+        const dir = v2.normalizeSafe(v2.sub(obj.pos, this.pos));
+        const dist = v2.distance(obj.pos, this.pos);
+        const falloff = Math.max(0, 1 - dist / pulseRange);
+
+        if (obj.__type === ObjectType.Player && obj !== this && obj.layer === this.layer) {
+            obj.knockbackVel = v2.add(
+                obj.knockbackVel,
+                v2.mul(dir, pulseForce * falloff * dt)
+            );
+        }
+        
+
+        if (obj.__type === ObjectType.Loot && obj.layer === this.layer) {
+            obj.push(dir, pulseForce * falloff * dt * 4);
+        }
     }
+}
+if (this.game.map.mapDef.gameMode.randomMode && !this.dead && !this.downed) {
+    this.randomModeTicker -= dt;
+    if (this.randomModeTicker <= 0) {
+        this.randomModeTicker = this.RANDOM_MODE_INTERVAL;
+        this.applyRandomLoadout();
+    }
+}
+}
+
+    
+    
     
 
     moveObjUpdate(occupiedBuilding?: Building): void {
@@ -2463,6 +2584,7 @@ leprechaunInvincibleTicker = 0;
                 updateMsg.partObjects.push(obj);
             }
         }
+        
 
         this.visibleObjects = newVisibleObjects;
 
@@ -2942,6 +3064,10 @@ if (this.game.map.factionMode && (this.game.map.mapDef.gameMode.factions ?? 2) >
         if (this.weaponManager.cookingThrowable) {
             this.weaponManager.throwThrowable(true);
         }
+        if (this.game.map.mapDef.gameMode.randomMode) {
+    // сбрасываем таймер чтобы следующий спавн начал новый отсчёт
+    this.randomModeTicker = this.RANDOM_MODE_INTERVAL;
+        }
 
         //
         // Send kill msg
@@ -3240,6 +3366,69 @@ if (
         // send data to parent process
         this.game.updateData();
     }
+applyRandomLoadout(): void {
+    // Убираем текущее оружие без дропа
+    for (let i = 0; i < 2; i++) {
+        const weap = this.weapons[i];
+        if (weap.type) {
+            const gunDef = GameObjectDefs[weap.type] as GunDef;
+if (gunDef.ammo) {
+    const ammoKey = gunDef.ammo as InventoryItem;
+    // проверяем что это валидный предмет инвентаря
+    if (!this.invManager.isValid(ammoKey)) continue; // ← добавь
+    const bagSize = GameConfig.bagSizes[ammoKey];
+    if (bagSize) {
+        const amount = bagSize[this.getGearLevel(this.backpack)];
+        this.invManager.give(ammoKey, amount);
+        this.weaponManager.reload(GameConfig.WeaponSlot.Primary, true);
+    }
+}
+            weap.type = "";
+            weap.ammo = 0;
+        }   
+    }
+
+    // Убираем перки без дропа
+    this._perks.length = 0;
+    this._perkTypes.length = 0;
+
+    // Рандомное оружие
+const gunTier = this.game.map.mapDef.lootTable["tier_guns"];
+const randomGun = gunTier[util.randomInt(0, gunTier.length - 1)];
+
+if (randomGun && randomGun.name) {
+    const gunDef = GameObjectDefs[randomGun.name] as GunDef;
+    if (!gunDef || gunDef.type !== "gun") return;
+
+    this.weaponManager.setWeapon(GameConfig.WeaponSlot.Primary, randomGun.name, 0);
+    
+    if (gunDef.ammo) {
+        const ammoKey = gunDef.ammo as InventoryItem;
+        const bagSize = GameConfig.bagSizes[ammoKey];
+        if (bagSize) {
+            const amount = bagSize[this.getGearLevel(this.backpack)];
+            this.invManager.give(ammoKey, amount);
+            this.weaponManager.reload(GameConfig.WeaponSlot.Primary, true);
+        }
+    }
+}
+    // Рандомная броня
+    const helmets = ["helmet01", "helmet02", "helmet03", "helmet04", "helmet04_moon", "helmet03_forest", "helmet03_lt", "helmet03_lt_aged", "helmet03_potato", "helmet03_marksman", "helmet03_mr", "one_V50", "helmet04_last_man_red", "helmet04_leader","helmet04_captain"];
+    const chests = ["chest01", "chest02", "chest03"];
+    this.helmet = helmets[util.randomInt(0, helmets.length - 1)];
+    this.chest = chests[util.randomInt(0, chests.length - 1)];
+
+    // Рандомный перк
+    const perk = this.game.lootBarn.getLootTable("tier_perks");
+    if (perk) {
+        this._perks.push({ type: perk.name, droppable: false });
+        this._perkTypes.push(perk.name);
+    }
+
+    this.weapsDirty = true;
+    this.inventoryDirty = true;
+    this.setDirty();
+}
 
     getAliveKiller(): Player | undefined {
         let attempts = 0;
@@ -3364,6 +3553,7 @@ if (
             this.playAnim(GameConfig.Anim.Revive, GameConfig.player.reviveDuration);
         }
     }
+    
 
     isAffectedByAOE(medic: Player): boolean {
         const effectRange =

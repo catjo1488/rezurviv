@@ -686,6 +686,8 @@ if (this.m_isEditor) {
                 inputMsg.useItem = "soda";
             } else if (this.m_inputBinds.isBindPressed(Input.UsePainkiller)) {
                 inputMsg.useItem = "painkiller";
+            } else if (this.m_inputBinds.isBindPressed(Input.UsepulseBox)) {
+                inputMsg.useItem = "pulseBox";
             }
 
             // Process 'drop' actions triggered from the ui

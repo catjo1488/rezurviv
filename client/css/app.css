@@ -3394,6 +3394,54 @@ screen and (max-width: 736px) and (orientation: landscape) {
     }
 }
 
+.btn-mode-lasr {
+    animation: silverShimmer 2s ease-in-out infinite;
+    border-bottom: 4px solid #5a5a6e;
+}
+
+@media (max-width: 850px),
+(max-width: 900px) and (min-resolution: 3dppx) {
+    .btn-mode-lasr {
+        border-bottom: 2px solid #5a5a6e;
+    }
+}
+
+@keyframes silverShimmer {
+    0% {
+        background-color: #6b6b80;
+    }
+    50% {
+        background-color: #c0c0d8;
+    }
+    100% {
+        background-color: #6b6b80;
+    }
+}
+
+.btn-mode-randomaizer {
+    animation: yellowShimmer 2s ease-in-out infinite;
+    border-bottom: 4px solid #a89000;
+}
+
+@media (max-width: 850px),
+(max-width: 900px) and (min-resolution: 3dppx) {
+    .btn-mode-randomaizer {
+        border-bottom: 2px solid #a89000;
+    }
+}
+
+@keyframes yellowShimmer {
+    0% {
+        background-color: #c8a800;
+    }
+    50% {
+        background-color: #fff176;
+    }
+    100% {
+        background-color: #c8a800;
+    }
+}
+
 @keyframes bloodPulse {
     from {
         background-color: #500000;

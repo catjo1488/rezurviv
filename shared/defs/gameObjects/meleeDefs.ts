@@ -856,16 +856,16 @@ const BaseDefs: Record<string, MeleeDef> = {
         stonePiercing: true,
         autoAttack: false,
         switchDelay: 0.25,
-        damage: 100, // 60
-        obstacleDamage: 5.5,
+        damage: 60, // 60
+        obstacleDamage: 3.5,
         attack: {
             offset: { x: 2, y: 0 },
-            rad: 3,
+            rad: 2.5,
             damageTimes: [0.3],
             cooldownTime: 0.3,
         },
         speed: {
-            equip: 6,
+            equip: 1,
         },
         anim: {
             idlePose: "meleeLasrSwrd",

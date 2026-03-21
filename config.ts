@@ -14,24 +14,24 @@ export function getConfig(isProduction: boolean, dir: string) {
     const config: ConfigType = {
         apiServer: {
             host: "127.0.0.1",
-            port: 8000,
+            port: 7000,
         },
         gameServer: {
             host: "127.0.0.1",
-            port: 8001,
+            port: 7001,
             apiServerUrl: "", // defaults to apiServer if blank
             thisRegion: "local",
         },
         vite: {
             host: "127.0.0.1",
-            port: 3000,
+            port: 4000,
         },
         regions: {},
         proxies: {},
         modes: [
-            { mapName: "oneVFifty", teamMode: TeamMode.Solo, enabled: true },
-            { mapName: "lepricon", teamMode: TeamMode.Duo, enabled: true },
-            { mapName: "main", teamMode: TeamMode.Squad, enabled: false },
+            { mapName: "lasrWswards", teamMode: TeamMode.Solo, enabled: true },
+            { mapName: "random", teamMode: TeamMode.Duo, enabled: true },
+            { mapName: "faction", teamMode: TeamMode.Squad, enabled: true },
         ],
         clientTheme: "main",
         gameTps: 100,

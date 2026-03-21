@@ -344,6 +344,26 @@ export class BulletBarn {
                                 p.changeLasrSwrdPose();
                             }
                         }
+if (player.m_hasPerk("void_infinite") && player.__id !== b.playerId) {
+    const voidCollision = coldet.intersectSegmentCircle(
+        posOld,
+        b.pos,
+        player.m_pos,
+        10,
+    );
+    if (voidCollision) {
+        const deflectNormal = v2.normalizeSafe(
+            v2.sub(voidCollision.point, player.m_pos)
+        );
+        const dot = v2.dot(b.dir, deflectNormal);
+        b.dir = v2.normalize(v2.sub(b.dir, v2.mul(deflectNormal, 2 * dot)));
+        b.pos = voidCollision.point;
+        b.startPos = voidCollision.point;
+        b.reflectCount++;
+        b.reflectObjId = player.__id;
+        break; // ← break вместо continue, выходим из цикла игроков
+    }
+}
                         const collision = coldet.intersectSegmentCircle(
                             posOld,
                             b.pos,
@@ -412,15 +432,20 @@ export class BulletBarn {
                         }
                     }
                 }
-                for (let C = 0; C < players.length; C++) {
-                    const player = players[C];
-                    if (
-                        player.active &&
-                        !player.m_netData.m_dead &&
-                        (util.sameLayer(player.m_netData.m_layer, b.layer) ||
-                            player.m_netData.m_layer & 2) &&
-                        (player.__id != b.playerId || b.damageSelf)
-                    ) {
+                
+for (let C = 0; C < players.length; C++) {
+    const player = players[C];
+    if (
+        player.active &&
+        !player.m_netData.m_dead &&
+        (util.sameLayer(player.m_netData.m_layer, b.layer) ||
+            player.m_netData.m_layer & 2) &&
+        (player.__id != b.playerId || b.damageSelf)
+    ) {
+        // пропускаем игроков с void_infinite — они отражают пули
+        if (player.m_hasPerk("void_infinite") && player.__id !== b.playerId) {
+            continue;
+        }   
                         let panCollision = null;
                         if (player.m_hasActivePan()) {
                             const p = player;

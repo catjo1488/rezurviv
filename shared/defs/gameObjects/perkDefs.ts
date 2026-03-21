@@ -3,6 +3,12 @@ export const PerkProperties = {
         minBoost: 100,
         scale: 0.25,
     },
+    void_infinite: {
+    range: 20,
+    playerForce: 100,
+    lootForce: 40,
+    bulletDeflect: true,
+},
     assume_leadership: {
         minBoost: 50,
         scale: 0.15,
@@ -136,6 +142,20 @@ export const PerkDefs: Record<string, PerkDef> = {
     },
     sound: {
         pickup: "perk_pickup_01",
+    },
+},
+void_infinite: {
+    name: "infinite void",
+    type: "perk",
+    lootImg: {
+        sprite: "loot-perk-void.img",
+        tint: 0xffffff,
+        border: "loot-circle-outer-03.img",
+        borderTint: 0x6600ff,
+        scale: 0.275,
+    },
+    sound: {
+        pickup: "perk_gojo_01",
     },
 },
      low_hp_surge: {

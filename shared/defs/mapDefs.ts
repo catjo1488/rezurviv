@@ -21,6 +21,8 @@ import { WoodsSummer } from "./maps/woodsSummerDefs";
 import type { MapId } from "./types/misc";
 import { OneVFifty } from "./maps/oneVFiftyDefs";
 import { lepricon } from "./maps/lepriconDefs";
+import { lasrWswards } from "./maps/lasrWswardsDefs";
+import { random } from "./maps/randomDefs";
 
 
 export type Atlas =
@@ -40,6 +42,8 @@ export type Atlas =
     | "beach"
     | "oneVFifty"
     | "lepricon"
+    | "lasrWswards"
+    | "random"
 
 export const MapDefs = {
     main: Main,
@@ -62,6 +66,8 @@ export const MapDefs = {
     beach: Beach,
     oneVFifty: OneVFifty,
     lepricon: lepricon,
+    lasrWswards: lasrWswards,
+    random: random, 
 
     /* STRIP_FROM_PROD_CLIENT:START */
     test_normal: testNormal,
@@ -125,6 +131,7 @@ export interface MapDef {
         perkModeRoles?: string[];
         turkeyMode?: boolean;
         spookyKillSounds?: boolean;
+        randomMode?: boolean;
     };
     gameConfig: {
         planes: {

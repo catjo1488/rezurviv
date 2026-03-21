@@ -407,6 +407,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-perk-leadership.svg",
         "loot/loot-perk-martyrdom.svg",
         "loot/loot-perk-pirate.svg",
+        
         "loot/loot-perk-rare-potato.svg",
         "loot/loot-perk-scavenger.svg",
         "loot/loot-perk-scavenger_adv.svg",
@@ -432,6 +433,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-perk-ultimate-survival.svg",
         "loot/loot-perk-armor_master.svg",
         "loot/loot-perk-low-hp-surge.svg",
+        "loot/loot-perk-void.svg",
         "loot/loot-scope-00.svg",
         "loot/loot-scope-01.svg",
         "loot/loot-scope-02.svg",
@@ -530,6 +532,9 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-weapon-scorpion.svg",
         "loot/loot-weapon-scout.svg",
         "loot/loot-weapon-spas12.svg",
+        "loot/loot-weapon-double-lasr-gun.svg",
+        "loot/loot-weapon-lasr-gun.svg",
+        "guns/gun-lasr-gun.svg",
         "loot/loot-weapon-sv98.svg",
         "loot/loot-weapon-svd.svg",
         "loot/loot-weapon-ump9.svg",
@@ -649,6 +654,8 @@ export const LoadoutAtlas: AtlasDef = {
         "particles/part-takedown-01.svg",
         "particles/part-wedge-01.svg",
         "particles/part-woodchip-01.svg",
+        "particles/part-aura-circle-01.svg",
+        "particles/part-aura-circle-02.svg",
         "player/player-armor-base-01.svg",
         "player/player-base-01.svg",
         "player/player-base-02.svg",
@@ -712,6 +719,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/lasr-sword-01.svg",
         "loot/lasr-sword-02.svg",
         "loot/lasr-sword-03.svg",
+        "loot/loot-pulseBox.svg",
 
     ],
 };

@@ -1,8 +1,8 @@
 import { GameConfig } from "../../gameConfig";
-import type { DeepPartial } from "../../utils/util";
-import { v2 } from "../../utils/v2";
+import { util } from "../../utils/util";
 import type { MapDef } from "../mapDefs";
 import { MapId } from "../types/misc";
+import { Main, type PartialMapDef } from "./baseDefs";
 
 // @NOTE: Entries defined as single-element arrays, like fixedSpawns: [{ }],
 // are done this way so that util.mergeDeep(...) will function as expected
@@ -10,14 +10,14 @@ import { MapId } from "../types/misc";
 //
 // Arrays are not mergeable, so the derived map will always redefine all
 // elements if that property is set.
-
-export const Main: MapDef = {
-    mapId: MapId.Main,
+const mapDef: PartialMapDef = {
+    mapId: MapId.lasrWswards,
     desc: {
-        name: "Normal",
-        icon: "",
-        buttonCss: "",
+        name: "star wars",
+        icon: "img/gui/lasr.svg",
+        buttonCss: "btn-mode-lasr",
         backgroundImg: "img/main_lasr.png",
+        buttonText: "star wars",
     },
     assets: {
         audio: [
@@ -27,19 +27,19 @@ export const Main: MapDef = {
             { name: "log_11", channel: "sfx" },
             { name: "log_12", channel: "sfx" },
         ],
-        atlases: ["gradient", "loadout", "shared", "main"],
+        atlases: ["gradient", "loadout", "shared", "main","lasrWswards"],
     },
 biome: {
         colors: {
             background: 0x51624,
-            water: 0x71b36,
-            waterRipple: 0xb3f0ff,
-            beach: 0x8e5632,
-            riverbank: 0x653313,
-            grass: 0x4e6128,
+            water: 0xA2A7CB,
+            waterRipple: 0xA2A7CB,
+            beach: 0x75829B,
+            riverbank: 0x444F6D,
+            grass: 0x54627A,
             underground: 0x1b0d03,
-            playerSubmerge: 0x123049,
-            playerGhillie: 0x4c6024,
+            playerSubmerge: 0x51624,
+            playerGhillie: 0x51624,
         },
         valueAdjust: 1,
         sound: { riverShore: "sand" },
@@ -83,6 +83,14 @@ biome: {
     // ? are guesses based on statistics
     // ! are uncertain data based on leak
     lootTable: {
+    tier_space: [
+            { name: "lasr_swrd", count: 1, weight: 0.29 },
+            { name: "lasr_swrd_02", count: 1, weight: 0.15 },
+            { name: "lasr_swrd_03", count: 1, weight: 0.15 },
+            { name: "lasr_gun", count: 1, weight: 0.27 },
+            { name: "lasr_gun_dual", count: 1, weight: 0.16 },
+            { name: "pulseBox", count: 2, weight: 0.2 },
+        ],
         tier_world: [
             { name: "tier_guns", count: 1, weight: 0.29 }, // TODO get more data on this from original
             { name: "tier_ammo", count: 1, weight: 0.04 }, // ?
@@ -712,68 +720,19 @@ biome: {
                 masks: [],
             },
         },
-        places: [
-            {
-                name: "The Killpit",
-                pos: v2.create(0.53, 0.64),
-            },
-            {
-                name: "Sweatbath",
-                pos: v2.create(0.84, 0.18),
-            },
-            {
-                name: "Tarkhany",
-                pos: v2.create(0.15, 0.11),
-            },
-            {
-                name: "Ytyk-Kyuyol",
-                pos: v2.create(0.25, 0.42),
-            },
-            {
-                name: "Todesfelde",
-                pos: v2.create(0.81, 0.85),
-            },
-            {
-                name: "Pineapple",
-                pos: v2.create(0.21, 0.79),
-            },
-            {
-                name: "Fowl Forest",
-                pos: v2.create(0.73, 0.47),
-            },
-            {
-                name: "Ranchito Pollo",
-                pos: v2.create(0.53, 0.25),
-            },
-        ],
-        bridgeTypes: {
-            medium: "bridge_md_structure_01",
-            large: "bridge_lg_structure_01",
-            xlarge: "",
-        },
-        customSpawnRules: {
-            locationSpawns: [
-                {
-                    type: "club_complex_01",
-                    pos: v2.create(0.5, 0.5),
-                    rad: 150,
-                    retryOnFailure: true,
-                },
-            ],
-            placeSpawns: ["warehouse_01", "house_red_01", "house_red_02", "barn_01"],
-        },
         densitySpawns: [
             {
                 stone_01: 350,
                 barrel_01: 76,
                 silo_01: 8,
-                crate_01: 50,
-                crate_02: 4,
+                crate_01m: 50,
+                space_crate: 40,
                 crate_03: 8,
-                bush_01: 78,
+                bush_01m: 78,
                 cache_06: 12,
-                tree_01: 320,
-                tree_13: 30,
+                map_tree_03_lasr_swards: 334,
+                map_tree_02_lasr_swards: 420,
+                map_tree_01_lasr_swards: 230,
                 hedgehog_01: 24,
                 container_01: 5,
                 container_02: 5,
@@ -819,6 +778,7 @@ biome: {
                 stone_04: 1,
             },
         ],
+        
         randomSpawns: [
             {
                 spawns: ["mansion_structure_01", "police_01", "bank_01"],
@@ -831,4 +791,4 @@ biome: {
     /* STRIP_FROM_PROD_CLIENT:END */
 };
 
-export type PartialMapDef = DeepPartial<MapDef>;
+export const lasrWswards = util.mergeDeep({}, Main, mapDef) as MapDef;

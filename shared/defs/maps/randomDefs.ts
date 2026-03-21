@@ -1,8 +1,9 @@
 import { GameConfig } from "../../gameConfig";
-import type { DeepPartial } from "../../utils/util";
 import { v2 } from "../../utils/v2";
+import { util } from "../../utils/util";
 import type { MapDef } from "../mapDefs";
 import { MapId } from "../types/misc";
+import { Main, type PartialMapDef } from "./baseDefs";
 
 // @NOTE: Entries defined as single-element arrays, like fixedSpawns: [{ }],
 // are done this way so that util.mergeDeep(...) will function as expected
@@ -11,13 +12,14 @@ import { MapId } from "../types/misc";
 // Arrays are not mergeable, so the derived map will always redefine all
 // elements if that property is set.
 
-export const Main: MapDef = {
-    mapId: MapId.Main,
+export const mapDef: MapDef = {
+    mapId: MapId.random,
     desc: {
-        name: "Normal",
-        icon: "",
-        buttonCss: "",
+        name: "randomaizer",
+        icon: "img/gui/randomaizer.svg",
+        buttonCss: "btn-mode-randomaizer",
         backgroundImg: "img/main_lasr.png",
+        buttonText: "randomaizer",
     },
     assets: {
         audio: [
@@ -27,7 +29,7 @@ export const Main: MapDef = {
             { name: "log_11", channel: "sfx" },
             { name: "log_12", channel: "sfx" },
         ],
-        atlases: ["gradient", "loadout", "shared", "main"],
+        atlases: ["gradient", "loadout", "shared", "main","random"],
     },
 biome: {
         colors: {
@@ -36,7 +38,7 @@ biome: {
             waterRipple: 0xb3f0ff,
             beach: 0x8e5632,
             riverbank: 0x653313,
-            grass: 0x4e6128,
+            grass: 0x997549,
             underground: 0x1b0d03,
             playerSubmerge: 0x123049,
             playerGhillie: 0x4c6024,
@@ -54,6 +56,7 @@ biome: {
     gameMode: {
         maxPlayers: 80,
         killLeaderEnabled: true,
+        randomMode: true
     },
     gameConfig: {
         planes: {
@@ -141,18 +144,18 @@ biome: {
             { name: "helmet03", count: 1, weight: 0.2 },
             { name: "chest01", count: 1, weight: 15 }, // !
             { name: "chest02", count: 1, weight: 6 },
-            { name: "chest03", count: 1, weight: 0.2 },
+            { name: "chest03", count: 1, weight: 12 },
         ],
         tier_packs: [
             { name: "backpack01", count: 1, weight: 15 }, // !
             { name: "backpack02", count: 1, weight: 6 },
-            { name: "backpack03", count: 1, weight: 0.2 },
+            { name: "backpack03", count: 1, weight: 12 },
         ],
         tier_medical: [
             { name: "bandage", count: 5, weight: 16 },
-            { name: "healthkit", count: 1, weight: 4 },
-            { name: "soda", count: 1, weight: 15 },
-            { name: "painkiller", count: 1, weight: 5 },
+            { name: "healthkit", count: 1, weight: 14 },
+            { name: "soda", count: 1, weight: 25 },
+            { name: "painkiller", count: 1, weight: 15 },
         ],
         tier_throwables: [
             { name: "frag", count: 2, weight: 1 }, // !
@@ -811,7 +814,11 @@ biome: {
                 chest_01: 1,
                 chest_03: { odds: 0.2 },
                 mil_crate_02: { odds: 0.25 },
-                tree_02: 3,
+                              tree_02: 6,
+                tree_07: 100,
+                tree_08: 130,
+                tree_08b: 150,
+                tree_09: 84,
                 teahouse_complex_01su: {
                     small: 1,
                     large: 2,
@@ -831,4 +838,4 @@ biome: {
     /* STRIP_FROM_PROD_CLIENT:END */
 };
 
-export type PartialMapDef = DeepPartial<MapDef>;
+export const random = util.mergeDeep({}, Main, mapDef) as MapDef;

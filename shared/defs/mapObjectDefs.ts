@@ -10394,6 +10394,15 @@ map: { display: true, color: 0x1a5c00  },
             enter: "none",
         },
     },
+    crate_23: createCrate({
+        health: 150,
+        reflectBullets: true,
+        loot: [tierLoot("tier_space", 3, 5)],
+        map: { display: false },
+        terrain: { grass: true, beach: false },
+        img: { sprite: "map-space-crate.img" },
+        sound: { explode: "crate_break_01" },
+    } as unknown as Partial<ObstacleDef>),
     deposit_box_01: createDepositBox({
         img: { sprite: "map-deposit-box-01.img" },
         loot: [tierLoot("tier_world", 1, 1)],
@@ -11210,6 +11219,35 @@ map: { display: true, color: 0x1a5c00  },
             scale: 0.35,
         },
     }),
+    space_crate: createCrate({
+        health: 150,
+        reflectBullets: true,
+        loot: [tierLoot("tier_space", 3, 5)],
+        map: { display: false },
+        terrain: { grass: true, beach: false },
+        img: { sprite: "map-space-crate.img" },
+        sound: { explode: "crate_break_01" },
+    } as unknown as Partial<ObstacleDef>),
+
+    map_tree_01_lasr_swards: createTree({
+        img: {
+            sprite: "map-tree-01-lasr-swards.img",
+            scale: 0.35,
+        },
+        collision: collider.createCircle(v2.create(0, 0), 1.2),
+        aabb: collider.createAabbExtents(v2.create(0, 0), v2.create(7.75, 7.75)),
+        map: { color: 0x2c4362 },
+    } as unknown as Partial<ObstacleDef>),
+
+    map_tree_02_lasr_swards: createTree({
+        map: { color: 4598631 },
+        img: { sprite: "map-tree-02-lasr-swards.img" },
+    } as unknown as Partial<ObstacleDef>),
+      map_tree_03_lasr_swards: createTree({
+        map: { color: 4598631 },
+        img: { sprite: "map-tree-03-lasr-swards.img" },
+    } as unknown as Partial<ObstacleDef>),    
+
     tree_02: createTree({
         health: 120,
         collision: collider.createCircle(v2.create(0, 0), 1.6),
@@ -30357,4 +30395,12 @@ map: { display: true, color: 0x1a5c00  },
             zIdx: 4,
         },
     },
+    crate_01m: createCrate({
+        loot: [tierLoot("tier_soviet", 3, 5)],
+       img: { sprite: "lasr_Swrds_Crate.img" },
+    }),
+      bush_01m: createBush({
+       img: { sprite: "lasr_swrds_bush.img" },
+        map: { color: 61183 },
+    } as unknown as Partial<ObstacleDef>),
 };

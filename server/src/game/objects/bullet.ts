@@ -356,6 +356,7 @@ export class Bullet {
                 this.onHitFx = "";
             }
         }
+        
 
         if (!this.alive && !this.reflected && this.onHitFx) {
             const def = GameObjectDefs[this.bulletType] as BulletDef;
@@ -504,7 +505,24 @@ export class Bullet {
         };
     }
 }
-                
+if (obj.hasPerk("void_infinite") && obj.__id !== this.playerId) {
+    const voidCollision = coldet.intersectSegmentCircle(
+        posOld,
+        this.pos,
+        obj.pos,
+        8, // фиксированный радиус
+    );
+    if (voidCollision) {
+        const deflectNormal = v2.normalizeSafe(v2.sub(voidCollision.point, obj.pos));
+        // принудительно сбрасываем флаги чтобы reflect сработал
+        this.reflected = false;
+        this.canReflect = true;
+        this.reflect(voidCollision.point, deflectNormal, obj.__id);
+        this.alive = false;
+        this.active = false;
+        return;
+    }
+}if (obj.hasPerk("void_infinite")) continue;
 
                 
 

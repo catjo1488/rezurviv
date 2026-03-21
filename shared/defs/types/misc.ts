@@ -13,6 +13,8 @@ export enum MapId {
     Beach = 9,
     OneVFifty = 10,
     lepricon = 20,
+    lasrWswards = 30,
+    random = 40,
 }
 
 export const TeamModeToString = {

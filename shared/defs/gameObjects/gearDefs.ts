@@ -348,6 +348,7 @@ export interface BoostDef {
     type: "boost";
     useTime: number;
     boost: number;
+    hideUi?: boolean;
     lootImg: LootImg;
     sound: Sound;
     emitter: string;
@@ -356,6 +357,7 @@ export interface BoostDef {
         tint: number;
     };
 }
+
 
 const BoostDefs: Record<string, BoostDef> = {
     soda: {
@@ -379,6 +381,28 @@ const BoostDefs: Record<string, BoostDef> = {
             sprite: "part-aura-circle-01.img",
             tint: 0x199500,
         },
+    },
+     pulseBox: {
+        name: "Pulse Box",
+        type: "boost",
+        useTime: 0.2,
+        boost: 0.0,
+        lootImg: {
+            sprite: "loot-pulseBox.img",
+            tint: 0xadb2c4,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0x000000,
+            scale: 0.2,
+        },
+        sound: {
+            pickup: "soda_pickup_01",
+            use: "pulseBox_use_01",
+        },
+        aura: {
+            sprite: "part-aura-circle-01.img",
+            tint: 0x199500,
+        },
+        emitter: "boost",
     },
     painkiller: {
         name: "Pills",

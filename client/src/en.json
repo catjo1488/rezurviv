@@ -605,6 +605,8 @@
     "index-play-50v50": "Play 50v50",
     "index-50v50": "50v50",
     "index-play-classic": "classic",
+    "index-play-star wars": "star wars",
+    "index-play-randomaizer": "randomaizer",
     "game-red-team": "Red Team",
     "game-blue-team": "Blue Team",
     "game-red-leader": "Red Commander",
@@ -770,5 +772,7 @@
     "game-xp_bone": "Bone of Gordon",
     "game-xp_donut": "Cake Donut",
     "game-leprechaun": "Leprechaun",
+    "game-void_infinite": "infinite void",
+    "game-void_infinite-desc": "expansion of territory",
     "game-leprechaun-desc": "You teleport if your health is less than 15 units due to the luck effect"
 }

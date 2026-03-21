@@ -15,6 +15,8 @@ import { TurkeyAtlas } from "./defs/turkey";
 import { WoodsAtlas } from "./defs/woods";
 import { OneVFiftyAtlas } from "./defs/oneVFifty";
 import { lepriconAtlas } from "./defs/lepricon";
+import { lasrWswardsAtlas } from "./defs/lasrWswards";
+import { randomAtlas } from "./defs/random";
 
 export interface AtlasDef {
     /**
@@ -47,7 +49,10 @@ export const Atlases: Record<Atlas, AtlasDef> = {
     turkey: TurkeyAtlas,
     beach: BeachAtlas,
     oneVFifty: OneVFiftyAtlas,
-    lepricon:lepriconAtlas,
+    lepricon: lepriconAtlas,
+    lasrWswards: lasrWswardsAtlas,
+    random: randomAtlas,
+
 };
 export type AtlasRes = "high" | "low";
 

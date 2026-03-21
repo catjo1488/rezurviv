@@ -1757,6 +1757,10 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/ui/perk_pickup_01.mp3",
             volume: 1,
         },
+        perk_gojo_01: {
+            path: "audio/ui/perk_gojo_01.mp3",
+            volume: 1,
+        },
         xp_pickup_01: {
             path: "audio/ui/xp_pickup_01.mp3",
             volume: 1.5,
