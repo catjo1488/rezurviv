@@ -848,7 +848,7 @@ const BaseDefs: Record<string, MeleeDef> = {
             playerHit: "knife_hit_01",
         },
     },
-    lasr_swrd: {
+   lasr_swrd: {
         name: "Lasr Swrd",
         type: "melee",
         quality: 1,
@@ -857,12 +857,12 @@ const BaseDefs: Record<string, MeleeDef> = {
         autoAttack: false,
         switchDelay: 0.25,
         damage: 60, // 60
-        obstacleDamage: 3.5,
+        obstacleDamage: 1.5,
         attack: {
             offset: { x: 2, y: 0 },
-            rad: 2.5,
+            rad: 2.1,
             damageTimes: [0.3],
-            cooldownTime: 0.3,
+            cooldownTime: 0.6,
         },
         speed: {
             equip: 1,
@@ -888,7 +888,7 @@ const BaseDefs: Record<string, MeleeDef> = {
             rot: 0.0,
         },
         worldImg: {
-            sprite: "lasr_swrd_01.img",
+            sprite: "lasr-sword-01.img",
             pos: { x: 110.0, y: -2.0 },
             rot: 0.0,
             scale: { x: 0.15, y: 0.15 },
@@ -896,8 +896,8 @@ const BaseDefs: Record<string, MeleeDef> = {
             leftHandOntop: true,
         },
         reflectArea: {
-            offset: { x: 2.0, y: 0.0 },
-            rad: 2,
+            offset: { x: 1.75, y: 0.0 },
+            rad: 1,
         },
     },
     hook: {
@@ -1477,12 +1477,12 @@ const SkinDefs: Record<string, MeleeDef> = {
         worldImg: { sprite: "loot-melee-cutlass-gold.img" },
     }),
     lasr_swrd_02: defineMeleeSkin("lasr_swrd", {
-        lootImg: { sprite: "loot-melee-lasr-swrd-02.img" },
-        worldImg: { sprite: "lasr-swrd-02.img" },
+        lootImg: { sprite: "loot-melee-lasr-sword-02.img" },
+        worldImg: { sprite: "lasr-sword-02.img" },
     }),
     lasr_swrd_03: defineMeleeSkin("lasr_swrd", {
-        lootImg: { sprite: "loot-melee-lasr-swrd-03.img" },
-        worldImg: { sprite: "lasr-swrd-03.img" },
+        lootImg: { sprite: "loot-melee-lasr-sword-03.img" },
+        worldImg: { sprite: "lasr-sword-03.img" },
     }),
 };
 
