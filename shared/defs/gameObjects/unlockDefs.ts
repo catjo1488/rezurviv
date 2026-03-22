@@ -14,6 +14,9 @@ const _allowedMeleeSkins = [
     "huntsman_burnished",
     "bowie_vintage",
     "bowie_frontier",
+    "lasr_swrd",
+    "lasr_swrd_02",
+    "lasr_swrd_03",
 ];
 const _allowedOutfits = [
     "outfitBase",
