@@ -29,7 +29,7 @@ export const mapDef: MapDef = {
             { name: "log_11", channel: "sfx" },
             { name: "log_12", channel: "sfx" },
         ],
-        atlases: ["gradient", "loadout", "shared", "main","random"],
+        atlases: ["gradient", "loadout", "shared", "main","random","woods"],
     },
 biome: {
         colors: {

@@ -7,7 +7,7 @@ export const randomAtlas: AtlasDef = {
          "map/map-tree-02-lasr-swards.svg",
          "map/map-tree-01-lasr-swards.svg",
          "map/map-tree-03-lasr-swards.svg",
-         "map/map-space-crate.svg",
+         "map/space_crate.svg",
          "map/map-building-greenhouse-ceiling-01.svg",
          "map/map-building-greenhouse-floor-01.svg",
          "map/map-bunker-chrys-chamber-ceiling-01.svg",
@@ -67,9 +67,9 @@ export const randomAtlas: AtlasDef = {
         "loot/loot-melee-lasr-sword-01.svg",
         "loot/loot-melee-lasr-sword-02.svg",
         "loot/loot-melee-lasr-sword-03.svg",
-        "loot/lasr-sword-01.svg",
-        "loot/lasr-sword-02.svg",
-        "loot/lasr-sword-03.svg",
+        "loot/loot-lasr-sword-01.svg",
+        "loot/loot-lasr-sword-02.svg",
+        "loot/loot-lasr-sword-03.svg",
 
     ],
 };

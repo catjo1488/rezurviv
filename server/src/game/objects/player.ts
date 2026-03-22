@@ -3371,7 +3371,7 @@ applyRandomLoadout(): void {
     for (let i = 0; i < 2; i++) {
         const weap = this.weapons[i];
         if (weap.type) {
-            const gunDef = GameObjectDefs[weap.type] as GunDef;
+            const gunDef = GameObjectDefs[weap.type] as GunDef;          
 if (gunDef.ammo) {
     const ammoKey = gunDef.ammo as InventoryItem;
     // проверяем что это валидный предмет инвентаря
@@ -3391,29 +3391,31 @@ if (gunDef.ammo) {
     // Убираем перки без дропа
     this._perks.length = 0;
     this._perkTypes.length = 0;
-
-    // Рандомное оружие
-const gunTier = this.game.map.mapDef.lootTable["tier_guns"];
-const randomGun = gunTier[util.randomInt(0, gunTier.length - 1)];
-
-if (randomGun && randomGun.name) {
-    const gunDef = GameObjectDefs[randomGun.name] as GunDef;
-    if (!gunDef || gunDef.type !== "gun") return;
-
-    this.weaponManager.setWeapon(GameConfig.WeaponSlot.Primary, randomGun.name, 0);
     
-    if (gunDef.ammo) {
-        const ammoKey = gunDef.ammo as InventoryItem;
-        const bagSize = GameConfig.bagSizes[ammoKey];
-        if (bagSize) {
-            const amount = bagSize[this.getGearLevel(this.backpack)];
-            this.invManager.give(ammoKey, amount);
-            this.weaponManager.reload(GameConfig.WeaponSlot.Primary, true);
+    const gunTier = this.game.map.mapDef.lootTable["tier_guns"].filter(
+        g => g.name !== "flare_gun" && g.name !== "flare_gun_dual"
+    );
+    const randomGun = gunTier[util.randomInt(0, gunTier.length - 1)];
+
+    if (randomGun && randomGun.name) {
+        const gunDef = GameObjectDefs[randomGun.name] as GunDef;
+        if (gunDef && gunDef.type === "gun") {
+            this.weaponManager.setWeapon(GameConfig.WeaponSlot.Primary, randomGun.name, 0);
+            if (gunDef.ammo) {
+                const ammoKey = gunDef.ammo as InventoryItem;
+                if (this.invManager.isValid(ammoKey)) {
+                    const bagSize = GameConfig.bagSizes[ammoKey];
+                    if (bagSize) {
+                        const amount = bagSize[this.getGearLevel(this.backpack)];
+                        this.invManager.give(ammoKey, amount);
+                        this.weaponManager.reload(GameConfig.WeaponSlot.Primary, true);
+                    }
+                }
+            }
         }
     }
-}
     // Рандомная броня
-    const helmets = ["helmet01", "helmet02", "helmet03", "helmet04", "helmet04_moon", "helmet03_forest", "helmet03_lt", "helmet03_lt_aged", "helmet03_potato", "helmet03_marksman", "helmet03_mr", "one_V50", "helmet04_last_man_red", "helmet04_leader","helmet04_captain"];
+    const helmets = ["helmet01", "helmet02", "helmet03", "helmet04", "helmet04_moon", "helmet05", "helmet03_lt", "helmet03_lt_aged", "helmet03_potato", "helmet03_marksman", "helmet03_mr", "one_V50", "helmet04_last_man_red", "helmet04_leader","helmet04_captain"];
     const chests = ["chest01", "chest02", "chest03"];
     this.helmet = helmets[util.randomInt(0, helmets.length - 1)];
     this.chest = chests[util.randomInt(0, chests.length - 1)];
