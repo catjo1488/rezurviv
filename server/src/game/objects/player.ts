@@ -929,6 +929,9 @@ leprechaunTeleportCooldown = 0;
 leprechaunHealthAtTeleport = -1; 
 leprechaunInvincibleTicker = 0;
 
+gunchiladaTicker = 0;
+readonly GUNCHILADA_DURATION = 2.75;
+
 randomModeTicker = 30;
 readonly RANDOM_MODE_INTERVAL = 30;
 
@@ -983,7 +986,7 @@ readonly RANDOM_MODE_INTERVAL = 30;
                     this.giveHaste(GameConfig.HasteType.Windwalk, 5);
                     break;
             }
-            
+        
 
             if (roleDef.defaultItems) {
                 // for non faction modes where teamId > 2, just cycles between blue and red teamId
@@ -1761,6 +1764,10 @@ readonly RANDOM_MODE_INTERVAL = 30;
                             target.boost += itemDef.boost;
                         });
                     }
+
+if (this.actionItem === "gunchilada") {
+    this.gunchiladaTicker = this.GUNCHILADA_DURATION;
+}                    
 if (this.actionItem === "pulseBox") {
     const pulseRange = GameConfig.player.medicHealRange;
     const pulseForce = 200;
@@ -2397,6 +2404,32 @@ if (v2.lengthSqr(this.knockbackVel) > 0.01) {
                 }
             }
         }
+if (this.gunchiladaTicker > 0) {
+    this.gunchiladaTicker -= dt;
+    
+    const weapon = this.weaponManager.weapons[this.weaponManager.curWeapIdx];
+    const weaponDef = GameObjectDefs[weapon.type] as GunDef;
+    
+    if (weaponDef?.type === "gun" && this.invManager.isValid(weaponDef.ammo)) {
+        // держим ammo на 1 чтобы можно было стрелять
+        if (weapon.ammo <= 0) {
+            const taken = this.invManager.take(weaponDef.ammo as InventoryItem, 1);
+            if (taken > 0) {
+                weapon.ammo = 1;
+                this.weapsDirty = true;
+            } else {
+                // патроны кончились — останавливаем
+                this.gunchiladaTicker = 0;
+            }
+        }
+    }
+    
+    if (this.gunchiladaTicker <= 0) {
+        this.gunchiladaTicker = 0;
+        // запускаем обычную перезарядку
+        this.weaponManager.scheduledReload = true;
+    }
+}        
         // Перк void_infinite — постоянно отталкивает игроков и лут вокруг
 if (this.hasPerk("void_infinite") && this.layer === 0 && !this.dead && !this.downed) {
     const pulseRange = GameConfig.player.medicHealRange;

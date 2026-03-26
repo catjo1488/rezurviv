@@ -720,6 +720,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-lasr-sword-02.svg",
         "loot/loot-lasr-sword-03.svg",
         "loot/loot-pulseBox.svg",
+        "loot/loot-gunchilada.svg",
 
     ],
 };

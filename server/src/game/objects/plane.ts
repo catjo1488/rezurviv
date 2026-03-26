@@ -646,6 +646,7 @@ class AirdropPlane extends Plane {
     }
 }
 
+
 class AirStrikePlane extends Plane {
     /** needed for kill credits and friendly fire prevention */
     playerId?: number;

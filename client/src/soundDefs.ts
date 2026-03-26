@@ -887,6 +887,10 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/ui/pulseBox_use_01.mp3",
             volume: 1,
         },
+        gunchilada_use_01: {
+            path: "audio/ui/gunchillada_use_01.mp3",
+            volume: 1,
+        },
         pills_use_01: {
             path: "audio/ui/pills_use_01.mp3",
             volume: 1,

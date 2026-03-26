@@ -89,7 +89,6 @@ biome: {
             { name: "lasr_swrd_03", count: 1, weight: 0.15 },
             { name: "lasr_gun", count: 1, weight: 0.27 },
             { name: "lasr_gun_dual", count: 1, weight: 0.16 },
-            { name: "pulseBox", count: 2, weight: 0.2 },
         ],
         tier_world: [
             { name: "tier_guns", count: 1, weight: 0.29 }, // TODO get more data on this from original

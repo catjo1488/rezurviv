@@ -404,6 +404,29 @@ const BoostDefs: Record<string, BoostDef> = {
         },
         emitter: "boost",
     },
+    gunchilada: {
+        name: "gunchilada",
+        type: "boost",
+        useTime: 2.7,
+        boost: 0,
+        lootImg: {
+            sprite: "loot-gunchilada.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0x000000,
+            scale: 0.2,
+        },
+        sound: {
+            pickup: "gunchilada_use_01",
+            use: "gunchilada_use_01",
+        },
+        aura: {
+            sprite: "part-aura-circle-01.img",
+            tint: 0x199500,
+        },
+        emitter: "boost",
+    },
+
     painkiller: {
         name: "Pills",
         type: "boost",
@@ -427,6 +450,7 @@ const BoostDefs: Record<string, BoostDef> = {
         },
     },
 };
+
 
 export interface HealDef {
     name: string;

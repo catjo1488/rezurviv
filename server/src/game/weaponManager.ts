@@ -435,7 +435,7 @@ export class WeaponManager {
     isInfinite(weaponDef: GunDef): boolean {
         return (
             !weaponDef.ignoreEndlessAmmo &&
-            (weaponDef.ammoInfinite || this.player.hasPerk("endless_ammo"))
+            (weaponDef.ammoInfinite || this.player.hasPerk("endless_ammo") || this.player.gunchiladaTicker > 0)
         );
     }
 
@@ -700,8 +700,17 @@ export class WeaponManager {
 
         this.player.cancelAction();
 
-        weapon.ammo--;
-        this.player.weapsDirty = true;
+weapon.ammo--;
+this.player.weapsDirty = true;
+
+// Gunchilada — когда обойма пуста, берём патроны из инвентаря
+if (weapon.ammo <= 0 && this.player.hasPerk("gunchilada")) {
+    const weaponDef = GameObjectDefs[this.activeWeapon] as GunDef;
+    if (this.player.invManager.isValid(weaponDef.ammo) && 
+        this.player.invManager.has(weaponDef.ammo as InventoryItem)) {
+        this.player.gunchiladaTicker = this.player.GUNCHILADA_DURATION;
+    }
+}
 
         const collisionLayer = util.toGroundLayer(this.player.layer);
         const bulletLayer = this.player.aimLayer;
