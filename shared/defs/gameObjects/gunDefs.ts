@@ -456,7 +456,7 @@ export const BaseDefs: Record<string, GunDef> = {
         quality: 0,
         fireMode: "auto",
         caseTiming: "shoot",
-        ammo: "762mm",
+        ammo: "9mm",
         ammoSpawnCount: 96,
         maxClip: 132,
         maxReload: 132,
