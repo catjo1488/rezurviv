@@ -1,4 +1,4 @@
-import { GameConfig } from "../../gameConfig";
+    import { GameConfig } from "../../gameConfig";
 import { v2 } from "../../utils/v2";
 import { util } from "../../utils/util";
 import type { MapDef } from "../mapDefs";
