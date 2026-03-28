@@ -19,7 +19,7 @@ const mapDef: PartialMapDef = {
         icon: "img/gui/star.svg",
         buttonCss: "btn-mode-faction",
         buttonText: "50v50",
-        backgroundImg: "img/main_splash_0_7_3.png",
+        backgroundImg: "img/main_splash_desert_01.png",
     },
     assets: {
         audio: [

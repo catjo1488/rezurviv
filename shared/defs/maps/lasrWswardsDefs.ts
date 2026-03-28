@@ -16,7 +16,7 @@ const mapDef: PartialMapDef = {
         name: "star wars",
         icon: "img/gui/lasr.svg",
         buttonCss: "btn-mode-lasr",
-        backgroundImg: "",
+        backgroundImg: "img/main_splash_desert_01.png",
         buttonText: "star wars",
     },
     assets: {
