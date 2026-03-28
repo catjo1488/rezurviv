@@ -17,7 +17,7 @@ export const Main: MapDef = {
         name: "Normal",
         icon: "",
         buttonCss: "",
-        backgroundImg: "img/main_lasr.png",
+        backgroundImg: "",
     },
     assets: {
         audio: [

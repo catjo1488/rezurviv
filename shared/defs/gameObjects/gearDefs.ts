@@ -408,7 +408,7 @@ const BoostDefs: Record<string, BoostDef> = {
         name: "gunchilada",
         type: "boost",
         useTime: 2.7,
-        boost: 0,
+        boost: 15,
         lootImg: {
             sprite: "loot-gunchilada.img",
             tint: 0xffffff,
@@ -866,6 +866,23 @@ const SkinDefs = {
         },
         lootImg: {
             sprite: "player-helmet-potato.img",
+            rot: 0.5 * Math.PI,
+        },
+    }),
+        helmet03_crate_21: defineSkin("helmet03", {
+        name: "Helmet 3",
+        perk: "endless_ammo",
+        noDrop: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseTintRed: 0xffffff,
+            baseTintBlue: 0xffffff,
+            baseSprite: "player-helmet-dm-01.img",
+            spriteScale: 0.3,
+        },
+        lootImg: {
+            sprite: "player-helmet-dm-01.img",
+            scale: 0.3,
             rot: 0.5 * Math.PI,
         },
     }),

@@ -3315,19 +3315,19 @@ screen and (max-width: 736px) and (orientation: landscape) {
 
 @keyframes faction-pulse {
     from {
-        background-color: #e4027eaf;
-        border-bottom-color: #b9069c;
-        -webkit-box-shadow: 0 0 9px #ff0062;
+        background-color: #d8829d;
+        border-bottom-color: #b35a76;
+        -webkit-box-shadow: 0 0 10px #e199af;
     }
     50% {
-        background-color: rgba(241, 10, 211, 0.781);
-        border-bottom-color: #e718ba;
-        -webkit-box-shadow: 0 0 18px rgba(156, 20, 111, 0.192);
+        background-color: #e5a1b5;
+        border-bottom-color: #c97d93;
+        -webkit-box-shadow: 0 0 20px rgba(225, 153, 175, 0.4);
     }
     to {
-        background-color: #dd5b5b;
-        border-bottom-color: #e972d9;
-        -webkit-box-shadow: 0 0 9px #ff00c8;
+        background-color: #cc6d88;
+        border-bottom-color: #a64e68;
+        -webkit-box-shadow: 0 0 10px #d8829d;
     }
 }
 

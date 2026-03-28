@@ -95,7 +95,7 @@ const defaultConfig = {
     loadout: loadout.defaultLoadout(),
     sessionCookie: "" as string | null,
     binds: "",
-    cachedBgImg: "main_lasr.png",
+    cachedBgImg: "img/main_splash_0_7_0.png",
     version: 1,
     /* STRIP_FROM_PROD_CLIENT:START */
     debugTools: debugToolsConfig,

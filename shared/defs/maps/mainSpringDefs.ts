@@ -4,7 +4,7 @@ import { Main, type PartialMapDef } from "./baseDefs";
 
 const mapDef: PartialMapDef = {
     desc: {
-        backgroundImg: "img/main_lasr.png",
+        backgroundImg: "",
     },
     assets: {
         audio: [],

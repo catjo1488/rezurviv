@@ -11,7 +11,7 @@ const mapDef: PartialMapDef = {
         name: "Desert",
         icon: "img/loot/loot-weapon-flare-gun.svg",
         buttonCss: "btn-mode-desert",
-        backgroundImg: "img/main_splash_desert_01.png",
+        backgroundImg: "img/main_splash_0_7_0.png",
     },
     assets: {
         audio: [
@@ -20,7 +20,7 @@ const mapDef: PartialMapDef = {
             { name: "log_04", channel: "sfx" },
             { name: "piano_music_01", channel: "ambient" },
         ],
-        atlases: ["gradient", "loadout", "shared", "desert"],
+        atlases: ["gradient", "loadout", "shared", "desert","savannah"],
     },
     biome: {
         colors: {
@@ -83,6 +83,7 @@ const mapDef: PartialMapDef = {
             { name: "spas12", count: 1, weight: 1 },
             { name: "qbb97", count: 1, weight: 0.01 },
             { name: "flare_gun", count: 1, weight: 14.5 },
+            { name: "gunchilada", count: 4, weight: 5 },
             {
                 name: "flare_gun_dual",
                 count: 1,
@@ -106,7 +107,11 @@ const mapDef: PartialMapDef = {
             { name: "scout_elite", count: 1, weight: 2.5 },
             { name: "model94", count: 1, weight: 2 },
             { name: "colt45", count: 1, weight: 1 },
-            { name: "mkg45", count: 1, weight: 2.5 }, // !
+            { name: "mkg45", count: 1, weight: 2.5 },
+            { name: "gunchilada", count: 4, weight: 5 },
+        ],
+        tier_crate_21: [
+            { name: "helmet03_crate_21", count: 1, weight: 1 },
         ],
         tier_airdrop_rare: [
             { name: "garand", count: 1, weight: 6 },
@@ -115,12 +120,14 @@ const mapDef: PartialMapDef = {
             { name: "m249", count: 1, weight: 0.1 },
             { name: "m4a1", count: 1, weight: 4 },
             { name: "ots38_dual", count: 1, weight: 4.5 },
+            { name: "gunchilada", count: 4, weight: 5 },
         ],
         tier_ammo: [
             { name: "45acp", count: 60, weight: 3 },
             { name: "762mm", count: 60, weight: 3 },
             { name: "556mm", count: 60, weight: 3 },
             { name: "12gauge", count: 10, weight: 3 },
+            { name: "gunchilada", count: 4, weight: 5 },
         ],
         tier_ammo_crate: [
             { name: "45acp", count: 60, weight: 3 },
@@ -130,12 +137,14 @@ const mapDef: PartialMapDef = {
             { name: "50AE", count: 21, weight: 1 },
             { name: "308sub", count: 5, weight: 1 },
             { name: "flare", count: 1, weight: 1 },
+            { name: "gunchilada", count: 4, weight: 1 },
         ],
         tier_airdrop_ammo: [
             { name: "45acp", count: 30, weight: 3 },
             { name: "762mm", count: 30, weight: 3 },
             { name: "556mm", count: 30, weight: 3 },
             { name: "12gauge", count: 5, weight: 3 },
+            { name: "gunchilada", count: 4, weight: 2 },
         ],
         tier_airdrop_outfits: [
             { name: "", count: 1, weight: 20 },
@@ -176,6 +185,22 @@ const mapDef: PartialMapDef = {
             { name: "chest03", count: 1, weight: 0.25 },
             { name: "4xscope", count: 1, weight: 0.5 },
             { name: "8xscope", count: 1, weight: 0.25 },
+            { name: "gunchilada", count: 4, weight: 5 },
+        ],
+        tier_medical: [
+            { name: "bandage", count: 5, weight: 16 },
+            { name: "healthkit", count: 1, weight: 4 },
+            { name: "soda", count: 1, weight: 15 },
+            { name: "painkiller", count: 1, weight: 5 },
+            { name: "gunchilada", count: 4, weight: 4 },
+        ],
+          tier_toilet: [
+            { name: "tier_guns", count: 1, weight: 0.1 },
+            { name: "tier_scopes", count: 1, weight: 0.05 },
+            { name: "tier_medical", count: 1, weight: 0.6 },
+            { name: "tier_throwables", count: 1, weight: 0.05 },
+            { name: "tier_outfits", count: 1, weight: 0.025 }, 
+            { name: "gunchilada", count: 2, weight: 5 },
         ],
         tier_hatchet: [
             { name: "vector45", count: 1, weight: 0.4 },
@@ -184,12 +209,14 @@ const mapDef: PartialMapDef = {
             { name: "pkp", count: 1, weight: 0.01 },
             { name: "m249", count: 1, weight: 0.01 },
             { name: "m9", count: 1, weight: 0.01 },
+            { name: "gunchilada", count: 4, weight: 0.3 },
         ],
         tier_throwables: [
             { name: "frag", count: 2, weight: 1 },
             { name: "smoke", count: 1, weight: 1 },
             { name: "strobe", count: 1, weight: 0.2 },
             { name: "mirv", count: 2, weight: 0.05 },
+            { name: "gunchilada", count: 4, weight: 1 },
         ],
         tier_airdrop_throwables: [
             { name: "strobe", count: 1, weight: 1 },
@@ -295,6 +322,7 @@ const mapDef: PartialMapDef = {
                 desert_town_02: 1,
                 greenhouse_02: 1,
                 stone_05: 6,
+                crate_21: 2,
             },
         ],
         randomSpawns: [],
@@ -305,6 +333,7 @@ const mapDef: PartialMapDef = {
                 crate_02: "crate_18",
                 stone_01: "stone_01b",
                 stone_03: "stone_03b",
+                crate_21: "crate_21"
             },
         ],
         importantSpawns: ["desert_town_01", "desert_town_02", "river_town_02"],

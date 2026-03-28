@@ -234,20 +234,28 @@
                 <div class="ui-loot-count">0</div>
                 <img class="ui-loot-image" src="">
                 </div>
-                <div id="ui-loot-gunchilada" class="ui-loot ui-outline-hover ui-scale-hover ui-medical tooltip">
+<div id="ui-loot-gunchilada" class="ui-loot ui-outline-hover ui-scale-hover ui-medical tooltip">
+    <div class="tooltip-text">
+        <div class="tooltip-title" data-l10n="gunchilada">Gunchilada</div>
+        <div class="tooltip-description"><span data-l10n="game-gunchilada-tooltip">Left-click to continue shooting from inventory.</span></div>
+                        </div>
+                        <div class="ui-loot-count">0</div>
+                        <img class="ui-loot-image" src="">
+                    </div>
+                    <div id="ui-loot-pulseBox" class="ui-loot ui-outline-hover ui-scale-hover ui-medical tooltip" style="display: none;">
                         <div class="tooltip-text">
-                            <div class="tooltip-title" data-l10n="gunchilada">Pills</div>
-                            <div class="tooltip-description"><span data-l10n="game-gunchilada-tooltip">Left-click to boost adrenaline by 50.</div>
+                            <div class="tooltip-title" data-l10n="pulseBox">Pulse Box</div>
+                            <div class="tooltip-description"><span data-l10n="game-pulseBox-tooltip">Left-click to boost adrenaline by 50.</span></div>
+                        </div>
+                        <div class="ui-loot-count">0</div>
+                        <img class="ui-loot-image" src="">
+                    </div>
                 </div>
-                <div class="ui-loot-count">0</div>
-                <img class="ui-loot-image" src="">
-                </div>
-            </div>
-            <div id="ui-ammo-interactive">
-                <div id="ui-loot-50AE" class="ui-outline-hover ui-ammo tooltip">
-                <div class="tooltip-text click-through">
-                    <div class="tooltip-title" data-l10n="game-50AE"></div>
-                    <div class="tooltip-description"><span data-l10n="game-50AE-tooltip"></span></div>
+                <div id="ui-ammo-interactive">
+                    <div id="ui-loot-50AE" class="ui-outline-hover ui-ammo tooltip">
+                        <div class="tooltip-text click-through">
+                            <div class="tooltip-title" data-l10n="game-50AE"></div>
+                            <div class="tooltip-description"><span data-l10n="game-50AE-tooltip"></span></div>
                         </div>
                         <div class="ui-loot-count">0</div>
                         <img class="ui-loot-image" src="">
@@ -1412,7 +1420,7 @@
         // load a cached background image as earlier as possible
         // so we dont have to wait for API to reply to show a background
         const config = JSON.parse(localStorage.getItem("surviv_config") || "{}");
-        const bgImg = config.cachedBgImg || "main_lasr.png";
+        const bgImg = config.cachedBgImg || "img/main_splash_0_7_0.png";
         const bg = document.getElementById("background");
         if (bg) {
             bg.style.backgroundImage = `url(${bgImg})`;

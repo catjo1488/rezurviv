@@ -18,7 +18,7 @@ export const mapDef: MapDef = {
         name: "randomaizer",
         icon: "img/gui/randomaizer.svg",
         buttonCss: "btn-mode-randomaizer",
-        backgroundImg: "img/main_lasr.png",
+        backgroundImg: "",
         buttonText: "randomaizer",
     },
     assets: {
