@@ -11,7 +11,7 @@ const mapDef: PartialMapDef = {
         name: "Desert",
         icon: "img/loot/loot-weapon-flare-gun.svg",
         buttonCss: "btn-mode-desert",
-        backgroundImg: "img/main_splash_0_7_0.png",
+        backgroundImg: "img/main_splash_0_7_3.png",
     },
     assets: {
         audio: [
