@@ -13,7 +13,9 @@ import type { ConfigManager, DebugRenderOpts } from "./config";
 import { DebugHUD } from "./debug/debugHUD";
 import { debugLines } from "./debug/debugLines";
 
+/* STRIP_FROM_PROD_CLIENT:START */
 import { Editor } from "./debug/editor";
+/* STRIP_FROM_PROD_CLIENT:END */
 
 import { device } from "./device";
 import { EmoteBarn } from "./emote";
@@ -107,7 +109,7 @@ export class Game {
     m_debugZoom!: number;
     m_useDebugZoom!: boolean;
 
-    editor: any;
+    editor!: Editor;
     debugHUD!: DebugHUD;
     m_isEditor = false;
 
@@ -142,6 +144,9 @@ export class Game {
         this.m_inputBindUi = m_inputBindUi;
         this.m_resourceManager = m_resourceManager;
 
+        if (this.m_isEditor) {
+            this.editor = new Editor(this.m_config);
+        }
     }
 
     tryJoinGame(
@@ -218,9 +223,9 @@ export class Game {
         }
     }
 
-init() {
-    this.m_canvasMode = this.m_pixi.renderer.type == PIXI.RENDERER_TYPE.CANVAS;
-    
+    init() {
+        this.m_canvasMode = this.m_pixi.renderer.type == PIXI.RENDERER_TYPE.CANVAS;
+
     // Создаёт editor только один раз
     if (!this.editor) {
         try {
@@ -229,7 +234,7 @@ init() {
             // недоступен в продакшн билде
         }
     }
-       // Modules
+        // Modules
         this.m_touch = new Touch(this.m_input, this.m_config);
         this.m_camera = new Camera();
         this.m_renderer = new Renderer(this, this.m_canvasMode);
@@ -403,18 +408,16 @@ init() {
     }
 
 update(dt: number) {
-    if (!this.initialized) return;
     this.debugHUD.m_update(dt, this);
 
-if (this.m_isEditor) {
-    if (this.m_input.keyPressed(Key.Tilde)) {
-        this.editor?.setEnabled(!this.editor.enabled);
+    if (this.m_isEditor) {
+        if (this.m_input.keyPressed(Key.Tilde)) {
+            this.editor.setEnabled(!this.editor.enabled);
+        }
+        if (this.editor.enabled) {
+            this.editor.m_update(this.m_input);
+        }
     }
-    if (this.editor?.enabled) {
-        this.editor.m_update(this.m_input);
-    }
-}
-
 
     let debug: DebugRenderOpts;
     if (this.m_isEditor) {
@@ -811,11 +814,11 @@ if (this.m_isEditor) {
         // Clear cached data
         this.m_ui2Manager.flushInput();
 
-if (this.m_isEditor && this.editor?.enabled && this.editor.sendMsg) {
-    var msg = this.editor.getMsg();
-    this.m_sendMessage(net.MsgType.Edit, msg);
-    this.editor.postSerialization();
-}
+        if (this.m_isEditor && this.editor.enabled && this.editor.sendMsg) {
+            var msg = this.editor.getMsg();
+            this.m_sendMessage(net.MsgType.Edit, msg);
+            this.editor.postSerialization();
+        }
 
         this.m_map.m_update(
             dt,
@@ -1252,7 +1255,6 @@ if (this.m_isEditor && this.editor?.enabled && this.editor.sendMsg) {
 
     // Socket functions
     m_onMsg(type: net.MsgType, stream: net.BitStream) {
-if (!this.initialized && type !== net.MsgType.Joined) return;
         switch (type) {
             case net.MsgType.Joined: {
                 const msg = new net.JoinedMsg();
@@ -1265,59 +1267,55 @@ if (!this.initialized && type !== net.MsgType.Joined) return;
                 if (!msg.started) {
                     this.m_uiManager.setWaitingForPlayers(true);
                 }
- fetch(`/api/editor/check/${msg.slug}`)
-        .then(r => r.json())
-        .then((data: any) => {  
-            this.m_isEditor = data.allowed;
-        });
+                fetch(`/api/editor/check/${msg.playerId}`)
+    .then(r => r.json())
+    .then((data: any) => { this.m_isEditor = data.allowed; });
                 this.m_uiManager.removeAds();
                 if (this.victoryMusic) {
                     this.victoryMusic.stop();
                     this.victoryMusic = null;
- 
                 }
-               // Play a sound if the user in another windows or tab
+                // Play a sound if the user in another windows or tab
                 if (!document.hasFocus()) {
                     this.m_audioManager.playSound("notification_start_01", {
                         channel: "ui",
                     });
                 }
                 if (this.m_isEditor) {
-                  if (this.m_isEditor && this.editor?.enabled) {
-                 this.editor.sendMsg = true;
-
+                    if (this.editor.enabled) {
+                        this.editor.sendMsg = true;
                     }
                 }
 
                 SDK.gamePlayStart();
                 break;
             }
-case net.MsgType.Map: {
+            case net.MsgType.Map: {
     const mapMsg = new net.MapMsg();
     mapMsg.deserialize(stream);
     this.m_map.loadMap(mapMsg, this.m_camera, this.m_canvasMode, this.m_particleBarn);
-    this.m_resourceManager.loadMapAssets(this.m_map.mapName);
-    this.m_map.renderMap(this.m_pixi.renderer, this.m_canvasMode);
-    this.m_bulletBarn.onMapLoad(this.m_map);
-    this.m_particleBarn.onMapLoad(this.m_map);
-    this.m_uiManager.onMapLoad(this.m_map, this.m_camera);
-    if (this.m_map.perkMode) {
-        const role = this.m_config.get("perkModeRole")!;
-        this.m_uiManager.setRoleMenuOptions(
-            role,
-            this.m_map.getMapDef().gameMode.perkModeRoles!,
-        );
-        this.m_uiManager.setRoleMenuActive(true);
-    } else {
-        this.m_uiManager.setRoleMenuActive(false);
-    }
-    if (this.m_isEditor && this.editor) {
-        this.editor.toolParams.mapSeed = mapMsg.seed;
-        this.editor.pane.refresh();
-    }
-    break;
-}
+                this.m_resourceManager.loadMapAssets(this.m_map.mapName);
+                this.m_map.renderMap(this.m_pixi.renderer, this.m_canvasMode);
+                this.m_bulletBarn.onMapLoad(this.m_map);
+                this.m_particleBarn.onMapLoad(this.m_map);
+                this.m_uiManager.onMapLoad(this.m_map, this.m_camera);
+                if (this.m_map.perkMode) {
+                    const role = this.m_config.get("perkModeRole")!;
+                    this.m_uiManager.setRoleMenuOptions(
+                        role,
+                        this.m_map.getMapDef().gameMode.perkModeRoles!,
+                    );
+                    this.m_uiManager.setRoleMenuActive(true);
+                } else {
+                    this.m_uiManager.setRoleMenuActive(false);
+                }
 
+                if (this.m_isEditor) {
+                    this.editor.toolParams.mapSeed = msg.seed;
+                    this.editor.pane.refresh();
+                }
+                break;
+            }
             case net.MsgType.Update: {
                 const msg = new net.UpdateMsg();
                 msg.deserialize(stream, this.m_objectCreator);
