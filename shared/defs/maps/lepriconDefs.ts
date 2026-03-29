@@ -12,7 +12,6 @@ const mapDef: PartialMapDef = {
         name: "lepricon",
         icon: "img/gui/st_patrick_button_icon.svg",
      buttonCss: "btn-mode-lepricon",
-        backgroundImg: "img/main_splash_desert_01.png",
                 buttonText: "classic",
     },
     assets: {

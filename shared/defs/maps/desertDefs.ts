@@ -6,12 +6,13 @@ import { MapId } from "../types/misc";
 import { Main, type PartialMapDef } from "./baseDefs";
 
 const mapDef: PartialMapDef = {
-    mapId: MapId.Desert,
-    desc: {
-        name: "Desert",
-        icon: "img/loot/loot-weapon-flare-gun.svg",
-        buttonCss: "btn-mode-desert",
-    },
+        mapId: MapId.Desert,
+        desc: {
+            name: "Desert",
+            icon: "img/loot/loot-weapon-flare-gun.svg",
+        backgroundImg: "img/main_splash_desert_01.png",
+            buttonCss: "btn-mode-desert",
+        },
     assets: {
         audio: [
             { name: "piano_02", channel: "sfx" },

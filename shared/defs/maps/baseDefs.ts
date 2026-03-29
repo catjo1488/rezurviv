@@ -17,7 +17,7 @@ export const Main: MapDef = {
         name: "Normal",
         icon: "",
         buttonCss: "",
-        backgroundImg: "",
+        backgroundImg: "img/main_splash_desert_01.png",
     },
     assets: {
         audio: [
