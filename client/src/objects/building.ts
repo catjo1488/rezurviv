@@ -670,7 +670,7 @@ export class Building implements AbstractObject {
             if (debug.buildings?.bridge) {
                 renderBridge(this);
             }
-            if (debug.buildings.waterEdge) {
+            if (debug.buildings?.waterEdge) {
                 renderWaterEdge(this);
             }
             if (debug.buildings?.ceiling) {

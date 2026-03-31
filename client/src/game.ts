@@ -416,12 +416,12 @@ if (this.m_isEditor) {
 }
 
 
-    let debug: DebugRenderOpts;
-    if (this.m_isEditor) {
-        debug = this.m_config.get("debugRenderer")!;
-    } else {
-        debug = {} as DebugRenderOpts;
-    }
+let debug: DebugRenderOpts;
+if (this.m_isEditor) {
+    debug = { buildings: {}, ...(this.m_config.get("debugRenderer") ?? {}) } as DebugRenderOpts;
+} else {
+    debug = {} as DebugRenderOpts;
+}
 
         const smokeParticles = this.m_smokeBarn.m_particles;
 
@@ -1036,13 +1036,13 @@ if (this.m_isEditor && this.editor?.enabled && this.editor.sendMsg) {
             this.m_planeBarn,
         );
         this.m_emoteBarn.m_render(this.m_camera);
-        if (this.m_isEditor) {
-            this.m_debugDisplay.clear();
-            if (debug.enabled) {
-                debugLines.m_render(this.m_camera, this.m_debugDisplay);
-            }
-            debugLines.flush();
-        }
+if (this.m_isEditor) {
+    this.m_debugDisplay.clear();
+    if (debug?.enabled) {
+        debugLines.m_render(this.m_camera, this.m_debugDisplay);
+    }
+    debugLines.flush();
+}
     }
 
     updateAmbience() {
