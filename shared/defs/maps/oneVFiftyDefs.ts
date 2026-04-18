@@ -73,11 +73,11 @@ gameMode: {
         },
         roles: {
             timings: [
-                { role: "deserter_2", circleIdx: 0, wait: 50 },
-                { role: "deserter_3", circleIdx: 0, wait: 150 },
-                { role: "deserter_4", circleIdx: 0, wait: 250 },
-                { role: "deserter_5", circleIdx: 0, wait: 350 },
-                { role: "deserter_1", circleIdx: 0, wait: 450 },
+                { role: "deserter_1", circleIdx: 0, wait: 50 },
+                { role: "deserter_2", circleIdx: 0, wait: 150 },
+                { role: "deserter_3", circleIdx: 0, wait: 250 },
+                { role: "deserter_4", circleIdx: 0, wait: 350 },
+                { role: "deserter_5", circleIdx: 0, wait: 450 },
                 { role: "archangel_1", circleIdx: 0, wait: 460 },
                 { role: "Humility01", circleIdx: 0, wait: 465 },
                 { role: "archangel_3", circleIdx: 0, wait: 470 },

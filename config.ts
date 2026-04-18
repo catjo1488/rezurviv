@@ -30,7 +30,7 @@ export function getConfig(isProduction: boolean, dir: string) {
         proxies: {},
         modes: [
             { mapName: "oneVFifty", teamMode: TeamMode.Solo, enabled: true },
-            { mapName: "random", teamMode: TeamMode.Duo, enabled: false },
+            { mapName: "main_spring", teamMode: TeamMode.Duo, enabled: true },
             { mapName: "faction", teamMode: TeamMode.Squad, enabled: true },
         ],
         clientTheme: "main",
