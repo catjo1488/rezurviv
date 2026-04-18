@@ -41,6 +41,7 @@ export class ProjectileBarn {
         damageType: DamageType,
         throwDir?: Vec2,
         weaponSourceType?: string,
+        gameSourceType?: string,
     ): Projectile {
         const proj = new Projectile(
             this.game,
@@ -76,6 +77,7 @@ export class Projectile extends BaseGameObject {
     // used for "heavy" potatos and snowballs
     // so the kill source is still the regular potato
     weaponSourceType: string;
+    gameSourceType: string;
 
     rad: number;
 
@@ -86,9 +88,11 @@ export class Projectile extends BaseGameObject {
     vel: Vec2;
     velZ: number;
     dead = false;
-
+    
     obstacleBellowId = 0;
 
+    private activateTime: number = 0;
+    private triggeredTime: number | null = null;
     strobe?: {
         timeToPing: number;
         airstrikesTotal: number;
@@ -111,6 +115,7 @@ export class Projectile extends BaseGameObject {
         damageType: DamageType,
         throwDir?: Vec2,
         weaponSourceType?: string,
+        gameSourceType?: string,
     ) {
         super(game, pos);
         this.layer = layer;
@@ -123,6 +128,7 @@ export class Projectile extends BaseGameObject {
         this.dir = v2.normalizeSafe(vel);
         this.throwDir = throwDir ?? v2.copy(this.dir);
         this.weaponSourceType = weaponSourceType || this.type;
+        this.gameSourceType = gameSourceType || this.type;
 
         const def = GameObjectDefs[type] as ThrowableDef;
         this.velZ = def.throwPhysics.velZ;
@@ -174,6 +180,57 @@ export class Projectile extends BaseGameObject {
     update(dt: number) {
         if (this.strobe) {
             this.updateStrobe(dt);
+        }
+                if (this.type === "mine") {
+            this.activateTime += dt;
+            if (this.activateTime >= 1.5) {
+                if (this.triggeredTime !== null) {
+                    this.triggeredTime += dt;
+                    if (this.triggeredTime >= 0.5) {
+                        this.game.explosionBarn.addExplosion(
+                            "explosion_mine",
+                            this.pos,
+                            this.layer,
+                            {
+                                damageType: GameConfig.DamageType.Player,
+                                gameSourceType: this.gameSourceType,
+                                source: this.game.playerBarn.players.find(
+                                    (p) => p.__id === this.playerId,
+                                ),
+                                mapSourceType: "",
+                            },
+                        );
+                        this.destroy();
+                    }
+                } else {
+                    let mineTrigger = false;
+                    for (const player of this.game.playerBarn.players.values()) {
+                        if (v2.distance(this.pos, player.pos) < 3) {
+                            mineTrigger = true;
+                            break;
+                        }
+                    }
+                    if (!mineTrigger) {
+                        for (const bullet of this.game.bulletBarn.bullets) {
+                            if (v2.distance(this.pos, bullet.pos) < 1.5) {
+                                mineTrigger = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!mineTrigger) {
+                        for (const explosion of this.game.explosionBarn.explosions) {
+                            if (v2.distance(this.pos, explosion.pos) < 10) {
+                                mineTrigger = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (mineTrigger) {
+                        this.triggeredTime = 0;
+                    }
+                }
+            }
         }
 
         const def = GameObjectDefs[this.type] as ThrowableDef;
@@ -230,8 +287,7 @@ export class Projectile extends BaseGameObject {
                         obj.damage({
                             amount: damage,
                             damageType: this.damageType,
-                            gameSourceType: this.type,
-                            weaponSourceType: this.weaponSourceType,
+                            gameSourceType: this.gameSourceType,
                             source: this.game.objectRegister.getById(this.playerId),
                             mapSourceType: "",
                             dir: this.vel,
@@ -360,7 +416,7 @@ export class Projectile extends BaseGameObject {
                     splitDef.fuseTime,
                     DamageType.Player,
                     undefined,
-                    this.weaponSourceType,
+                    this.gameSourceType,
                 );
             }
         }
@@ -378,7 +434,7 @@ export class Projectile extends BaseGameObject {
                 this.pos,
                 this.layer,
                 {
-                    gameSourceType: this.type,
+                    gameSourceType: this.gameSourceType,
                     weaponSourceType: this.weaponSourceType,
                     damageType: this.damageType,
                     source,

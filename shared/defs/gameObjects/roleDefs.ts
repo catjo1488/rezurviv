@@ -639,6 +639,134 @@ export const RoleDefs: Record<string, RoleDef> = {
             },
         }),
     },
+archangel_1: {
+    type: "role",
+    announce: true,
+    killFeed: { assign: true },
+    sound: { assign: "leader_assigned_02" },
+    mapIcon: {
+        alive: "player-the-hunted.img",
+    },
+    mapIndicator: {
+        sprite: "player-the-hunted.img",
+        tint: 0xffaa00,
+        pulse: false,
+        pulseTint: 0xffaa00,
+    },
+    perks: ["steelskin","splinter","windwalk","firepower","field_medic","ap_rounds","melee_striker","armor_master","woods","flac_jacket"],
+    defaultItems: createDefaultItems({
+        weapons: [
+             { type: "pkp", ammo: 200, fillInv: true, weight: 1 },
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+        ],
+        outfit: "outfitDesertCamo",
+        backpack: "backpack03",
+        helmet: "archangel",
+        chest: "chest05",
+        inventory: {
+            bandage: 5,
+            "4xscope": 1,
+        },
+    }),
+},
+Humility01: {
+    type: "role",
+    announce: true,
+    killFeed: { assign: true },
+    sound: { assign: "leader_assigned_02" },
+    mapIcon: {
+        alive: "player-the-hunted.img",
+    },
+    mapIndicator: {
+        sprite: "player-the-hunted.img",
+        tint: 0xffaa00,
+        pulse: false,
+        pulseTint: 0xffaa00,
+    },
+    perks: ["steelskin","splinter","windwalk","firepower","field_medic","ap_rounds","melee_striker","armor_master","woods","flac_jacket"],
+    defaultItems: createDefaultItems({
+        weapons: [
+             { type: "pkp", ammo: 200, fillInv: true, weight: 1 },
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+        ],
+        outfit: "outfitDesertCamo",
+        backpack: "backpack03",
+        helmet: "Humility",
+        chest: "chest05",
+        inventory: {
+            bandage: 5,
+            "4xscope": 1,
+        },
+    }),
+},  
+archangel_3: {
+    type: "role",
+    announce: true,
+    killFeed: { assign: true },
+    sound: { assign: "leader_assigned_02" },
+    mapIcon: {
+        alive: "player-the-hunted.img",
+    },
+    mapIndicator: {
+        sprite: "player-the-hunted.img",
+        tint: 0xffaa00,
+        pulse: false,
+        pulseTint: 0xffaa00,
+    },
+    perks: ["steelskin","splinter","windwalk","firepower","field_medic","ap_rounds","melee_striker","armor_master","woods","flac_jacket"],
+    defaultItems: createDefaultItems({
+        weapons: [
+             { type: "pkp", ammo: 200, fillInv: true, weight: 1 },
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+        ],
+        outfit: "outfitDesertCamo",
+        backpack: "backpack03",
+        helmet: "archangel2",
+        chest: "chest05",
+        inventory: {
+            bandage: 5,
+            "4xscope": 1,
+        },
+    }),
+},
+archangel_4: {
+    type: "role",
+    announce: true,
+    killFeed: { assign: true },
+    sound: { assign: "leader_assigned_02" },
+    mapIcon: {
+        alive: "player-the-hunted.img",
+    },
+    mapIndicator: {
+        sprite: "player-the-hunted.img",
+        tint: 0xffaa00,
+        pulse: false,
+        pulseTint: 0xffaa00,
+    },
+    perks: ["steelskin","splinter","windwalk","firepower","field_medic","ap_rounds","melee_striker","armor_master","woods","flac_jacket"],
+    defaultItems: createDefaultItems({
+        weapons: [
+             { type: "pkp", ammo: 200, fillInv: true, weight: 1 },
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+            { type: "", ammo: 0 },
+        ],
+        outfit: "outfitDesertCamo",
+        backpack: "backpack03",
+        helmet: "archangel3",
+        chest: "chest05",
+        inventory: {
+            bandage: 5,
+            "4xscope": 1,
+        },
+    }),
+},
     // Дезертир - стартовая роль (0 минут)
 deserter_1: {
     type: "role",
@@ -654,17 +782,18 @@ deserter_1: {
         pulse: false,
         pulseTint: 0xffaa00,
     },
-    perks: ["small_arms","steelskin","splinter","windwalk","firepower","field_medic","ap_rounds","melee_striker","armor_master","gotw","leprechaun"],
+    perks: ["steelskin","splinter","windwalk","firepower","field_medic","ap_rounds","melee_striker","armor_master","woods","flac_jacket"],
     defaultItems: createDefaultItems({
         weapons: [
              { type: "pkp", ammo: 200, fillInv: true, weight: 1 },
             { type: "", ammo: 0 },
-            { type: "", ammo: 0 },
+            { type: "Black_Death", ammo: 0, weight: 1 },
             { type: "", ammo: 0 },
         ],
+        outfit: "outfitRedLeader",
         backpack: "backpack03",
         helmet: "one_V50lvl5",
-        chest: "chest05",
+        chest: "chest06",
         inventory: {
             bandage: 5,
             "4xscope": 1,
@@ -687,13 +816,13 @@ deserter_2: {
         pulse: false,
         pulseTint: 0xff8800,
     },
- perks: ["small_arms","steelskin","splinter","firepower","field_medic","melee_striker","armor_master","gotw"],
+    perks: ["steelskin","splinter","firepower","field_medic","melee_striker","armor_master","gotw"],
     defaultItems: createDefaultItems({
         weapons: [
+            { type: "pkp", ammo: 200, fillInv: true, weight: 1 },
             { type: "", ammo: 0 },
             { type: "", ammo: 0 },
-            { type: "", ammo: 0 },
-            { type: "mirv", ammo: 2 },
+            { type: "mirv", ammo: 8 },
         ],
         backpack: "backpack03",
         helmet: "one_V50lvl4",
@@ -722,7 +851,7 @@ deserter_3: {
         pulse: false,
         pulseTint: 0xff5500,
     },
- perks: ["small_arms","steelskin","splinter","firepower","field_medic","melee_striker","armor_master",],
+ perks: ["small_arms","steelskin","splinter","firepower","field_medic","melee_striker","armor_master","gotw"],
     defaultItems: createDefaultItems({
         weapons: [
             { type: "", },
@@ -732,7 +861,7 @@ deserter_3: {
         ],
         backpack: "backpack03",
         helmet: "one_V50lvl3",
-        chest: "chest04",
+        chest: "chest05",
         inventory: {
             mirv:4,
             bandage: 10,
@@ -758,7 +887,7 @@ deserter_4: {
         pulse: true,
         pulseTint: 0xff2200,
     },
-    perks: ["small_arms","steelskin","splinter","windwalk","firepower","field_medic"],
+    perks: ["small_arms","steelskin","splinter","windwalk","firepower","field_medic","melee_striker","armor_master",],
     defaultItems: createDefaultItems({
         weapons: [
             { type: "",  },
@@ -768,7 +897,7 @@ deserter_4: {
         ],
         backpack: "backpack03",
         helmet: "one_V50lvl2",
-        chest: "chest04",
+        chest: "chest05",
         inventory: {
             mirv:6,
             bandage: 15,
@@ -796,7 +925,7 @@ deserter_5: {
         pulse: true,
         pulseTint: 0xff0000,
     },
-    perks: ["small_arms","steelskin","field_medic","armor_master"],
+    perks: ["small_arms","steelskin","field_medic","armor_master","gotw","firepower"],
     defaultItems: createDefaultItems({
         weapons: [
             { type: "m249", ammo: 100, fillInv: true },
@@ -857,7 +986,7 @@ deserter_5: {
                 healthkit: 1,
             },
         }),
-        announce: false,
+         announce: true,
         sound: { assign: "spawn_01" },
         perks: ["field_medic", "windwalk"],
         visorImg: {
@@ -873,7 +1002,7 @@ deserter_5: {
             outfit: "outfitTank",
             chest: "chest01",
         }),
-        announce: false,
+         announce: true,
         sound: { assign: "spawn_01" },
         perks: ["steelskin", "endless_ammo"],
         visorImg: {
@@ -891,7 +1020,7 @@ deserter_5: {
                 "2xscope": 1,
             },
         }),
-        announce: false,
+         announce: true,
         sound: { assign: "spawn_01" },
         perks: ["chambered", "takedown"],
         visorImg: {
@@ -909,7 +1038,7 @@ deserter_5: {
                 soda: 1,
             },
         }),
-        announce: false,
+         announce: true,
         sound: { assign: "spawn_01" },
         perks: ["small_arms", "tree_climbing"],
         visorImg: {
@@ -925,7 +1054,7 @@ deserter_5: {
             outfit: "outfitDemo",
             backpack: "backpack01",
         }),
-        announce: false,
+         announce: true,
         sound: { assign: "spawn_01" },
         perks: ["fabricate", "flak_jacket"],
         visorImg: {
@@ -943,7 +1072,7 @@ deserter_5: {
                 bandage: 5,
             },
         }),
-        announce: false,
+        announce: true,
         sound: { assign: "spawn_01" },
         perks: ["firepower", "bonus_assault"],
         visorImg: {

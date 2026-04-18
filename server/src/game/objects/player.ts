@@ -2875,7 +2875,7 @@ if (playerSource && params.source !== this) {
         };
 
         // ignore armor for gas and bleeding damage
-        if (
+       if (
             params.damageType !== GameConfig.DamageType.Gas &&
             params.damageType !== GameConfig.DamageType.Bleeding &&
             params.damageType !== GameConfig.DamageType.Airdrop
@@ -2883,7 +2883,11 @@ if (playerSource && params.source !== this) {
             const gameSourceDef = GameObjectDefs[params.gameSourceType ?? ""];
             let isHeadShot = false;
 
-            if (gameSourceDef && "headshotMult" in gameSourceDef && !params.isExplosion) {
+            if (
+                gameSourceDef &&
+                gameSourceDef.type != "melee" &&
+                "headshotMult" in gameSourceDef
+            ) {
                 isHeadShot = Math.random() < GameConfig.player.headshotChance;
 
                 if (isHeadShot) {

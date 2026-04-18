@@ -97,10 +97,8 @@ const defaultConfig = {
     binds: "",
     cachedBgImg: "img/main_splash_desert_01.png",
     version: 1,
-    /* STRIP_FROM_PROD_CLIENT:START */
     debugTools: debugToolsConfig,
     debugRenderer: debugRenderConfig,
-    /* STRIP_FROM_PROD_CLIENT:END */
     debugHUD: debugHUDConfig,
 };
 

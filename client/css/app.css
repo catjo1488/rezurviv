@@ -1124,16 +1124,125 @@ a:active {
     width: 625px;
 }
 
+#team-menu.private-lobby-root {
+    height: auto;
+    min-height: 260px;
+    max-height: calc(100vh - 100px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 640px;
+    max-width: calc(100vw - 40px);
+    z-index: 5;
+}
+
+#team-menu.private-lobby-root #team-menu-contents {
+    padding-top: 44px;
+}
+
+#team-menu.private-lobby-root #btn-team-leave {
+    position: static;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    transform: none;
+    margin: 0 0 10px auto;
+    display: block;
+}
+
+#team-menu.private-lobby-root #team-menu-contents {
+    padding-top: 0;
+}
+
 @media (max-width: 850px),
 (max-width: 900px) and (min-resolution: 3dppx) {
     #team-menu {
         height: 230px;
         width: 418px;
     }
+    #team-menu.private-lobby-root {
+        height: auto;
+        max-height: calc(100vh - 80px);
+        width: min(418px, calc(100vw - 24px));
+    }
+}
+
+#start-main.team-menu-active #start-top-left-desktop {
+    display: none !important;
 }
 
 #team-menu-columns {
     height: 225px;
+}
+
+#team-menu-columns.private-lobby-columns {
+    height: auto !important;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 12px;
+    clear: both;
+}
+
+#team-menu-options.private-lobby-options {
+    float: none !important;
+    width: 260px;
+    flex: 0 0 auto;
+    order: 1;
+    padding: 8px 8px 8px 0;
+    box-sizing: border-box;
+}
+
+#team-menu-members.private-lobby-members {
+    float: none !important;
+    width: auto !important;
+    max-width: 360px;
+    flex: 1 1 200px;
+    order: 2;
+    padding: 4px 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#team-player-count.private-lobby-player-count {
+    width: 100%;
+    margin: 0 0 10px;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    background: rgba(18, 20, 22, 0.9);
+    color: #d7dadd !important;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+@media (max-width: 850px),
+(max-width: 900px) and (min-resolution: 3dppx) {
+    #team-player-count.private-lobby-player-count {
+        font-size: 22px;
+        padding: 7px 10px;
+    }
+}
+
+@media (max-width: 850px),
+(max-width: 900px) and (min-resolution: 3dppx) {
+    #team-menu-columns.private-lobby-columns {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #team-menu-options.private-lobby-options {
+        width: 100%;
+        max-width: none;
+        padding: 8px 0;
+    }
+    #team-menu-members.private-lobby-members {
+        max-width: none;
+    }
 }
 
 @media (max-width: 850px),
@@ -1179,10 +1288,64 @@ a:active {
     width: 320px;
 }
 
+
+/* Private lobby: only connected players, compact chips (not 80 empty cells) */
+
+#team-menu-member-list.private-lobby-grid.private-lobby-players-only {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-content: flex-start;
+    justify-content: flex-start;
+    max-height: 100px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 2px 0 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.private-lobby-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    min-height: 36px;
+    min-width: 76px;
+    max-width: 118px;
+    padding: 4px 5px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    font-size: 10px;
+    text-align: center;
+    word-break: break-word;
+    line-height: 1.15;
+}
+
+.private-lobby-slot-num {
+    color: #888;
+    font-weight: 700;
+    font-size: 10px;
+    margin-bottom: 2px;
+}
+
+.private-lobby-slot-name {
+    color: #eee;
+    max-width: 100%;
+}
+
+.private-lobby-slot-in-game {
+    opacity: 0.75;
+}
+
 @media (max-width: 850px),
 (max-width: 900px) and (min-resolution: 3dppx) {
     #team-menu-members {
         width: 220px;
+    }
+    #team-menu-member-list.private-lobby-grid.private-lobby-players-only {
+        max-height: 88px;
     }
 }
 
@@ -4669,6 +4832,29 @@ input [type="image"]:focus {
     animation-duration: 0.2s;
 }
 
+#modal-private-code {
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 6;
+}
+
+#modal-private-code .modal-content {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(420px, calc(100vw - 24px));
+}
+
+#modal-private-code .modal-body {
+    background-color: #83af50;
+}
+
+#private-code-basic-input {
+    box-sizing: border-box;
+    display: block;
+    margin: 8px auto 0;
+    width: 100%;
+}
+
 #modal-settings {
     background-color: #000;
     background-color: rgba(0, 0, 0, 0.4);
@@ -6668,6 +6854,9 @@ input [type="image"]:focus {
         bottom: 60%;
         width: 85%;
     }
+    #modal-private-code .modal-content {
+        width: calc(100vw - 24px);
+    }
     #start-bottom-right {
         top: 8px;
         right: 6px;
@@ -6725,6 +6914,11 @@ input [type="image"]:focus {
         left: 50%;
         transform: translateX(-50%);
     }
+    #team-menu.private-lobby-root {
+        height: auto;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+    }
     #team-desc {
         margin-bottom: initial;
         margin-top: -16px;
@@ -6750,11 +6944,21 @@ input [type="image"]:focus {
         height: auto;
         width: 240px;
     }
+    #team-menu-members.private-lobby-members {
+        width: 100% !important;
+        max-width: none;
+    }
+    #team-menu-member-list.private-lobby-grid.private-lobby-players-only {
+        max-height: 132px;
+    }
     .team-menu-member .name {
         width: 150px;
     }
     #team-menu-options {
         float: none;
+    }
+    #team-menu-options.private-lobby-options {
+        width: 100%;
     }
     #team-mobile-link {
         position: absolute;
@@ -6874,6 +7078,246 @@ input [type="image"]:focus {
     #modal-create-account>.modal-content {
         transform: translate(-50%, -50%) scale(1);
         width: 100%;
+    }
+}
+
+#spin-modal .spin-screen,
+#reward-modal .reward-screen {
+    display: block;
+    background: #141414;
+    position: absolute;
+    width: 1044.7px;
+    height: 470.21px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#reward-modal .reward-item .reward-effect {
+    position: absolute;
+    height: 500px;
+    width: 500px;
+    background-image: url(../img/gui/loot-spinner-01.svg);
+    background-repeat: no-repeat;
+    background-size: 114%;
+    background-position: center;
+    top: -129px;
+    left: 50%;
+    margin-left: -250px;
+    animation: spin 4s linear infinite;
+    pointer-events: none;
+}
+
+div.roulette_container {
+    width: 100%;
+    height: 207px;
+    margin: auto;
+    margin-top: 14.5%;
+    position: relative;
+    overflow: hidden;
+}
+
+.roulette-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.roulette-overlay::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 100%;
+    width: 280px;
+    height: 280px;
+    box-shadow: 0 0 0 2000px rgba(20, 20, 20, 0.5);
+}
+
+.roulette-arrows {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.roulette-top-arrow {
+    position: absolute;
+    display: flex;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.roulette-top-arrow-left {
+    width: 0;
+    height: 0;
+    border-left: 22px solid transparent;
+    border-right: 0 solid transparent;
+    border-top: 41px solid #ffd600;
+}
+
+.roulette-top-arrow-right {
+    width: 0;
+    height: 0;
+    border-left: 0 solid transparent;
+    border-right: 22px solid transparent;
+    border-top: 41px solid #ffea7e;
+}
+
+.roulette-bottom-arrow {
+    position: absolute;
+    display: flex;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.roulette-bottom-arrow-left {
+    width: 0;
+    height: 0;
+    border-left: 22px solid transparent;
+    border-right: 0 solid transparent;
+    border-bottom: 41px solid #ffea7e;
+}
+
+.roulette-bottom-arrow-right {
+    width: 0;
+    height: 0;
+    border-left: 0 solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 41px solid #ffd600;
+}
+
+div.price-marker {
+    height: 208px;
+    position: absolute;
+    top: 0;
+    width: 2px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: orange;
+    z-index: 2;
+}
+
+div.roulette {
+    margin-top: 30px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    will-change: transform;
+    z-index: 1;
+}
+
+.lootbox-roulette-item {
+    width: 148px;
+    height: 148px;
+    margin: 4px 10px 0;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+#reward-modal .reward-img>div,
+.lootbox-roulette-sprite,
+.lootbox-reward-sprite {
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.lootbox-roulette-sprite {
+    width: 100%;
+    height: 100%;
+    background-size: 120px;
+}
+
+#reward-modal .reward-title {
+    color: #fff;
+    text-shadow: 1.66941px 1.66941px 2px rgba(0, 0, 0, 0.75);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30.3361px;
+    line-height: 36px;
+    text-align: center;
+    position: relative;
+    margin: 16px 0 0;
+}
+
+#reward-modal .reward-type {
+    color: #fff;
+    text-shadow: 1.66941px 1.66941px 2px rgba(0, 0, 0, 0.75);
+    font-style: normal;
+    font-weight: bold;
+    font-size: 58px;
+    line-height: 68px;
+    text-align: center;
+}
+
+#reward-modal .reward-btns {
+    display: flex;
+    justify-content: center;
+    margin-top: 17px;
+}
+
+#reward-modal .reward-btn-blue {
+    background-color: #1e90ff;
+    border-bottom: 2px solid #1871c8;
+    box-shadow: inset 0 -2px #1871c8;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 22.7521px;
+    width: 291px;
+}
+
+#reward-modal .reward-btn-blue.green {
+    background-color: #83af50;
+    border-bottom: 2px solid #5b7a38;
+    box-shadow: inset 0 -2px #5b7a38;
+}
+
+#reward-modal .reward-img {
+    margin: 0 auto 30px;
+    display: flex;
+    justify-content: center;
+}
+
+#reward-modal .reward-img>div {
+    margin-top: 10px;
+    height: 225px;
+    width: 225px;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.lootbox-reward-sprite {
+    width: 100%;
+    height: 100%;
+    background-size: 170px;
+}
+
+#reward-modal .reward-img>div .item-rarity-style {
+    width: 31px;
+    height: 29px;
+}
+
+#reward-modal .reward-item {
+    position: relative;
+    height: 255px;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
     }
 }
 

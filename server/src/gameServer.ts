@@ -76,6 +76,7 @@
                 region: data.region,
                 version: data.version,
                 autoFill: data.autoFill,
+                privateLobbyRandomTeams: data.privateLobbyRandomTeams,
                 mapName: data.mapName,
                 teamMode: data.teamMode,
                 playerData: data.playerData,

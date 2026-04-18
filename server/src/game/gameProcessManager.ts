@@ -134,10 +134,15 @@ class GameProcess implements GameData {
         this.avaliableSlots = mapDef.gameMode.maxPlayers;
     }
 
-    addJoinTokens(tokens: FindGamePrivateBody["playerData"], autoFill: boolean) {
+    addJoinTokens(
+        tokens: FindGamePrivateBody["playerData"],
+        autoFill: boolean,
+        privateLobbyRandomTeams?: boolean,
+    ) {
         this.send({
             type: ProcessMsgType.AddJoinToken,
             autoFill,
+            privateLobbyRandomTeams,
             tokens,
         });
         this.avaliableSlots--;
@@ -308,13 +313,21 @@ export class GameProcessManager implements GameManager {
         if (!game.created) {
             return await new Promise((resolve) => {
                 game.onCreatedCbs.push((game) => {
-                    game.addJoinTokens(body.playerData, body.autoFill);
+                    game.addJoinTokens(
+                        body.playerData,
+                        body.autoFill,
+                        body.privateLobbyRandomTeams,
+                    );
                     resolve(game.id);
                 });
             });
         }
 
-        game.addJoinTokens(body.playerData, body.autoFill);
+        game.addJoinTokens(
+            body.playerData,
+            body.autoFill,
+            body.privateLobbyRandomTeams,
+        );
 
         return game.id;
     }

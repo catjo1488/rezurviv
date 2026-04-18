@@ -18,6 +18,7 @@ import type { PingTest } from "../pingTest";
 import { SDK } from "../sdk";
 import type { SiteInfo } from "../siteInfo";
 import type { Localization } from "./localization";
+import { MapDefs } from "../../../shared/defs/mapDefs";
 
 function errorTypeToString(type: string, localization: Localization) {
     const typeMap = {
@@ -109,6 +110,13 @@ export class TeamMenu {
                 this.tryStartGame();
             });
         });
+        $("#private-game-mode").on("change", () => {
+            const idx = Number($("#private-game-mode").val());
+            if (!Number.isNaN(idx)) {
+                this.setRoomProperty("gameModeIdx", idx);
+            }
+        });
+
         $("#team-copy-url, #team-desc-text").on("click", (e) => {
             const t = $("<div/>", {
                 class: "copy-toast",
@@ -176,7 +184,7 @@ export class TeamMenu {
         });
     }
 
-    connect(create: boolean, roomUrl: string) {
+    connect(create: boolean, roomUrl: string, isPrivate = false) {
         if (!this.active || roomUrl !== this.roomData.roomUrl) {
             const roomHost = api.resolveRoomHost();
             const url = `w${
@@ -199,6 +207,7 @@ export class TeamMenu {
                 autoFill: this.config.get("teamAutoFill")!,
                 findingGame: false,
                 lastError: "",
+                isPrivate,
             } as RoomData;
             this.displayedInvalidProtocolModal = false;
 
@@ -396,17 +405,48 @@ export class TeamMenu {
             }
             el.prop("disabled", !enabled);
         };
+        if (this.roomData.isPrivate) {
+            const playersWord = this.localization.translate("index-players");
+            $("#team-player-count")
+                .text(`${this.players.length}/80 ${playersWord}`)
+                .show();
+            $("#private-mode-select").show();
+
+            const modeSelect = $("#private-game-mode");
+            modeSelect.empty();
+            const modes = this.siteInfo.info.modes || [];
+            for (let i = 0; i < modes.length; i++) {
+                const mode = modes[i];
+                if (!mode.enabled) continue;
+                const mapDef = (MapDefs[mode.mapName as keyof typeof MapDefs] || MapDefs.main)
+                    .desc;
+                const label = `${mapDef.name} - ${mode.teamMode === 1 ? "Solo" : mode.teamMode === 2 ? "Duo" : "Squad"}`;
+                modeSelect.append(`<option value="${i}">${label}</option>`);
+            }
+            modeSelect.val(this.roomData.gameModeIdx);
+            modeSelect.prop("disabled", !this.isLeader || !this.joined);
+            $("#team-menu-members").addClass("private-lobby-members");
+        } else {
+            $("#team-player-count").hide();
+            $("#private-mode-select").hide();
+            $("#team-menu-members").removeClass("private-lobby-members");
+        }
         $("#team-menu").css("display", this.active ? "block" : "none");
         $("#start-menu").css("display", this.active ? "none" : "block");
         $("#right-column").css("display", this.active ? "none" : "block");
         $("#social-share-block").css("display", this.active ? "none" : "block");
+
+        $("#start-main").toggleClass("team-menu-active", this.active);
+        const privateLobbyLayout = !!(this.active && this.roomData.isPrivate);
+        $("#team-menu").toggleClass("private-lobby-root", privateLobbyLayout);
+        $("#team-menu-columns").toggleClass("private-lobby-columns", privateLobbyLayout);
+        $("#team-menu-options").toggleClass("private-lobby-options", privateLobbyLayout);
 
         // Error text
         const hasError = this.roomData.lastError != "";
         const errorTxt = errorTypeToString(this.roomData.lastError, this.localization);
         this.serverWarning.css("opacity", hasError ? 1 : 0);
         this.serverWarning.html(errorTxt);
-
         if (
             this.roomData.lastError == "find_game_invalid_protocol" &&
             !this.displayedInvalidProtocolModal
@@ -447,21 +487,27 @@ export class TeamMenu {
                 ele.selected = ele.value == this.roomData.region;
             });
 
-            // Modes btns
-            setButtonState(
-                this.queueMode1,
-                this.roomData.gameModeIdx == 1,
-                this.isLeader && this.roomData.enabledGameModeIdxs.includes(1),
+            // Modes btns (hidden for private lobby — mode is chosen in dropdown)
+            const priv = !!this.roomData.isPrivate;
+            $("#team-menu-options .team-menu-options-buttons").css(
+                "display",
+                priv ? "none" : "flex",
             );
-            setButtonState(
-                this.queueMode2,
-                this.roomData.gameModeIdx == 2,
-                this.isLeader && this.roomData.enabledGameModeIdxs.includes(2),
-            );
+            if (!priv) {
+                setButtonState(
+                    this.queueMode1,
+                    this.roomData.gameModeIdx == 1,
+                    this.isLeader && this.roomData.enabledGameModeIdxs.includes(1),
+                );
+                setButtonState(
+                    this.queueMode2,
+                    this.roomData.gameModeIdx == 2,
+                    this.isLeader && this.roomData.enabledGameModeIdxs.includes(2),
+                );
 
-            // Fill mode
-            setButtonState(this.fillAuto, this.roomData.autoFill, this.isLeader);
-            setButtonState(this.fillNone, !this.roomData.autoFill, this.isLeader);
+                setButtonState(this.fillAuto, this.roomData.autoFill, this.isLeader);
+                setButtonState(this.fillNone, !this.roomData.autoFill, this.isLeader);
+            }
             this.serverSelect.prop("disabled", !this.isLeader);
 
             // Invite link
@@ -557,129 +603,137 @@ export class TeamMenu {
             // Player properties
             const teamMembers = $("#team-menu-member-list");
             teamMembers.empty();
-            for (let t = 0; t < this.roomData.maxPlayers; t++) {
-                let playerStatus = {
-                    name: "",
-                    playerId: 0,
-                    isLeader: false,
-                    inGame: false,
-                    self: false,
-                };
-                if (t < this.players.length) {
-                    const player = this.players[t];
-                    playerStatus = {
-                        name: player.name,
-                        playerId: player.playerId,
-                        isLeader: player.isLeader,
-                        inGame: player.inGame,
-                        self: player.playerId == this.localPlayerId,
+
+            if (this.roomData.isPrivate) {
+                $("#team-menu-members").hide();
+                teamMembers.addClass("private-lobby-grid private-lobby-players-only");
+                $("#team-player-count")
+                    .addClass("private-lobby-player-count")
+                    .text(`${this.players.length}/80 SURVIVRS JOINED`);
+            } else {
+                $("#team-menu-members").show();
+                $("#team-player-count").removeClass("private-lobby-player-count");
+                teamMembers.removeClass("private-lobby-grid private-lobby-players-only");
+                for (let t = 0; t < this.roomData.maxPlayers; t++) {
+                    let playerStatus = {
+                        name: "",
+                        playerId: 0,
+                        isLeader: false,
+                        inGame: false,
+                        self: false,
                     };
-                }
-
-                const member = $("<div/>", {
-                    class: "team-menu-member",
-                });
-
-                // Left-side icon
-                let iconClass = "";
-                if (playerStatus.isLeader) {
-                    iconClass = " icon-leader";
-                } else if (this.isLeader && playerStatus.playerId != 0) {
-                    iconClass = " icon-kick";
-                }
-
-                member.append(
-                    $("<div/>", {
-                        class: `icon${iconClass}`,
-                        "data-playerid": playerStatus.playerId,
-                    }),
-                );
-                let n: JQuery<HTMLInputElement> | null = null;
-                let c = null;
-                if (this.editingName && playerStatus.self) {
-                    n = $("<input/>", {
-                        type: "text",
-                        tabindex: 0,
-                        class: "name menu-option name-text name-self-input",
-                        maxLength: net.Constants.PlayerNameMaxLen,
-                    });
-                    n.val(playerStatus.name);
-                    const m = () => {
-                        const name = helpers.sanitizeNameInput(n?.val()!);
-                        playerStatus.name = name;
-                        this.config.set("playerName", name);
-                        this.sendMessage("changeName", {
-                            name,
-                        });
-                        this.editingName = false;
-                        this.refreshUi();
-                    };
-                    const h = () => {
-                        this.editingName = false;
-                        this.refreshUi();
-                    };
-                    n.on("keydown", (e) => {
-                        if (e.which === 13) {
-                            m();
-                            return false;
-                        }
-                    });
-                    n.on("blur", h);
-                    member.append(n);
-                    c = $("<div/>", {
-                        class: "icon icon-submit-name-change",
-                    });
-                    c.on("click", m);
-                    c.on("mousedown", (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    });
-                } else {
-                    // Name
-                    let nameClass = "name-text";
-
-                    if (playerStatus.self) {
-                        nameClass += " name-self";
+                    if (t < this.players.length) {
+                        const player = this.players[t];
+                        playerStatus = {
+                            name: player.name,
+                            playerId: player.playerId,
+                            isLeader: player.isLeader,
+                            inGame: player.inGame,
+                            self: player.playerId == this.localPlayerId,
+                        };
                     }
-                    if (playerStatus.inGame) {
-                        nameClass += " name-in-game";
-                    }
-                    const nameDiv = $("<div/>", {
-                        class: `name menu-option ${nameClass}`,
-                        html: helpers.htmlEscape(playerStatus.name),
+
+                    const member = $("<div/>", {
+                        class: "team-menu-member",
                     });
-                    if (playerStatus.self) {
-                        nameDiv.on("click", () => {
-                            this.editingName = true;
-                            this.refreshUi();
-                        });
+
+                    let iconClass = "";
+                    if (playerStatus.isLeader) {
+                        iconClass = " icon-leader";
+                    } else if (this.isLeader && playerStatus.playerId != 0) {
+                        iconClass = " icon-kick";
                     }
-                    member.append(nameDiv);
-                }
-                if (c) {
-                    member.append(c);
-                } else {
+
                     member.append(
                         $("<div/>", {
-                            class: `icon ${playerStatus.inGame ? "icon-in-game" : ""}`,
+                            class: `icon${iconClass}`,
+                            "data-playerid": playerStatus.playerId,
                         }),
                     );
+                    let n: JQuery<HTMLInputElement> | null = null;
+                    let c = null;
+                    if (this.editingName && playerStatus.self) {
+                        n = $("<input/>", {
+                            type: "text",
+                            tabindex: 0,
+                            class: "name menu-option name-text name-self-input",
+                            maxLength: net.Constants.PlayerNameMaxLen,
+                        });
+                        n.val(playerStatus.name);
+                        const m = () => {
+                            const name = helpers.sanitizeNameInput(n?.val()!);
+                            playerStatus.name = name;
+                            this.config.set("playerName", name);
+                            this.sendMessage("changeName", {
+                                name,
+                            });
+                            this.editingName = false;
+                            this.refreshUi();
+                        };
+                        const h = () => {
+                            this.editingName = false;
+                            this.refreshUi();
+                        };
+                        n.on("keydown", (e) => {
+                            if (e.which === 13) {
+                                m();
+                                return false;
+                            }
+                        });
+                        n.on("blur", h);
+                        member.append(n);
+                        c = $("<div/>", {
+                            class: "icon icon-submit-name-change",
+                        });
+                        c.on("click", m);
+                        c.on("mousedown", (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    } else {
+                        let nameClass = "name-text";
+
+                        if (playerStatus.self) {
+                            nameClass += " name-self";
+                        }
+                        if (playerStatus.inGame) {
+                            nameClass += " name-in-game";
+                        }
+                        const nameDiv = $("<div/>", {
+                            class: `name menu-option ${nameClass}`,
+                            html: helpers.htmlEscape(playerStatus.name),
+                        });
+                        if (playerStatus.self) {
+                            nameDiv.on("click", () => {
+                                this.editingName = true;
+                                this.refreshUi();
+                            });
+                        }
+                        member.append(nameDiv);
+                    }
+                    if (c) {
+                        member.append(c);
+                    } else {
+                        member.append(
+                            $("<div/>", {
+                                class: `icon ${playerStatus.inGame ? "icon-in-game" : ""}`,
+                            }),
+                        );
+                    }
+                    teamMembers.append(member);
+                    n?.trigger("focus");
                 }
-                teamMembers.append(member);
-                n?.trigger("focus");
+
+                $(".icon-kick", teamMembers).on("click", (e) => {
+                    const playerId = Number($(e.currentTarget).attr("data-playerid"));
+                    this.sendMessage("kick", { playerId });
+                });
             }
 
-            $(".icon-kick", teamMembers).on("click", (e) => {
-                const playerId = Number($(e.currentTarget).attr("data-playerid"));
-                this.sendMessage("kick", {
-                    playerId,
-                });
-            });
-
-            // Play a sound if player count has increased
             const localPlayer = this.players.find((player) => {
                 return player.playerId == this.localPlayerId;
             });
+
             const playJoinSound = localPlayer && !localPlayer.inGame;
             if (
                 !document.hasFocus() &&
@@ -687,11 +741,9 @@ export class TeamMenu {
                 this.players.length > 1 &&
                 playJoinSound
             ) {
-                this.audioManager.playSound("notification_join_01", {
-                    channel: "ui",
-                });
+                this.audioManager.playSound("notification_join_01", { channel: "ui" });
             }
             this.prevPlayerCount = this.players.length;
         }
     }
-}
+} 

@@ -359,6 +359,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-melee-huntsman-rugged.svg",
         "loot/loot-melee-ice_pick.svg",
         "loot/loot-melee-karambit-drowned.svg",
+        "loot/loot-melee-Black-Death.svg",
         "loot/loot-melee-karambit-prismatic.svg",
         "loot/loot-melee-karambit-rugged.svg",
         "loot/loot-melee-katana-demo.svg",
@@ -721,6 +722,12 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-lasr-sword-03.svg",
         "loot/loot-pulseBox.svg",
         "loot/loot-gunchilada.svg",
+        "proj/proj-mine-01.svg",
+        "loot/loot-throwable-mine.svg",
+        "loot/player-helmet-archangel.svg",
+        "loot/player-helmet-Humility.svg",
+        "loot/player-helmet-archangel3.svg",
+        "loot/player-helmet-archangel2.svg",       
 
     ],
 };

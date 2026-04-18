@@ -14,7 +14,7 @@ export const PerkProperties = {
         scale: 0.15,
     },
     steelskin: {
-        scale: 0.4,
+        scale: 0.40,
         damageReduction: 0.45,
     },
     flak_jacket: {
@@ -61,11 +61,11 @@ export const PerkProperties = {
         giveInterval: 0.30, // interval between each grenade being given until the backpack is full
     },
     gotw: {
-        scale: 0.30,
+        scale: 0.40,
         healthRegen: 1.3, // per second
     },
     woods: {
-        scale: 0.30,
+        scale: 1599.0,
         healthRegen: 1.1,
     },    
     field_medic: {

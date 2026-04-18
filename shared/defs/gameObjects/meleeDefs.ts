@@ -26,6 +26,7 @@ export interface MeleeDef {
         idlePose: string;
         attackAnims: string[];
         poseAnims?: string[];
+        deploy?: string;
     };
     sound: Record<string, string>;
     noDrop?: boolean;
@@ -212,6 +213,7 @@ const BaseDefs: Record<string, MeleeDef> = {
         anim: {
             idlePose: "slash",
             attackAnims: ["slash", "fists"],
+            deploy: "spin",
         },
         sound: {
             pickup: "frag_pickup_01",
@@ -347,6 +349,51 @@ const BaseDefs: Record<string, MeleeDef> = {
                 x: 0.35,
                 y: 0.35,
             },
+            tint: 0xffffff,
+        },
+    },
+    Black_Death: {
+        name: "Black Death",
+        type: "melee",
+        quality: 0, // или поставь нужную редкость
+        autoAttack: false,
+        switchDelay: 0.25,
+        damage: 140,
+        obstacleDamage: 1,
+        noPotatoSwap: true,
+        noDropOnDeath: true,
+        attack: {
+            offset: { x: 2, y: 0 },
+            rad: 3.3,
+            damageTimes: [0.3],
+            cooldownTime: 0.6,
+        },
+        speed: {
+            equip: 1,
+        },
+        anim: {
+            idlePose: "meleeLasrSwrd",
+            attackAnims: ["lasrSwrdSwing"],
+        },
+        sound: {
+            pickup: "frag_pickup_01",
+            swing: "knife_swing_01",
+            deploy: "knife_deploy_01",
+            playerHit: "knife_hit_01",
+        },
+        lootImg: {
+            sprite: "loot-melee-Black-Death.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-02.img",
+            borderTint: 0xffffff,
+            scale: 0.6,
+            rot: -0.785,
+        },
+        worldImg: {
+            sprite: "loot-melee-Black-Death.img",
+            pos: { x: -10.5, y: -3 },
+            rot: 0.785,
+            scale: { x: 0.7, y: 0.7 }, // Увеличенный размер в руках
             tint: 0xffffff,
         },
     },

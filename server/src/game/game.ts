@@ -493,7 +493,50 @@ export class Game {
         }
     }
 
-    addJoinTokens(tokens: FindGamePrivateBody["playerData"], autoFill: boolean) {
+    addJoinTokens(
+        tokens: FindGamePrivateBody["playerData"],
+        autoFill: boolean,
+        privateLobbyRandomTeams?: boolean,
+    ) {
+        const pushToken = (
+            token: FindGamePrivateBody["playerData"][number],
+            groupData: { playerCount: number; groupHashToJoin: string; autoFill: boolean },
+        ) => {
+            this.joinTokens.set(token.token, {
+                expiresAt: Date.now() + 10000,
+                userId: token.userId,
+                slug: token.slug ?? "",
+                groupData,
+                findGameIp: token.ip,
+                loadout: token.loadout,
+            });
+        };
+
+        if (
+            privateLobbyRandomTeams &&
+            !autoFill &&
+            this.teamMode > 1 &&
+            tokens.length > 0
+        ) {
+            const shuffled = [...tokens];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            for (let i = 0; i < shuffled.length; i += this.teamMode) {
+                const chunk = shuffled.slice(i, i + this.teamMode);
+                const groupData = {
+                    playerCount: chunk.length,
+                    groupHashToJoin: "",
+                    autoFill: false,
+                };
+                for (const token of chunk) {
+                    pushToken(token, groupData);
+                }
+            }
+            return;
+        }
+
         const groupData = {
             playerCount: tokens.length,
             groupHashToJoin: "",
@@ -501,14 +544,7 @@ export class Game {
         };
 
         for (const token of tokens) {
-this.joinTokens.set(token.token, {
-    expiresAt: Date.now() + 10000,
-    userId: token.userId,
-    slug: token.slug ?? "",
-    groupData,
-    findGameIp: token.ip,
-    loadout: token.loadout,
-});
+            pushToken(token, groupData);
         }
     }
 

@@ -11,7 +11,7 @@ import {
     type ConfigType,
     debugHUDConfig,
     debugRenderConfig,
-    type debugToolsConfig,
+    debugToolsConfig,
 } from "../config";
 import { type InputHandler, Key } from "../input";
 
@@ -68,11 +68,11 @@ export class Editor {
         this.config = config;
         this.config.addModifiedListener(this.onConfigModified.bind(this));
 
-        this.toolParams = this.config.get("debugTools")!;
+        this.toolParams = this.config.get("debugTools") ?? { ...debugToolsConfig };
         this.toolParams.role = "";
 
-        this.renderParams = this.config.get("debugRenderer")!;
-        this.debugHUDParams = this.config.get("debugHUD")!;
+        this.renderParams = this.config.get("debugRenderer") ?? { ...debugRenderConfig };
+        this.debugHUDParams = this.config.get("debugHUD") ?? { ...debugHUDConfig };
 
         const container = document.getElementById(
             "ui-editor-top-right",

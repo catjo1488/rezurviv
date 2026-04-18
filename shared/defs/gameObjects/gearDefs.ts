@@ -123,6 +123,26 @@ const ChestDefs: Record<string, ChestDef> = {
             pickup: "chest_pickup_01",
         },
     },
+        chest06: {
+        name: "ARMOR OF GOD",
+        type: "chest",
+        level: 6,
+        damageReduction: 0.95,
+        skinImg: {
+            baseTint: 0x000,
+            baseSprite: "player-armor-base-01.img",
+        },
+        lootImg: {
+            sprite: "loot-chest-03.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
+        },
+        sound: {
+            pickup: "chest_pickup_01",
+        },
+    },
 };
 
 export interface HelmetDef {
@@ -1074,6 +1094,70 @@ const SkinDefs = {
         },
         lootImg: {
             sprite: "player-helmet-last-man-06.img",
+            scale: 0.3,
+            rot: 0.5 * Math.PI,
+        },
+    }),
+    archangel: defineSkin("helmet05", {
+        name: "archangel00",
+        noDrop: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseTintRed: 0xffffff,
+            baseTintBlue: 0xffffff,
+            baseSprite: "player-helmet-archangel.img",
+            spriteScale: 0.3,
+        },
+        lootImg: {
+            sprite: "player-helmet-archangel.img",
+            scale: 0.3,
+            rot: 0.5 * Math.PI,
+        },
+    }),
+    Humility: defineSkin("helmet05", {
+        name: "archangel 01",
+        noDrop: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseTintRed: 0xffffff,
+            baseTintBlue: 0xffffff,
+            baseSprite: "player-helmet-Humility.img",
+            spriteScale: 0.3,
+        },
+        lootImg: {
+            sprite: "player-helmet-Humility.img",
+            scale: 0.3,
+            rot: 0.5 * Math.PI,
+        },
+    }),
+    archangel2: defineSkin("helmet05", {
+        name: "archangel 02",
+        noDrop: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseTintRed: 0xffffff,
+            baseTintBlue: 0xffffff,
+            baseSprite: "player-helmet-archangel2.img",
+            spriteScale: 0.3,
+        },
+        lootImg: {
+            sprite: "player-helmet-archangel2.img",
+            scale: 0.3,
+            rot: 0.5 * Math.PI,
+        },
+    }),
+    archangel3: defineSkin("helmet05", {
+        name: "archangel 03",
+        noDrop: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseTintRed: 0xffffff,
+            baseTintBlue: 0xffffff,
+            baseSprite: "player-helmet-archangel3.img",
+            spriteScale: 0.3,
+        },
+        lootImg: {  
+            sprite: "player-helmet-archangel3.img",
             scale: 0.3,
             rot: 0.5 * Math.PI,
         },

@@ -29,6 +29,7 @@ export interface RoomData {
     gameModeIdx: number;
     maxPlayers: number;
     captchaEnabled: boolean;
+    isPrivate?: boolean;
 }
 
 //
@@ -95,6 +96,7 @@ export const zClientRoomData = z.object({
     region: z.string(),
     autoFill: z.boolean(),
     gameModeIdx: z.number(),
+    isPrivate: z.boolean().optional(),
 });
 
 export type ClientRoomData = z.infer<typeof zClientRoomData>;

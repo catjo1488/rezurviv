@@ -56,6 +56,8 @@ export const zFindGamePrivateBody = z.object({
     region: z.string(),
     version: z.number(),
     autoFill: z.boolean(),
+    /** Private lobby: shuffle and split into squads of `teamMode` (same match, not one party). */
+    privateLobbyRandomTeams: z.boolean().optional(),
     mapName: z.string(),
     teamMode: z.number(),
     playerData: z.array(
@@ -111,6 +113,7 @@ export interface UpdateDataMsg extends GameData {
 export interface AddJoinTokenMsg {
     type: ProcessMsgType.AddJoinToken;
     autoFill: boolean;
+    privateLobbyRandomTeams?: boolean;
     tokens: FindGamePrivateBody["playerData"];
 }
 

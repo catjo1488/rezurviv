@@ -64,7 +64,11 @@ process.on("message", async (msg: ProcessMsg) => {
 
     switch (msg.type) {
         case ProcessMsgType.AddJoinToken:
-            game.addJoinTokens(msg.tokens, msg.autoFill);
+            game.addJoinTokens(
+                msg.tokens,
+                msg.autoFill,
+                msg.privateLobbyRandomTeams,
+            );
             break;
         case ProcessMsgType.SocketMsg:
             const sMsg = msg.msgs[0];

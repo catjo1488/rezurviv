@@ -149,7 +149,11 @@ export class SingleThreadGameManager implements GameManager {
             });
         }
 
-        game.addJoinTokens(body.playerData, body.autoFill);
+        game.addJoinTokens(
+            body.playerData,
+            body.autoFill,
+            body.privateLobbyRandomTeams,
+        );
 
         return game.id;
     }

@@ -82,8 +82,23 @@ const mapDef: PartialMapDef = {
                 name: "bugle_03",
                 channel: "otherPlayers",
             },
+            {
+                name: "pumpkin_break_01",
+                channel: "sfx" 
+            },
+            {   name: "potato_01",
+                channel: "sfx" 
+            },
+            {   
+                name: "potato_02",
+                channel: "sfx" 
+            },
+            { 
+                name: "potato_pickup_01",
+                channel: "ui" 
+            },
         ],
-        atlases: ["snow","gradient", "loadout", "shared", "faction","woods","main","halloween","desert"],
+        atlases: ["snow","gradient", "loadout", "shared", "faction","woods","main","halloween","desert","cobalt","potato"],
     },
     biome: {
         colors: {
@@ -102,6 +117,8 @@ const mapDef: PartialMapDef = {
         maxPlayers: 100,
         factionMode: true,
         factions: 2,
+        perkModeRoles: ["scout", "sniper", "healer", "demo", "assault", "tank"],
+        
     },
     /* STRIP_FROM_PROD_CLIENT:START */
     gameConfig: {
@@ -193,7 +210,7 @@ const mapDef: PartialMapDef = {
                     },
                 },
             ],
-            crates: [{ name: "airdrop_crate_03", weight: 1 }],
+            crates: [{ name: "airdrop_crate_03", weight: 1 }, { name: "class_shell_02", weight: 10 }, { name: "class_shell_03", weight: 1 }],
         },
         roles: {
             timings: [
@@ -241,7 +258,7 @@ const mapDef: PartialMapDef = {
                 {
                     role: "Vice_Admiral",
                     circleIdx: 0,
-                    wait: 24,
+                    wait: 35,
                 },
                 {
                     role: "front_line_grenadier",
@@ -268,10 +285,40 @@ const mapDef: PartialMapDef = {
                     circleIdx: 0,
                     wait: 46,
                 },
-                     {
+                {
                     role: "undefeated",
                     circleIdx: 0,
                     wait: 86,
+                },
+              {
+                    role: "scout",
+                    circleIdx: 0,
+                    wait: 13,
+                },
+                                {
+                    role: "tank",
+                    circleIdx: 0,
+                    wait: 16,
+                },
+                                {
+                    role: "assault", 
+                    circleIdx: 0,
+                    wait: 19,
+                },
+                                {
+                    role: "demo",
+                    circleIdx: 0,
+                    wait: 21,
+                },
+                                {
+                    role: "healer",
+                    circleIdx: 0,
+                    wait: 24,
+                },
+                                {
+                    role: "sniper",
+                    circleIdx: 0,
+                    wait: 28,
                 },
             ],
         },
@@ -318,6 +365,7 @@ const mapDef: PartialMapDef = {
             { name: "tier_guns", count: 1, weight: 0.1 },
             { name: "tier_scopes", count: 1, weight: 0.05 },
             { name: "tier_medical", count: 1, weight: 0.6 },
+            { name: "leprechaun", count: 1, weight: 0.9 },
             {
                 name: "tier_throwables",
                 count: 1,
@@ -418,8 +466,8 @@ const mapDef: PartialMapDef = {
             rivers: {
                 weights: [
                     { weight: 1, widths: [20] },
-                    // { weight: 1, widths: [20, 4] },
-                    // { weight: 1, widths: [20, 8, 4] },
+                    { weight: 1, widths: [20, 4] },
+                    { weight: 1, widths: [20, 8, 4] },
                 ],
                 smoothness: 0.15,
             },
@@ -466,6 +514,13 @@ const mapDef: PartialMapDef = {
                 tree_07spr: 106,
                 tree_08spr: 53,
                 tree_09: 60,
+                potato_01: 100,
+                potato_02: 20,
+                potato_03: 30,
+                egg_01: 15,
+                egg_02: 15,
+                egg_03: 15,
+                egg_04: 15,
             },
         ],
         fixedSpawns: [
@@ -495,6 +550,7 @@ const mapDef: PartialMapDef = {
                 chest_03f: 1,
                 mil_crate_02: { odds: 1 },
                 tree_08sp: 3,
+                class_shell_01: 40,
             },
         ],
         randomSpawns: [],

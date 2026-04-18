@@ -124,7 +124,6 @@ class Room {
         initialData: ClientRoomData,
     ) {
         this.data.roomUrl = `#${id}`;
-        this.data.enabledGameModeIdxs = teamMenu.allowedGameModeIdxs();
         this.data.captchaEnabled = teamMenu.server.captchaEnabled;
 
         this.setProps(initialData);
@@ -185,20 +184,28 @@ class Room {
         }
         this.data.region = region;
 
-        let gameModeIdx = props.gameModeIdx;
-
+        this.data.isPrivate = props.isPrivate ?? false;
         const modes = this.teamMenu.server.modes;
 
+        if (this.data.isPrivate) {
+            this.data.enabledGameModeIdxs = modes
+                .map((_, i) => i)
+                .filter((i) => modes[i].enabled);
+        } else {
+            this.data.enabledGameModeIdxs = this.teamMenu.allowedGameModeIdxs();
+        }
+
+        let gameModeIdx = props.gameModeIdx;
         if (!this.data.enabledGameModeIdxs.includes(gameModeIdx)) {
-            // we don't allow creating teams if there's no valid team mode
-            // so this will never be -1
-            gameModeIdx = modes.findIndex((mode) => mode.enabled && mode.teamMode > 1);
+            gameModeIdx = this.data.isPrivate
+                ? (this.data.enabledGameModeIdxs[0] ?? 0)
+                : modes.findIndex((mode) => mode.enabled && mode.teamMode > 1);
         }
 
         this.data.gameModeIdx = gameModeIdx;
-
-        this.data.maxPlayers = modes[gameModeIdx].teamMode;
+        this.data.maxPlayers = this.data.isPrivate ? 80 : modes[gameModeIdx].teamMode;
         this.data.autoFill = props.autoFill;
+
 
         // kick players that don't fit on the new max players
         while (this.players.length > this.data.maxPlayers) {
@@ -263,6 +270,7 @@ class Room {
                 .from(usersTable)
                 .where(inArray(usersTable.id, userIds));
         }
+        
 
         const playerData = this.players.map((p) => {
             const token = randomUUID();
@@ -301,15 +309,16 @@ class Room {
             }
         }
 
-        const res = await this.teamMenu.server.findGame({
+const res = await this.teamMenu.server.findGame({
             mapName: mode.mapName,
             teamMode: mode.teamMode,
-            autoFill: this.data.autoFill,
+            autoFill: this.data.isPrivate ? false : this.data.autoFill,
+            privateLobbyRandomTeams:
+                this.data.isPrivate && mode.teamMode > 1 ? true : undefined,
             region: region,
             version: data.version,
             playerData,
         });
-
         if ("error" in res) {
             const errMap: Partial<Record<FindGameError, TeamMenuErrorType>> = {
                 full: "find_game_full",
@@ -558,8 +567,12 @@ export class TeamMenu {
         if (!player.room) {
             switch (msg.type) {
                 case "create": {
-                    // don't allow creating a team if there's no team mode enabled
-                    if (!this.allowedGameModeIdxs().length) {
+                    const wantPrivate = !!msg.data.roomData.isPrivate;
+                    if (!wantPrivate && !this.allowedGameModeIdxs().length) {
+                        player.send("error", { type: "create_failed" });
+                        break;
+                    }
+                    if (wantPrivate && !this.server.modes.some((m) => m.enabled)) {
                         player.send("error", { type: "create_failed" });
                         break;
                     }

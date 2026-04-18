@@ -917,6 +917,14 @@
                                 <div class="team-menu-connecting-text" id="team-menu-creating-text"><span data-l10n="index-creating-team">Creating team</span> ...</div>
                             </div>
                             <div id="team-menu-contents">
+                                <div id="team-player-count" style="color:#aaa;font-size:14px;margin-top:4px"></div>
+                                <div id="private-mode-select" style="display:none;margin-top:8px">
+                                    <select id="private-game-mode" class="btn-hollow btn-hollow-selected server-select menu-option">
+        <option value="0">Solo</option>
+        <option value="1">Duo</option>
+        <option value="2">Squad</option>
+    </select>
+                                </div>
                                 <div id="team-desc">
                                     <div id="team-desc-text"><span id="invite-link-text" data-l10n="index-invite-link">Invite link</span>: <span id="team-url"></span>
                                     </div>
@@ -1347,6 +1355,27 @@
                 </div>
                 <div class="modal-footer modal-footer-round">
                     <h3 class="close close-footer">OK</h3>
+                </div>
+            </div>
+        </div>
+        <div id="modal-private-code" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Join Private Lobby</h2>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-body-text">Enter code</p>
+                    <input
+                        type="text"
+                        id="private-code-basic-input"
+                        class="menu-option player-name-input"
+                        placeholder="Enter code"
+                        maxlength="16"
+                    />
+                </div>
+                <div class="modal-footer modal-footer-round">
+                    <h3 id="btn-private-code-join" class="finish">Join lobby</h3>
+                    <h3 id="btn-private-code-cancel" class="close close-footer">Cancel</h3>
                 </div>
             </div>
         </div>

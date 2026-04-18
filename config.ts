@@ -29,7 +29,7 @@ export function getConfig(isProduction: boolean, dir: string) {
         regions: {},
         proxies: {},
         modes: [
-            { mapName: "desert", teamMode: TeamMode.Solo, enabled: true },
+            { mapName: "oneVFifty", teamMode: TeamMode.Solo, enabled: true },
             { mapName: "random", teamMode: TeamMode.Duo, enabled: false },
             { mapName: "faction", teamMode: TeamMode.Squad, enabled: true },
         ],

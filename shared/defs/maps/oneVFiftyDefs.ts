@@ -49,7 +49,7 @@ biome: {
     },
 },
 gameMode: {
-    maxPlayers: 51,
+    maxPlayers: 80,
     factionMode: true,
     factions: 1,        // одна команда — все союзники
     killLeaderEnabled: false,
@@ -73,11 +73,15 @@ gameMode: {
         },
         roles: {
             timings: [
-                { role: "deserter_1", circleIdx: 0, wait: 50  },
-                { role: "deserter_2", circleIdx: 0, wait: 150 },
-                { role: "deserter_3", circleIdx: 0, wait: 250 },
-                { role: "deserter_4", circleIdx: 0, wait: 350 },
-                { role: "deserter_5", circleIdx: 0, wait: 450 },
+                { role: "deserter_2", circleIdx: 0, wait: 50 },
+                { role: "deserter_3", circleIdx: 0, wait: 150 },
+                { role: "deserter_4", circleIdx: 0, wait: 250 },
+                { role: "deserter_5", circleIdx: 0, wait: 350 },
+                { role: "deserter_1", circleIdx: 0, wait: 450 },
+                { role: "archangel_1", circleIdx: 0, wait: 460 },
+                { role: "Humility01", circleIdx: 0, wait: 465 },
+                { role: "archangel_3", circleIdx: 0, wait: 470 },
+                { role: "archangel_4", circleIdx: 0, wait: 475 },
             ],
         },
         bagSizes: {},
@@ -268,11 +272,12 @@ gameMode: {
             { name: "sv98", count: 1, weight: 0.01 },
             { name: "spas12", count: 1, weight: 1 },
             { name: "qbb97", count: 1, weight: 0.01 },
-            { name: "flare_gun", count: 1, weight: 0.145 }, // !
-            { name: "flare_gun_dual", count: 1, weight: 0.0025 }, // !
+            { name: "flare_gun", count: 1, weight: 5 }, // !
+            { name: "flare_gun_dual", count: 1, weight: 0.25 }, // !
             { name: "groza", count: 1, weight: 0.8 },
             { name: "scout_elite", count: 1, weight: 0.1 },
             { name: "vss", count: 1, weight: 0.1 }, // !
+            { name: "awc", count: 1, weight: 3 },
         ],
         tier_police: [
             { name: "scar", count: 1, weight: 0.5 },
@@ -439,7 +444,7 @@ gameMode: {
         tier_guns_rare_sniper: [
             { name: "mosin", count: 5, weight: 5 },
             { name: "sv98", count: 1, weight: 0.1 },
-            { name: "awc", count: 1, weight: 0.05 },
+            { name: "awc", count: 1, weight: 0.20 },
         ],
         tier_guns_rare_demo: [
             { name: "saiga", count: 1, weight: 1 },

@@ -17,6 +17,8 @@ const _allowedMeleeSkins = [
     "lasr_swrd",
     "lasr_swrd_02",
     "lasr_swrd_03",
+    "Black_Death"
+
 ];
 const _allowedOutfits = [
     "outfitBase",
