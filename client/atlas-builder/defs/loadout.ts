@@ -729,8 +729,8 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/player-helmet-archangel3.svg",
         "loot/player-helmet-archangel2.svg",       
         "loot/loot-melee-paws2.svg",
-        "loot/player-hands-paws2-left.svg",
-        "loot/player-hands-paws2-right.svg"
+        "player/player-hands-paws2-left.svg",
+        "player/player-hands-paws2-right.svg"
 
     ],
 };
