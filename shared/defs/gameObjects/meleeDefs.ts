@@ -1390,6 +1390,22 @@ const SkinDefs: Record<string, MeleeDef> = {
             sprite: "loot-melee-machete-taiga.img",
         },
     }),
+    fist_bePresent: defineMeleeSkin("fists", {
+        name: "paws",
+        rarity: Rarity.Rare,
+        noPotatoSwap: true,
+        noDropOnDeath: true,
+        lootImg: {
+            sprite: "loot-melee-paws2.img",
+            scale: 0.3,
+            rad: 25,
+            tint: 0xffffff,
+        },
+        handSprites: {
+            spriteL: "player-hands-paws2-left.img",
+            spriteR: "player-hands-paws2-right.img",
+        },
+    }),
      lasr_swrd: defineMeleeSkin("lasr_swrd", {
         name: "lasr swrd",
         noPotatoSwap: false,
