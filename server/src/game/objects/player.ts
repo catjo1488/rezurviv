@@ -829,6 +829,7 @@ for (let i = this.scheduledRoles.length - 1; i >= 0; i--) {
         spectators = new Set<Player>();
 
         outfit = "outfitBase";
+         meleeSkin = "fists";
 
         setOutfit(outfit: string) {
             if (this.outfit === outfit) return;
@@ -4683,7 +4684,9 @@ if (gunDef.ammo) {
             this.setOutfit(loadout.outfit);
         }
 
-        if (isItemInLoadout(loadout.melee, "melee") && loadout.melee != "fists") {
+        if (isItemInLoadout(loadout.melee, "melee")) {
+            this.loadout.melee = loadout.melee;
+            this.meleeSkin = loadout.melee;
             this.weapons[GameConfig.WeaponSlot.Melee].type = loadout.melee;
         }
 

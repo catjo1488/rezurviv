@@ -1390,7 +1390,7 @@ const SkinDefs: Record<string, MeleeDef> = {
             sprite: "loot-melee-machete-taiga.img",
         },
     }),
-    fist_bePresent: defineMeleeSkin("fists", {
+    paws: defineMeleeSkin("fists", {
         name: "paws",
         rarity: Rarity.Rare,
         noPotatoSwap: true,

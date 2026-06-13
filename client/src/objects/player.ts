@@ -339,6 +339,7 @@ export class Player implements AbstractObject {
         m_frozenOri: number;
         m_hasteType: Exclude<HasteType, HasteType.Count>;
         m_hasteSeq: number;
+        m_meleeSkin: string;
         m_actionItem: string;
         m_scale: number;
         m_role: string;
@@ -476,6 +477,7 @@ export class Player implements AbstractObject {
             m_dir: v2.create(1, 0),
             m_outfit: "",
             m_backpack: "",
+            m_meleeSkin: "",
             m_helmet: "",
             m_chest: "",
             m_activeWeapon: "fists",
@@ -550,6 +552,7 @@ export class Player implements AbstractObject {
         if (fullUpdate) {
             this.m_netData.m_outfit = data.outfit;
             this.m_netData.m_backpack = data.backpack;
+            this.m_netData.m_meleeSkin = data.meleeSkin;
             this.m_netData.m_helmet = data.helmet;
             this.m_netData.m_chest = data.chest;
             this.m_netData.m_activeWeapon = data.activeWeapon;
@@ -1499,7 +1502,7 @@ export class Player implements AbstractObject {
         this.renderZIdx = renderZIdx;
     }
 
-    updateVisuals(playerBarn: PlayerBarn, map: Map) {
+updateVisuals(playerBarn: PlayerBarn, map: Map) {
         const outfitDef = GameObjectDefs[this.m_netData.m_outfit] as OutfitDef;
         const outfitImg = outfitDef.skinImg;
         const bodyScale = this.m_bodyRad / GameConfig.player.radius;
@@ -1555,8 +1558,21 @@ export class Player implements AbstractObject {
         const handTint = outfitDef.ghillie
             ? map.getMapDef().biome.colors.playerGhillie
             : outfitImg.handTint;
-        setHandSprite(this.handLSprite, outfitImg.handSprite, handTint);
-        setHandSprite(this.handRSprite, outfitImg.handSprite, handTint);
+
+        // Use meleeSkin for hand sprites (fist skins)
+        const meleeSkinType = this.m_netData.m_meleeSkin;
+        const meleeSkinDef = meleeSkinType
+            ? (GameObjectDefs[meleeSkinType] as MeleeDef)
+            : undefined;
+        const meleeHandSprites = meleeSkinDef?.handSprites;
+
+        if (meleeHandSprites && !outfitDef.ghillie) {
+            setHandSprite(this.handLSprite, meleeHandSprites.spriteL, 0xffffff);
+            setHandSprite(this.handRSprite, meleeHandSprites.spriteR, 0xffffff);
+        } else {
+            setHandSprite(this.handLSprite, outfitImg.handSprite, handTint);
+            setHandSprite(this.handRSprite, outfitImg.handSprite, handTint);
+        }
 
         // Feet
         const setFootSprite = function (
@@ -1716,7 +1732,7 @@ export class Player implements AbstractObject {
                 this.bodyContainer.addChild(this.handRContainer);
             }
         }
-        if (R.type == "melee" && this.m_netData.m_activeWeapon != "fists") {
+        if (R.type == "melee" && R.worldImg && this.m_netData.m_activeWeapon != "fists") {
             const V = R.worldImg!;
             this.meleeSprite.texture = PIXI.Texture.from(V.sprite);
             this.meleeSprite.pivot.set(-V.pos.x, -V.pos.y);

@@ -811,7 +811,7 @@ if (this.m_isEditor) {
         // Clear cached data
         this.m_ui2Manager.flushInput();
 
-if (this.m_isEditor && this.editor?.enabled && this.editor.sendMsg) {
+if (IS_DEV && this.editor?.enabled && this.editor.sendMsg) {
     var msg = this.editor.getMsg();
     this.m_sendMessage(net.MsgType.Edit, msg);
     this.editor.postSerialization();
@@ -1036,7 +1036,7 @@ if (this.m_isEditor && this.editor?.enabled && this.editor.sendMsg) {
             this.m_planeBarn,
         );
         this.m_emoteBarn.m_render(this.m_camera);
-if (this.m_isEditor) {
+if (IS_DEV) {
     this.m_debugDisplay.clear();
     if (debug?.enabled) {
         debugLines.m_render(this.m_camera, this.m_debugDisplay);
@@ -1282,8 +1282,8 @@ if (!this.initialized && type !== net.MsgType.Joined) return;
                         channel: "ui",
                     });
                 }
-                if (this.m_isEditor) {
-                  if (this.m_isEditor && this.editor?.enabled) {
+                if (IS_DEV) {
+                  if (IS_DEV && this.editor?.enabled) {
                  this.editor.sendMsg = true;
 
                     }
@@ -1311,7 +1311,7 @@ case net.MsgType.Map: {
     } else {
         this.m_uiManager.setRoleMenuActive(false);
     }
-    if (this.m_isEditor && this.editor) {
+    if (IS_DEV && this.editor) {
         this.editor.toolParams.mapSeed = mapMsg.seed;
         this.editor.pane.refresh();
     }
